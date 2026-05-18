@@ -587,6 +587,13 @@ h1.hero-headline {
   background-position: center;
   position: relative;
 }
+.stats-portrait-icon {
+  position: absolute;
+  top: 20px; left: 20px;
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
 .stats-card-dark {
   background: #0A0A0A;
   border-radius: 28px;
@@ -947,7 +954,9 @@ h1.hero-headline {
 <!-- STATS PORTRAIT -->
 <section class="section-stats">
   <div class="stats-card-wrap">
-    <div class="stats-portrait" role="img" aria-label="Engineer portrait"></div>
+    <div class="stats-portrait" role="img" aria-label="Engineer portrait">
+      <img src="PowerToFly-Icon.svg" alt="" class="stats-portrait-icon" aria-hidden="true">
+    </div>
     <div class="stats-card-dark">
       <div>
         <div class="stat-big-num">17K</div>
