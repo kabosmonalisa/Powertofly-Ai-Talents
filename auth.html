@@ -371,12 +371,12 @@ body {
   <div class="auth-card">
 
     <div class="auth-toggle">
-      <button class="active" id="tabSignIn" onclick="showPanel('signin')">Sign in</button>
-      <button id="tabSignUp" onclick="showPanel('signup')">Sign up</button>
+      <button id="tabSignIn" onclick="showPanel('signin')">Sign in</button>
+      <button class="active" id="tabSignUp" onclick="showPanel('signup')">Sign up</button>
     </div>
 
     <!-- SIGN IN -->
-    <div class="auth-panel active" id="panelSignin">
+    <div class="auth-panel" id="panelSignin">
       <h1 class="auth-heading">Welcome back</h1>
       <p class="auth-sub">Sign in to your PowerToFly AI account.</p>
       <form class="auth-form" onsubmit="return false">
@@ -410,7 +410,7 @@ body {
     </div>
 
     <!-- SIGN UP -->
-    <div class="auth-panel" id="panelSignup">
+    <div class="auth-panel active" id="panelSignup">
 
       <!-- Step 1 -->
       <div id="signupStep1">
@@ -436,22 +436,7 @@ body {
             <label for="su-email">Email</label>
             <input type="email" id="su-email" placeholder="you@example.com" autocomplete="email">
           </div>
-          <div class="field">
-            <label for="su-domain">Your domain</label>
-            <select id="su-domain">
-              <option value="" disabled selected>Select your field</option>
-              <option>Clinical / Healthcare</option>
-              <option>Legal</option>
-              <option>Financial Analysis</option>
-              <option>Engineering / Software</option>
-              <option>Language & Translation</option>
-              <option>Scientific Research</option>
-              <option>Education</option>
-              <option>Creative / Brand</option>
-              <option>Operations</option>
-              <option>Other</option>
-            </select>
-          </div>
+
           <div class="field">
             <label for="su-password">Password</label>
             <input type="password" id="su-password" placeholder="Min. 8 characters" autocomplete="new-password">
@@ -512,6 +497,7 @@ body {
 </div>
 
 <script>
+if (new URLSearchParams(window.location.search).get('mode') === 'signin') showPanel('signin');
 function showPanel(panel) {
   document.getElementById('panelSignin').classList.toggle('active', panel === 'signin');
   document.getElementById('panelSignup').classList.toggle('active', panel === 'signup');
