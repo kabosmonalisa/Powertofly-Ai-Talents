@@ -384,6 +384,88 @@ background: transparent;
 }
 .opp-card .btn:hover { background: var(--ink); color: #fff; }
 
+/* ===== Logo Strip ===== */
+.logo-strip {
+  padding: 64px 32px;
+  background: var(--bg-soft);
+  text-align: center;
+}
+.logo-strip-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 36px;
+}
+.logo-strip-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px 56px;
+}
+.logo-strip-track img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.45);
+  transition: filter 220ms ease;
+}
+.logo-strip-track img:hover { filter: grayscale(0) opacity(1); }
+
+/* ===== Testimonials ===== */
+.section-proof { background: var(--bg); }
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.t-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.t-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+.t-stars { color: #F5A623; font-size: 14px; letter-spacing: 2px; }
+.t-quote {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  flex: 1;
+}
+.t-meta {
+  margin-top: 22px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.t-meta-info { display: flex; flex-direction: column; min-width: 0; }
+.t-author { font-size: 14px; font-weight: 600; color: var(--ink); }
+.t-company { font-size: 13px; font-weight: 500; color: var(--ink-2); margin-top: 3px; }
+.t-role { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.t-logo {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.t-logo img { width: 70%; height: 70%; object-fit: contain; }
+
+@media (max-width: 1000px) { .testimonials { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .testimonials { grid-template-columns: 1fr; } }
+
 /* ===== Footer ===== */
 .footer {
 background: #000000;
@@ -458,48 +540,57 @@ font-size: 12.5px; color: #758682;
   text-align: center;
 }
 
-/* ===== Benefits ===== */
-.benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
+/* ===== Benefits (sticky scroll stack) ===== */
+.benefits-stack { padding-bottom: 4vh; }
 .benefit-card {
-  border-radius: 28px;
-  padding: 40px 32px 36px;
-  border: 1.5px solid transparent;
-  background:
-    linear-gradient(var(--bg-soft), var(--bg-soft)) padding-box,
-    linear-gradient(135deg, rgba(91,207,255,0.45), rgba(79,232,169,0.30), rgba(213,255,102,0.20)) border-box;
+  position: sticky;
+  top: 14vh;
+  border-radius: 24px;
+  border: 1px solid rgba(10,10,10,0.09);
   box-shadow: var(--shadow-card);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  transition: transform 220ms ease, box-shadow 220ms ease;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 340px;
+  background: var(--bg-soft);
+  transition: box-shadow 220ms ease;
 }
-.benefit-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card);
+.benefit-card:nth-child(2) { z-index: 2; margin-top: 36vh; }
+.benefit-card:nth-child(3) { z-index: 3; margin-top: 36vh; }
+.benefit-sparkle-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  border-right: 1px solid rgba(10,10,10,0.07);
 }
 .benefit-sparkle {
-  width: 180px;
-  height: 180px;
+  width: 160px;
+  height: 160px;
   animation: floatY 4s ease-in-out infinite;
 }
 .benefit-card:nth-child(2) .benefit-sparkle { animation-delay: -1.3s; }
 .benefit-card:nth-child(3) .benefit-sparkle { animation-delay: -2.7s; }
+.benefit-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 52px;
+  gap: 16px;
+}
 .benefit-card h3 {
   font-family: 'Inter Tight', sans-serif;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.2;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
   color: var(--ink);
 }
 .benefit-card p {
-  font-size: 16px;
+  font-size: 17px;
   color: var(--ink-3);
-  line-height: 1.6;
+  line-height: 1.65;
+  max-width: 48ch;
 }
 
 /* ===== How It Works ===== */
@@ -761,9 +852,12 @@ font-size: 12.5px; color: #758682;
 .nav-links { display: none; }
 .footer-cols { grid-template-columns: 1fr 1fr; }
 .opp-grid { grid-template-columns: repeat(2, 1fr); }
-.benefits-grid { grid-template-columns: 1fr; }
+.benefit-card { grid-template-columns: 1fr; min-height: auto; }
+.benefit-sparkle-col { border-right: none; border-bottom: 1px solid rgba(10,10,10,0.07); padding: 32px; }
+.benefit-card:nth-child(2) { margin-top: 0; }
+.benefit-card:nth-child(3) { margin-top: 0; }
 .how-inner { grid-template-columns: 1fr; gap: 48px; }
-.how-sparkle { width: 240px; height: 240px; }
+.how-portrait-card { aspect-ratio: 4 / 3; }
 }
 @media (max-width: 600px) {
 .nav { padding: 0 20px; }
@@ -779,9 +873,8 @@ font-size: 12.5px; color: #758682;
 .opp-grid { grid-template-columns: 1fr; }
 .hero-stats { gap: 8px; }
 .mission { padding: 80px 20px; }
-.benefit-card { padding: 32px 24px 28px; }
-.benefit-sparkle { width: 140px; height: 140px; }
-.how-sparkle { width: 200px; height: 200px; }
+.benefit-text-col { padding: 28px 24px 32px; }
+.benefit-sparkle { width: 120px; height: 120px; }
 .closing-cta { padding: 80px 20px 72px; }
 }
 
@@ -830,11 +923,6 @@ font-size: 12.5px; color: #758682;
 <section class="hero">
 <div class="hero-glow" aria-hidden="true"></div>
 <div class="hero-inner">
-
-  <div class="hero-eyebrow">
-    <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-    Now matching experts across 12 domains
-  </div>
 
   <h1 class="display">
     Your expertise is the<br>
@@ -1017,33 +1105,45 @@ font-size: 12.5px; color: #758682;
   <div class="section-head">
     <h2>What you can expect</h2>
   </div>
-  <div class="benefits-grid">
+  <div class="benefits-stack">
 
     <div class="benefit-card">
-      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs><linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-        <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg1)"/>
-      </svg>
-      <h3>Work from anywhere</h3>
-      <p>Every project is fully remote. Set your own hours and contribute from wherever you do your best thinking.</p>
+      <div class="benefit-sparkle-col">
+        <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+          <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg1)"/>
+        </svg>
+      </div>
+      <div class="benefit-text-col">
+        <h3>Work from anywhere</h3>
+        <p>Every project is fully remote. Set your own hours and contribute from wherever you do your best thinking.</p>
+      </div>
     </div>
 
     <div class="benefit-card">
-      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-        <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg2)"/>
-      </svg>
-      <h3>Earn what your expertise is worth</h3>
-      <p>Rates reflect your knowledge, not entry-level hours. Most domain experts earn $65–130 per hour on PowerToFly AI projects.</p>
+      <div class="benefit-sparkle-col">
+        <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+          <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg2)"/>
+        </svg>
+      </div>
+      <div class="benefit-text-col">
+        <h3>Earn what your expertise is worth</h3>
+        <p>Rates reflect your knowledge, not entry-level hours. Most domain experts earn $65–130 per hour on PowerToFly AI projects.</p>
+      </div>
     </div>
 
     <div class="benefit-card">
-      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs><linearGradient id="sg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-        <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg3)"/>
-      </svg>
-      <h3>Build with frontier AI</h3>
-      <p>Work directly with teams at the world's leading AI labs. Your input shapes models that millions of people will use.</p>
+      <div class="benefit-sparkle-col">
+        <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><linearGradient id="sg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+          <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg3)"/>
+        </svg>
+      </div>
+      <div class="benefit-text-col">
+        <h3>Build with frontier AI</h3>
+        <p>Work directly with teams at the world's leading AI labs. Your input shapes models that millions of people will use.</p>
+      </div>
     </div>
 
   </div>
@@ -1060,18 +1160,6 @@ font-size: 12.5px; color: #758682;
 
     <div class="how-portrait-card">
       <img src="PowerToFly-Icon.svg" alt="" class="how-portrait-icon" aria-hidden="true">
-      <div class="how-stat-chip how-chip-1">
-        <span class="chip-num">5,000+</span>
-        <span class="chip-label">Experts matched</span>
-      </div>
-      <div class="how-stat-chip how-chip-2">
-        <span class="chip-num">$65–120</span>
-        <span class="chip-label">Avg hourly rate</span>
-      </div>
-      <div class="how-stat-chip how-chip-3">
-        <span class="chip-num">140+</span>
-        <span class="chip-label">AI companies</span>
-      </div>
     </div>
 
     <div class="steps" id="stepsContainer">
@@ -1157,6 +1245,87 @@ font-size: 12.5px; color: #758682;
         <span class="faq-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
       </button>
       <div class="faq-a"><div class="faq-a-inner">Anywhere. All work is fully remote, and opportunities are available to experts in most countries. Some projects require English fluency; others are specifically designed for speakers of other languages.</div></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- LOGO STRIP -->
+<section class="logo-strip">
+  <p class="logo-strip-label">Companies our experts work with</p>
+  <div class="logo-strip-track">
+    <img src="logos/google.png" alt="Google">
+    <img src="logos/visa.png" alt="Visa">
+    <img src="logos/expedia.png" alt="Expedia">
+    <img src="logos/zapier.png" alt="Zapier">
+    <img src="logos/zillow.png" alt="Zillow">
+    <img src="logos/nestle.png" alt="Nestlé">
+    <img src="logos/stryker.png" alt="Stryker">
+    <img src="logos/sp-global.png" alt="S&P Global">
+    <img src="logos/veracode.png" alt="Veracode">
+    <img src="logos/avery-dennison.png" alt="Avery Dennison">
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section section-proof">
+<div class="section-narrow">
+  <div class="section-head">
+    <h2>What experts say about <span class="italic-accent">the work</span></h2>
+  </div>
+  <div class="testimonials">
+
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-quote">"I've been a registered nurse for 14 years. This is the first time I've been paid to actually use that knowledge — not just execute tasks. The projects are substantive and the rate is fair."</p>
+      <div class="t-meta">
+        <div class="t-meta-info">
+          <div class="t-author">Danielle O.</div>
+          <div class="t-company">Registered Nurse</div>
+          <div class="t-role">Clinical AI reviewer</div>
+        </div>
+        <div class="t-logo"><img src="https://www.google.com/s2/favicons?domain=stryker.com&sz=128" alt="Stryker"></div>
+      </div>
+    </div>
+
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-quote">"The onboarding was 45 minutes. By week two I was reviewing contract clauses for a major AI legal tool. The work is real, the feedback loop is fast, and I set my own hours."</p>
+      <div class="t-meta">
+        <div class="t-meta-info">
+          <div class="t-author">Marcus T.</div>
+          <div class="t-company">Corporate Attorney</div>
+          <div class="t-role">Legal AI specialist</div>
+        </div>
+        <div class="t-logo"><img src="https://www.google.com/s2/favicons?domain=google.com&sz=128" alt="Google"></div>
+      </div>
+    </div>
+
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-quote">"As a translator, I was skeptical. But this isn't about replacing my work — it's about making sure AI doesn't butcher what I've spent a career learning. Meaningful, well-paid, flexible."</p>
+      <div class="t-meta">
+        <div class="t-meta-info">
+          <div class="t-author">Sofia R.</div>
+          <div class="t-company">Certified Translator</div>
+          <div class="t-role">Language AI evaluator</div>
+        </div>
+        <div class="t-logo"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=128" alt="Zapier"></div>
+      </div>
+    </div>
+
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-quote">"I'm a senior engineer and I was worried the tasks would be too junior. They weren't. Code review at this level requires real architectural thinking — and they pay accordingly."</p>
+      <div class="t-meta">
+        <div class="t-meta-info">
+          <div class="t-author">Kwame A.</div>
+          <div class="t-company">Principal Engineer</div>
+          <div class="t-role">Code review AI trainer</div>
+        </div>
+        <div class="t-logo"><img src="https://www.google.com/s2/favicons?domain=visa.com&sz=128" alt="Visa"></div>
+      </div>
     </div>
 
   </div>
