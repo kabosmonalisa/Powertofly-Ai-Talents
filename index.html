@@ -431,8 +431,8 @@ font-size: 12.5px; color: #758682;
   50% { transform: translateY(-14px); }
 }
 @keyframes floatY-slow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-18px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
 }
 
 /* ===== Mission Statement ===== */
@@ -446,12 +446,15 @@ font-size: 12.5px; color: #758682;
   margin: 0 auto;
 }
 .mission-inner p {
-  font-family: 'Inter Tight', sans-serif;
+  font-family: 'Inter Tight', 'Inter', sans-serif;
   font-weight: 600;
-  font-size: clamp(36px, 5vw, 64px);
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  font-size: clamp(32px, 4.4vw, 58px);
+  letter-spacing: -0.022em;
+  line-height: 1.22;
   color: var(--ink);
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 /* ===== Benefits ===== */
@@ -474,8 +477,8 @@ font-size: 12.5px; color: #758682;
   transition: transform 220ms ease, box-shadow 220ms ease;
 }
 .benefit-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(15,30,26,0.05), 0 24px 52px rgba(15,30,26,0.13);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
 }
 .benefit-sparkle {
   width: 180px;
@@ -513,7 +516,7 @@ font-size: 12.5px; color: #758682;
 .how-sparkle {
   width: 360px;
   height: 360px;
-  animation: floatY-slow 6s ease-in-out infinite;
+  animation: floatY-slow 7s ease-in-out infinite;
 }
 .steps {
   position: relative;
@@ -954,7 +957,7 @@ font-size: 12.5px; color: #758682;
 <!-- MISSION STATEMENT -->
 <section class="mission">
 <div class="mission-inner">
-  <p>AI built by people who look like the world it serves.</p>
+  <p>The clinicians, teachers, translators, engineers, lawyers, and creators who built their expertise over decades — they're the ones who know when AI gets it wrong. PowerToFly AI exists because that lived knowledge shouldn't be invisible. It should be paid, credited, and built into the systems that affect all of us.</p>
 </div>
 </section>
 
