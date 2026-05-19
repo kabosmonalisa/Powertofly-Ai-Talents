@@ -3,22 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Join PowerToFly AI</title>
+<title>Sign in — PowerToFly AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
 <style>
 
+/* ===== Design Tokens ===== */
 :root {
-  --ink: #0A0A0A;
-  --ink-2: #2A2A2A;
-  --ink-3: #5C6F69;
-  --bg: #ffffff;
-  --bg-soft: #F4F4F1;
-  --line: rgba(10,10,10,0.1);
-  --iri-cyan: #5BCFFF;
-  --iri-green: #4FE8A9;
-  --iri-lime: #D5FF66;
+--ink: #0A0A0A;
+--ink-2: #2A2A2A;
+--ink-3: #5C6F69;
+--bg: #ffffff;
+--bg-soft: #FAFAF6;
+--line: rgba(10,10,10,0.08);
+--shadow-card: 0 1px 2px rgba(15,30,26,0.04), 0 8px 28px rgba(15,30,26,0.08);
+--iri-cyan: #5BCFFF;
+--iri-green: #4FE8A9;
+--iri-lime: #D5FF66;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,96 +28,215 @@ html, body { height: 100%; -webkit-font-smoothing: antialiased; }
 body {
   font-family: 'Inter', system-ui, sans-serif;
   color: var(--ink);
-  background: var(--bg);
+  background: var(--bg-soft);
+  font-size: 16px;
+  line-height: 1.55;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Ambient glow ===== */
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.auth-bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+}
+.auth-bg-blob.b1 {
+  width: 600px; height: 500px;
+  background: radial-gradient(circle, #5BCFFF, transparent 70%);
+  top: -160px; left: -100px;
+}
+.auth-bg-blob.b2 {
+  width: 500px; height: 400px;
+  background: radial-gradient(circle, #4FE8A9, transparent 70%);
+  bottom: -100px; right: -80px;
+}
+.auth-bg-blob.b3 {
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, #D5FF66, transparent 70%);
+  top: 40%; left: 60%;
+  opacity: 0.1;
+}
+
+/* ===== Nav ===== */
+.nav {
+  position: relative;
+  z-index: 10;
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-brand img { height: 28px; }
+.brand-ai {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
+  color: #0A2A1F;
+}
+.nav-back {
+  font-size: 14px;
+  color: var(--ink-3);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 180ms ease;
+}
+.nav-back:hover { color: var(--ink); }
+
+/* ===== Main layout ===== */
+.auth-wrap {
+  position: relative;
+  z-index: 1;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 20px;
+  padding: 32px 20px 64px;
 }
 
 /* ===== Card ===== */
 .auth-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: 0 2px 4px rgba(15,30,26,0.04), 0 16px 48px rgba(15,30,26,0.10);
   width: 100%;
-  max-width: 480px;
+  max-width: 440px;
+  padding: 48px 44px 44px;
 }
 
-/* ===== Header row ===== */
-.auth-header {
+/* ===== Toggle ===== */
+.auth-toggle {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 28px;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 36px;
+  gap: 4px;
 }
-.auth-title {
+.auth-toggle button {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 999px;
   font-family: 'Inter Tight', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease, box-shadow 200ms ease;
+  background: transparent;
+  color: var(--ink-3);
+}
+.auth-toggle button.active {
+  background: var(--ink);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(10,10,10,0.18);
+}
+
+/* ===== Heading ===== */
+.auth-heading {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
   letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 6px;
   color: var(--ink);
 }
-.auth-switch-link {
+.auth-sub {
   font-size: 15px;
-  font-weight: 700;
   color: var(--ink-3);
-  text-decoration: none;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 1px;
-  line-height: 1;
-  font-weight: 600;
+  margin-bottom: 32px;
+  line-height: 1.5;
 }
-.auth-switch-link:hover { color: var(--ink); border-color: var(--ink-3); }
 
-/* ===== Social buttons ===== */
-.social-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 24px;
+/* ===== Form ===== */
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: 0.01em;
 }
-.btn-google {
-  padding: 14px 16px;
+.field input,
+.field select {
+  width: 100%;
+  padding: 13px 16px;
   border-radius: 12px;
   border: 1.5px solid var(--line);
-  background: var(--bg);
+  background: var(--bg-soft);
   font-family: 'Inter', sans-serif;
   font-size: 15px;
-  font-weight: 600;
   color: var(--ink);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: border-color 180ms, background 180ms;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
-.btn-google:hover { border-color: rgba(10,10,10,0.25); background: var(--bg-soft); }
-.btn-linkedin {
-  padding: 14px 16px;
-  border-radius: 12px;
+.field input::placeholder { color: var(--ink-3); opacity: 0.7; }
+.field input:focus,
+.field select:focus {
+  border-color: var(--iri-green);
+  box-shadow: 0 0 0 3px rgba(79,232,169,0.15);
+  background: var(--bg);
+}
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ===== Submit button ===== */
+.btn-auth {
+  margin-top: 8px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 999px;
   border: none;
-  background: #0A66C2;
-  font-family: 'Inter', sans-serif;
+  background: var(--ink);
+  color: #fff;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 15px;
   font-weight: 600;
-  color: #fff;
+  letter-spacing: -0.01em;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: background 180ms;
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
-.btn-linkedin:hover { background: #0958a8; }
+.btn-auth:hover {
+  background: #1a1a1a;
+  box-shadow: 0 12px 28px rgba(79,232,169,0.25), 0 4px 12px rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
 
 /* ===== Divider ===== */
 .auth-divider {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin: 4px 0;
   color: var(--ink-3);
-  font-size: 14px;
+  font-size: 13px;
 }
 .auth-divider::before,
 .auth-divider::after {
@@ -125,216 +246,180 @@ body {
   background: var(--line);
 }
 
-/* ===== Form ===== */
-.auth-form { display: flex; flex-direction: column; gap: 16px; }
-
-.field { display: flex; flex-direction: column; gap: 7px; }
-.field label {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink-2);
-}
-.field label .req { color: var(--ink-3); font-weight: 400; }
-
-.field input,
-.field select {
+/* ===== Social buttons ===== */
+.social-btns { display: flex; flex-direction: column; gap: 10px; }
+.btn-social {
   width: 100%;
-  padding: 14px 16px;
+  padding: 13px 16px;
   border-radius: 12px;
-  border: 1.5px solid var(--bg-soft);
-  background: var(--bg-soft);
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  color: var(--ink);
-  outline: none;
-  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
-  appearance: none;
-  -webkit-appearance: none;
-}
-.field input::placeholder { color: var(--ink-3); opacity: 0.6; }
-.field input:focus,
-.field select:focus {
-  border-color: var(--iri-green);
+  border: 1.5px solid var(--line);
   background: var(--bg);
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.18);
-}
-
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-/* Password wrapper */
-.password-wrap { position: relative; }
-.password-wrap input { padding-right: 48px; }
-.password-toggle {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
   cursor: pointer;
-  color: var(--ink-3);
-  padding: 4px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: border-color 180ms ease, background 180ms ease;
 }
-.password-toggle:hover { color: var(--ink); }
-
-/* ===== CTA button ===== */
-.btn-cta {
-  margin-top: 8px;
-  width: 100%;
-  padding: 16px;
-  border-radius: 999px;
-  border: none;
-  background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
-  color: var(--ink);
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  cursor: pointer;
-  transition: opacity 180ms, transform 180ms, box-shadow 180ms;
-}
-.btn-cta:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(79,232,169,0.35);
-}
+.btn-social:hover { border-color: rgba(10,10,10,0.2); background: var(--bg-soft); }
+.btn-social svg { flex-shrink: 0; }
 
 /* ===== Footer note ===== */
 .auth-note {
-  margin-top: 20px;
-  font-size: 12px;
+  margin-top: 24px;
+  font-size: 13px;
   color: var(--ink-3);
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.5;
 }
-.auth-note a { color: var(--ink-3); font-weight: 600; text-decoration: underline; }
+.auth-note a { color: var(--ink); font-weight: 600; text-decoration: none; }
+.auth-note a:hover { text-decoration: underline; }
 
-/* ===== Panel toggle ===== */
+/* ===== Panel visibility ===== */
 .auth-panel { display: none; }
-.auth-panel.active { display: block; }
+.auth-panel.active { display: contents; }
 
 /* ===== Responsive ===== */
-@media (max-width: 480px) {
-  .social-row { grid-template-columns: 1fr; }
+@media (max-width: 500px) {
+  .auth-card { padding: 36px 24px 32px; border-radius: 20px; }
   .field-row { grid-template-columns: 1fr; }
-  .auth-title { font-size: 24px; }
+  .nav { padding: 16px 20px; }
 }
 
 </style>
 </head>
 <body>
 
-<div class="auth-card">
+<div class="auth-bg">
+  <div class="auth-bg-blob b1"></div>
+  <div class="auth-bg-blob b2"></div>
+  <div class="auth-bg-blob b3"></div>
+</div>
 
-  <!-- SIGN UP -->
-  <div class="auth-panel active" id="panelSignup">
-    <div class="auth-header">
-      <h1 class="auth-title">Join PowerToFly AI</h1>
-      <a href="#" class="auth-switch-link" onclick="showPanel('signin');return false">Login</a>
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <img src="PowerToFly-Logo-Black.png" alt="PowerToFly">
+    <span class="brand-ai">AI</span>
+  </a>
+  <a href="index.html" class="nav-back">← Back to home</a>
+</nav>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <div class="auth-toggle">
+      <button class="active" id="tabSignIn" onclick="showPanel('signin')">Sign in</button>
+      <button id="tabSignUp" onclick="showPanel('signup')">Sign up</button>
     </div>
 
-    <div class="social-row">
-      <button class="btn-google">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/><path d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332Z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 6.294C4.672 4.169 6.656 3.58 9 3.58Z" fill="#EA4335"/></svg>
-        Google
-      </button>
-      <button class="btn-linkedin">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M16.5 9.173c0-4.142-3.357-7.5-7.5-7.5s-7.5 3.358-7.5 7.5c0 3.745 2.745 6.85 6.328 7.41v-5.24H5.652V9.173h2.176V7.41c0-2.149 1.28-3.337 3.24-3.337.937 0 1.918.167 1.918.167v2.11h-1.08c-1.064 0-1.396.66-1.396 1.337v1.607h2.375l-.379 2.37H10.51v5.24c3.583-.56 6.328-3.665 6.328-7.41H16.5Z" fill="white"/></svg>
-        LinkedIn
-      </button>
-    </div>
-
-    <div class="auth-divider">or sign up with email</div>
-
-    <form class="auth-form" onsubmit="return false">
-      <div class="field">
-        <label for="su-email">Email <span class="req">*</span></label>
-        <input type="email" id="su-email" placeholder="" autocomplete="email">
-      </div>
-      <div class="field-row">
+    <!-- SIGN IN -->
+    <div class="auth-panel active" id="panelSignin">
+      <h1 class="auth-heading">Welcome back</h1>
+      <p class="auth-sub">Sign in to your PowerToFly AI account.</p>
+      <form class="auth-form" onsubmit="return false">
         <div class="field">
-          <label for="su-first">First Name <span class="req">*</span></label>
-          <input type="text" id="su-first" placeholder="" autocomplete="given-name">
+          <label for="si-email">Email</label>
+          <input type="email" id="si-email" placeholder="you@example.com" autocomplete="email">
         </div>
         <div class="field">
-          <label for="su-last">Last Name <span class="req">*</span></label>
-          <input type="text" id="su-last" placeholder="" autocomplete="family-name">
+          <label for="si-password">Password</label>
+          <input type="password" id="si-password" placeholder="••••••••" autocomplete="current-password">
         </div>
+        <button class="btn-auth" type="submit">Sign in</button>
+      </form>
+      <div class="auth-divider">or</div>
+      <div class="social-btns">
+        <button class="btn-social">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/><path d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332Z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 6.294C4.672 4.169 6.656 3.58 9 3.58Z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+        <button class="btn-social">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M16.5 9.173c0-4.142-3.357-7.5-7.5-7.5s-7.5 3.358-7.5 7.5c0 3.745 2.745 6.85 6.328 7.41v-5.24H5.652V9.173h2.176V7.41c0-2.149 1.28-3.337 3.24-3.337.937 0 1.918.167 1.918.167v2.11h-1.08c-1.064 0-1.396.66-1.396 1.337v1.607h2.375l-.379 2.37H10.51v5.24c3.583-.56 6.328-3.665 6.328-7.41H16.5Z" fill="#1877F2"/></svg>
+          Continue with LinkedIn
+        </button>
       </div>
-      <div class="field">
-        <label for="su-password">Password <span class="req">*</span></label>
-        <div class="password-wrap">
-          <input type="password" id="su-password" placeholder="XXXXXXXX" autocomplete="new-password">
-          <button type="button" class="password-toggle" onclick="togglePassword('su-password', this)" aria-label="Show password">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
-        </div>
-      </div>
-      <button class="btn-cta" type="submit">Create my account</button>
-    </form>
-
-    <p class="auth-note">
-      By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-    </p>
-  </div>
-
-  <!-- SIGN IN -->
-  <div class="auth-panel" id="panelSignin">
-    <div class="auth-header">
-      <h1 class="auth-title">Welcome back</h1>
-      <a href="#" class="auth-switch-link" onclick="showPanel('signup');return false">Sign up</a>
+      <p class="auth-note">
+        Don't have an account? <a href="#" onclick="showPanel('signup');return false">Sign up free</a>
+      </p>
+      <p class="auth-note" style="margin-top:10px">
+        <a href="#">Forgot password?</a>
+      </p>
     </div>
 
-    <div class="social-row">
-      <button class="btn-google">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/><path d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332Z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 6.294C4.672 4.169 6.656 3.58 9 3.58Z" fill="#EA4335"/></svg>
-        Google
-      </button>
-      <button class="btn-linkedin">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M16.5 9.173c0-4.142-3.357-7.5-7.5-7.5s-7.5 3.358-7.5 7.5c0 3.745 2.745 6.85 6.328 7.41v-5.24H5.652V9.173h2.176V7.41c0-2.149 1.28-3.337 3.24-3.337.937 0 1.918.167 1.918.167v2.11h-1.08c-1.064 0-1.396.66-1.396 1.337v1.607h2.375l-.379 2.37H10.51v5.24c3.583-.56 6.328-3.665 6.328-7.41H16.5Z" fill="white"/></svg>
-        LinkedIn
-      </button>
+    <!-- SIGN UP -->
+    <div class="auth-panel" id="panelSignup">
+      <h1 class="auth-heading">Join as an expert</h1>
+      <p class="auth-sub">Get matched to AI projects that need your domain expertise.</p>
+      <form class="auth-form" onsubmit="return false">
+        <div class="field-row">
+          <div class="field">
+            <label for="su-first">First name</label>
+            <input type="text" id="su-first" placeholder="Amara" autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label for="su-last">Last name</label>
+            <input type="text" id="su-last" placeholder="Osei" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="field">
+          <label for="su-email">Email</label>
+          <input type="email" id="su-email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="su-domain">Your domain</label>
+          <select id="su-domain">
+            <option value="" disabled selected>Select your field</option>
+            <option>Clinical / Healthcare</option>
+            <option>Legal</option>
+            <option>Financial Analysis</option>
+            <option>Engineering / Software</option>
+            <option>Language & Translation</option>
+            <option>Scientific Research</option>
+            <option>Education</option>
+            <option>Creative / Brand</option>
+            <option>Operations</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="su-password">Password</label>
+          <input type="password" id="su-password" placeholder="Min. 8 characters" autocomplete="new-password">
+        </div>
+        <button class="btn-auth" type="submit">Create account</button>
+      </form>
+      <div class="auth-divider">or</div>
+      <div class="social-btns">
+        <button class="btn-social">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/><path d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332Z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 6.294C4.672 4.169 6.656 3.58 9 3.58Z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+        <button class="btn-social">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M16.5 9.173c0-4.142-3.357-7.5-7.5-7.5s-7.5 3.358-7.5 7.5c0 3.745 2.745 6.85 6.328 7.41v-5.24H5.652V9.173h2.176V7.41c0-2.149 1.28-3.337 3.24-3.337.937 0 1.918.167 1.918.167v2.11h-1.08c-1.064 0-1.396.66-1.396 1.337v1.607h2.375l-.379 2.37H10.51v5.24c3.583-.56 6.328-3.665 6.328-7.41H16.5Z" fill="#1877F2"/></svg>
+          Continue with LinkedIn
+        </button>
+      </div>
+      <p class="auth-note">
+        Already have an account? <a href="#" onclick="showPanel('signin');return false">Sign in</a>
+      </p>
+      <p class="auth-note" style="margin-top:10px;font-size:12px">
+        By creating an account you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+      </p>
     </div>
 
-    <div class="auth-divider">or sign in with email</div>
-
-    <form class="auth-form" onsubmit="return false">
-      <div class="field">
-        <label for="si-email">Email <span class="req">*</span></label>
-        <input type="email" id="si-email" placeholder="" autocomplete="email">
-      </div>
-      <div class="field">
-        <label for="si-password">Password <span class="req">*</span></label>
-        <div class="password-wrap">
-          <input type="password" id="si-password" placeholder="XXXXXXXX" autocomplete="current-password">
-          <button type="button" class="password-toggle" onclick="togglePassword('si-password', this)" aria-label="Show password">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
-        </div>
-      </div>
-      <button class="btn-cta" type="submit">Log in</button>
-    </form>
-
-    <p class="auth-note">
-      <a href="#">Forgot your password?</a>
-    </p>
   </div>
-
 </div>
 
 <script>
 function showPanel(panel) {
-  document.getElementById('panelSignup').classList.toggle('active', panel === 'signup');
   document.getElementById('panelSignin').classList.toggle('active', panel === 'signin');
-  document.title = panel === 'signup' ? 'Join PowerToFly AI' : 'Log in — PowerToFly AI';
-}
-function togglePassword(id, btn) {
-  var input = document.getElementById(id);
-  var showing = input.type === 'text';
-  input.type = showing ? 'password' : 'text';
-  btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+  document.getElementById('panelSignup').classList.toggle('active', panel === 'signup');
+  document.getElementById('tabSignIn').classList.toggle('active', panel === 'signin');
+  document.getElementById('tabSignUp').classList.toggle('active', panel === 'signup');
+  document.title = panel === 'signin' ? 'Sign in — PowerToFly AI' : 'Sign up — PowerToFly AI';
 }
 </script>
 
