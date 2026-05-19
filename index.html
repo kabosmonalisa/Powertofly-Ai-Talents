@@ -1124,7 +1124,12 @@ font-size: 12.5px; color: #758682;
       <div class="benefit-sparkle-col">
         <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs><linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-          <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg1)"/>
+          <!-- ring back arc -->
+          <path d="M 14,90 A 76,24 0 0 0 166,90" fill="none" stroke="url(#sg1)" stroke-width="13" stroke-linecap="round" transform="rotate(-20 90 90)"/>
+          <!-- planet body -->
+          <circle cx="90" cy="90" r="48" fill="url(#sg1)"/>
+          <!-- ring front arc -->
+          <path d="M 14,90 A 76,24 0 0 1 166,90" fill="none" stroke="url(#sg1)" stroke-width="13" stroke-linecap="round" transform="rotate(-20 90 90)"/>
         </svg>
       </div>
       <div class="benefit-text-col">
@@ -1137,7 +1142,8 @@ font-size: 12.5px; color: #758682;
       <div class="benefit-sparkle-col">
         <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-          <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg2)"/>
+          <circle cx="90" cy="90" r="64" fill="url(#sg2)"/>
+          <text x="90" y="112" font-family="Inter Tight, Inter, sans-serif" font-weight="800" font-size="88" fill="rgba(255,255,255,0.88)" text-anchor="middle">$</text>
         </svg>
       </div>
       <div class="benefit-text-col">
