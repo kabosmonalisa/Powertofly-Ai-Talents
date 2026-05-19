@@ -507,8 +507,57 @@ font-size: 12.5px; color: #758682;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
-  align-items: center;
+  align-items: start;
 }
+.how-portrait-card {
+  border-radius: 28px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background-image: url('https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&h=1200&fit=crop&q=80');
+  background-size: cover;
+  background-position: center top;
+  position: relative;
+}
+.how-portrait-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.4));
+}
+.how-stat-chip {
+  position: absolute;
+  background: rgba(10,10,10,0.80);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.how-stat-chip .chip-num {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 60%, #4FE8A9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.how-stat-chip .chip-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.02em;
+}
+.how-chip-1 { bottom: 28px; left: 20px; }
+.how-chip-2 { bottom: 28px; right: 20px; }
+.how-chip-3 { top: 84px; right: 20px; }
+
 .how-sparkle-wrap {
   display: flex;
   align-items: center;
@@ -958,7 +1007,7 @@ font-size: 12.5px; color: #758682;
 <!-- MISSION STATEMENT -->
 <section class="mission">
 <div class="mission-inner">
-  <p>The clinicians, teachers, translators, engineers, lawyers, and creators who built their expertise over decades — they're the ones who know when AI gets it wrong. PowerToFly AI exists because that lived knowledge shouldn't be invisible. It should be paid, credited, and built into the systems that affect all of us.</p>
+  <p>AI is shaping every life it touches. It should be built by the people who've spent theirs becoming experts.</p>
 </div>
 </section>
 
@@ -1009,11 +1058,20 @@ font-size: 12.5px; color: #758682;
   </div>
   <div class="how-inner">
 
-    <div class="how-sparkle-wrap">
-      <svg class="how-sparkle" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs><linearGradient id="hsg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-        <path d="M 180,4 L 208,152 L 356,180 L 208,208 L 180,356 L 152,208 L 4,180 L 152,152 Z" fill="url(#hsg)" opacity="0.88"/>
-      </svg>
+    <div class="how-portrait-card">
+      <img src="PowerToFly-Icon.svg" alt="" class="how-portrait-icon" aria-hidden="true">
+      <div class="how-stat-chip how-chip-1">
+        <span class="chip-num">5,000+</span>
+        <span class="chip-label">Experts matched</span>
+      </div>
+      <div class="how-stat-chip how-chip-2">
+        <span class="chip-num">$65–120</span>
+        <span class="chip-label">Avg hourly rate</span>
+      </div>
+      <div class="how-stat-chip how-chip-3">
+        <span class="chip-num">140+</span>
+        <span class="chip-label">AI companies</span>
+      </div>
     </div>
 
     <div class="steps" id="stepsContainer">
