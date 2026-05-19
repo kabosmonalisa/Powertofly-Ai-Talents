@@ -428,11 +428,292 @@ font-size: 12.5px; color: #758682;
 }
 .footer-bottom .links a { color: inherit; text-decoration: none; margin-left: 20px; }
 
+/* ===== Float animations ===== */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes floatY-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
+}
+
+/* ===== Mission Statement ===== */
+.mission {
+  padding: 140px 32px;
+  background: var(--bg);
+  text-align: center;
+}
+.mission-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.mission-inner p {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: clamp(36px, 5vw, 64px);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+/* ===== Benefits ===== */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.benefit-card {
+  border-radius: 28px;
+  padding: 40px 32px 36px;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--bg-soft), var(--bg-soft)) padding-box,
+    linear-gradient(135deg, rgba(91,207,255,0.45), rgba(79,232,169,0.30), rgba(213,255,102,0.20)) border-box;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.benefit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(15,30,26,0.05), 0 24px 52px rgba(15,30,26,0.13);
+}
+.benefit-sparkle {
+  width: 180px;
+  height: 180px;
+  animation: floatY 4s ease-in-out infinite;
+}
+.benefit-card:nth-child(2) .benefit-sparkle { animation-delay: -1.3s; }
+.benefit-card:nth-child(3) .benefit-sparkle { animation-delay: -2.7s; }
+.benefit-card h3 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.benefit-card p {
+  font-size: 16px;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+/* ===== How It Works ===== */
+.how-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.how-sparkle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.how-sparkle {
+  width: 360px;
+  height: 360px;
+  animation: floatY-slow 6s ease-in-out infinite;
+}
+.steps {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.steps::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 44px;
+  bottom: 44px;
+  width: 1px;
+  border-left: 2px dashed rgba(10,10,10,0.12);
+  z-index: 0;
+}
+.step {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 20px 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+.step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.step-num {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  position: relative;
+  z-index: 1;
+}
+.step-content { padding-top: 12px; }
+.step-content h4 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.step-content p {
+  font-size: 14.5px;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+/* ===== FAQ ===== */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.faq-item {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow 180ms ease;
+}
+.faq-item.open { box-shadow: var(--shadow-card); }
+.faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.faq-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 280ms ease, background 180ms ease, border-color 180ms ease;
+}
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.faq-icon svg { display: block; }
+.faq-item.open .faq-icon line { stroke: #fff; }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 320ms ease;
+}
+.faq-item.open .faq-a { max-height: 240px; }
+.faq-a-inner {
+  padding: 0 24px 22px;
+  font-size: 15px;
+  color: var(--ink-3);
+  line-height: 1.65;
+}
+
+/* ===== Closing CTA ===== */
+.closing-cta {
+  padding: 120px 32px 100px;
+  text-align: center;
+  background: linear-gradient(180deg,
+    rgba(91,207,255,0.10) 0%,
+    rgba(79,232,169,0.07) 45%,
+    rgba(213,255,102,0.04) 75%,
+    rgba(255,255,255,0) 100%);
+}
+.closing-cta-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+.avatar-cluster {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.avatar-wrap {
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(from 0deg, #5BCFFF 0%, #4FE8A9 35%, #D5FF66 65%, #5BCFFF 100%);
+  margin-left: -10px;
+  flex-shrink: 0;
+}
+.avatar-wrap:first-child { margin-left: 0; }
+.avatar-wrap img,
+.avatar-init {
+  display: block;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  object-fit: cover;
+}
+.avatar-init {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #E4EDE9;
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+.avatar-wrap:nth-child(1) { animation: floatY 3.2s ease-in-out infinite 0s; }
+.avatar-wrap:nth-child(2) { animation: floatY 4.0s ease-in-out infinite -0.8s; }
+.avatar-wrap:nth-child(3) { animation: floatY 3.6s ease-in-out infinite -1.6s; }
+.avatar-wrap:nth-child(4) { animation: floatY 4.4s ease-in-out infinite -2.4s; }
+.avatar-wrap:nth-child(5) { animation: floatY 3.8s ease-in-out infinite -0.4s; }
+.avatar-wrap:nth-child(6) { animation: floatY 4.2s ease-in-out infinite -1.2s; }
+.closing-cta h2 {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(28px, 4.5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--ink);
+  max-width: 18ch;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
 .nav-links { display: none; }
 .footer-cols { grid-template-columns: 1fr 1fr; }
 .opp-grid { grid-template-columns: repeat(2, 1fr); }
+.benefits-grid { grid-template-columns: 1fr; }
+.how-inner { grid-template-columns: 1fr; gap: 48px; }
+.how-sparkle { width: 240px; height: 240px; }
 }
 @media (max-width: 600px) {
 .nav { padding: 0 20px; }
@@ -447,6 +728,11 @@ font-size: 12.5px; color: #758682;
 .hero-glow { width: 500px; height: 400px; }
 .opp-grid { grid-template-columns: 1fr; }
 .hero-stats { gap: 8px; }
+.mission { padding: 80px 20px; }
+.benefit-card { padding: 32px 24px 28px; }
+.benefit-sparkle { width: 140px; height: 140px; }
+.how-sparkle { width: 200px; height: 200px; }
+.closing-cta { padding: 80px 20px 72px; }
 }
 
 </style>
@@ -668,6 +954,188 @@ font-size: 12.5px; color: #758682;
 </div>
 </section>
 
+<!-- MISSION STATEMENT -->
+<section class="mission">
+<div class="mission-inner">
+  <p>AI built by people who look like the world it serves.</p>
+</div>
+</section>
+
+<!-- WHAT YOU CAN EXPECT -->
+<section class="section" style="background: var(--bg-soft);">
+<div class="section-narrow">
+  <div class="section-head">
+    <h2>What you can expect</h2>
+  </div>
+  <div class="benefits-grid">
+
+    <div class="benefit-card">
+      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+        <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg1)"/>
+      </svg>
+      <h3>Work from anywhere</h3>
+      <p>Every project is fully remote. Set your own hours and contribute from wherever you do your best thinking.</p>
+    </div>
+
+    <div class="benefit-card">
+      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+        <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg2)"/>
+      </svg>
+      <h3>Earn what your expertise is worth</h3>
+      <p>Rates reflect your knowledge, not entry-level hours. Most domain experts earn $65–130 per hour on PowerToFly AI projects.</p>
+    </div>
+
+    <div class="benefit-card">
+      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="sg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+        <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg3)"/>
+      </svg>
+      <h3>Build with frontier AI</h3>
+      <p>Work directly with teams at the world's leading AI labs. Your input shapes models that millions of people will use.</p>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" style="background: var(--bg);">
+<div class="section-narrow">
+  <div class="section-head">
+    <h2>How it works</h2>
+  </div>
+  <div class="how-inner">
+
+    <div class="how-sparkle-wrap">
+      <svg class="how-sparkle" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="hsg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+        <path d="M 180,4 L 208,152 L 356,180 L 208,208 L 180,356 L 152,208 L 4,180 L 152,152 Z" fill="url(#hsg)" opacity="0.88"/>
+      </svg>
+    </div>
+
+    <div class="steps" id="stepsContainer">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h4>Apply and verify</h4>
+          <p>Submit your profile and verify your credentials in under 10 minutes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h4>Get matched to a project</h4>
+          <p>We surface opportunities aligned with your domain, availability, and preferred rate.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h4>Take the short training</h4>
+          <p>A brief async orientation to project guidelines — typically 30–60 minutes, no prior AI experience needed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h4>Contribute your expertise</h4>
+          <p>Review, annotate, or generate content in your field at your own pace, on your schedule.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h4>Get paid weekly</h4>
+          <p>Payments are processed automatically every week. No invoicing, no chasing checks.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section class="section" style="background: var(--bg-soft);">
+<div class="section-narrow">
+  <div class="section-head">
+    <h2>Frequently asked questions</h2>
+  </div>
+  <div class="faq-list" id="faqList">
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">What is PowerToFly AI?
+        <span class="faq-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">PowerToFly AI is a professional network that connects domain experts with AI companies building production systems that need real-world knowledge to be accurate and safe. We pay experts like you to help train, evaluate, and improve the AI being built in your field.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">Do I need a technical background?
+        <span class="faq-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">No. We match you on your domain expertise — whether you're a nurse, lawyer, financial analyst, or translator. No coding or AI experience required. We'll walk you through everything in a short async orientation before your first project.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">How much does it pay?
+        <span class="faq-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Rates vary by domain and project, typically $55–$130 per hour. You'll see the exact pay range on every opportunity before you apply — no surprises. Payments are processed weekly, automatically.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">How much time do I need?
+        <span class="faq-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Most projects require 5–20 hours per week, and you choose which ones to take. Work is fully asynchronous — no set meeting times. You set your pace, and you can step away between projects as needed.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">Where do I need to live?
+        <span class="faq-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#0A0A0A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">Anywhere. All work is fully remote, and opportunities are available to experts in most countries. Some projects require English fluency; others are specifically designed for speakers of other languages.</div></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- CLOSING CTA -->
+<section class="closing-cta">
+<div class="closing-cta-inner">
+
+  <div class="avatar-cluster" aria-hidden="true">
+    <div class="avatar-wrap">
+      <div class="avatar-init" style="width:54px;height:54px;font-size:12px;">M.A.</div>
+    </div>
+    <div class="avatar-wrap">
+      <img src="photos/photo-1609436132311-e4b0c9370469.avif" width="78" height="78" alt="" style="width:78px;height:78px;">
+    </div>
+    <div class="avatar-wrap">
+      <img src="photos/premium_photo-1690407617542-2f210cf20d7e.avif" width="94" height="94" alt="" style="width:94px;height:94px;">
+    </div>
+    <div class="avatar-wrap">
+      <div class="avatar-init" style="width:72px;height:72px;font-size:14px;">J.W.</div>
+    </div>
+    <div class="avatar-wrap">
+      <img src="photos/premium_photo-1664474633055-6d181d654320.avif" width="86" height="86" alt="" style="width:86px;height:86px;">
+    </div>
+    <div class="avatar-wrap">
+      <div class="avatar-init" style="width:54px;height:54px;font-size:12px;">S.L.</div>
+    </div>
+  </div>
+
+  <h2>Join 50,000 experts shaping the AI you'll use.</h2>
+
+  <a href="#" class="btn btn-primary">Sign up now →</a>
+
+</div>
+</section>
+
 </main>
 
 <!-- FOOTER -->
@@ -733,6 +1201,50 @@ btn.setAttribute('aria-expanded', false);
 drawer.setAttribute('aria-hidden', true);
 }
 });
+})();
+
+// Scroll fade-in for How It Works steps
+(function() {
+  var steps = document.querySelectorAll('.step');
+  if (!steps.length) return;
+  if (!('IntersectionObserver' in window)) {
+    steps.forEach(function(s) { s.classList.add('visible'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var delay = parseInt(el.dataset.delay || 0);
+        setTimeout(function() { el.classList.add('visible'); }, delay);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.15 });
+  steps.forEach(function(s, i) {
+    s.dataset.delay = i * 110;
+    obs.observe(s);
+  });
+})();
+
+// FAQ accordion
+(function() {
+  var list = document.getElementById('faqList');
+  if (!list) return;
+  list.addEventListener('click', function(e) {
+    var btn = e.target.closest('.faq-q');
+    if (!btn) return;
+    var item = btn.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+    list.querySelectorAll('.faq-item.open').forEach(function(i) {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
 })();
 </script>
 </body>
