@@ -1353,29 +1353,6 @@ font-size: 12.5px; color: #758682;
   </div>
 </section>
 
-<!-- STATS -->
-<section class="section-stats">
-  <div class="stats-card-wrap">
-    <div class="stats-portrait">
-      <img src="PowerToFly-Icon.svg" alt="" class="stats-portrait-icon" aria-hidden="true">
-    </div>
-    <div class="stats-card-dark">
-      <div>
-        <div class="stat-big-num">5,000+</div>
-        <div class="stat-big-label">Experts matched to projects</div>
-      </div>
-      <div>
-        <div class="stat-big-num">140+</div>
-        <div class="stat-big-label">AI companies hiring now</div>
-      </div>
-      <div>
-        <div class="stat-big-num">$65–120</div>
-        <div class="stat-big-label">Average hourly rate</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- TRENDING OPPORTUNITIES -->
 <section class="section" id="opportunities" style="background: var(--bg-soft);">
 <div class="section-narrow">
@@ -1589,6 +1566,29 @@ font-size: 12.5px; color: #758682;
 
   </div>
 </div>
+</section>
+
+<!-- STATS -->
+<section class="section-stats">
+  <div class="stats-card-wrap">
+    <div class="stats-portrait">
+      <img src="PowerToFly-Icon.svg" alt="" class="stats-portrait-icon" aria-hidden="true">
+    </div>
+    <div class="stats-card-dark">
+      <div>
+        <div class="stat-big-num" data-count="5" data-suffix=",000+">5,000+</div>
+        <div class="stat-big-label">Experts matched to projects</div>
+      </div>
+      <div>
+        <div class="stat-big-num" data-count="140" data-suffix="+">140+</div>
+        <div class="stat-big-label">AI companies hiring now</div>
+      </div>
+      <div>
+        <div class="stat-big-num">$65–120</div>
+        <div class="stat-big-label">Average hourly rate</div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- HOW IT WORKS -->
@@ -1960,6 +1960,38 @@ drawer.setAttribute('aria-hidden', true);
 
   show(matches[0]);
   setInterval(cycle, 3500);
+})();
+
+/* ===== Count-up animation for stats ===== */
+(function(){
+  var nums = document.querySelectorAll('.stat-big-num[data-count]');
+  if (!nums.length) return;
+  var easeOut = function(t){ return 1 - Math.pow(1 - t, 3); };
+  function animate(el) {
+    var target = parseFloat(el.dataset.count);
+    var suffix = el.dataset.suffix || '';
+    var isDecimal = target % 1 !== 0;
+    var duration = 1800;
+    var start = performance.now();
+    function step(now) {
+      var elapsed = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var val = easeOut(progress) * target;
+      el.textContent = (isDecimal ? val.toFixed(1) : Math.floor(val)) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = (isDecimal ? target.toFixed(1) : target) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  nums.forEach(function(el){ observer.observe(el); });
 })();
 </script>
 </body>
