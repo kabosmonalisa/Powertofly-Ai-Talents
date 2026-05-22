@@ -269,18 +269,23 @@ object-position: center 35%;
 border-radius: 28px;
 display: block;
 }
-.hero-match-card {
+/* Float wrapper handles positioning + bobbing animation */
+.hmc-float-wrap {
 position: absolute;
 bottom: -20px;
 left: -32px;
+z-index: 10;
+animation: floatY 5s ease-in-out infinite;
+}
+/* Card itself handles the 3D flip */
+.hero-match-card {
 background: #fff;
 border: 1px solid var(--line);
 border-radius: 18px;
-padding: 14px 18px;
 box-shadow: 0 8px 32px rgba(15,30,26,0.14), 0 2px 8px rgba(15,30,26,0.06);
 width: 320px;
-z-index: 10;
-animation: floatY 5s ease-in-out infinite;
+transform-style: preserve-3d;
+transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hmc-badge {
 display: inline-flex;
@@ -325,19 +330,25 @@ flex-wrap: wrap;
 gap: 6px;
 }
 .hero-visual {
-perspective: 1000px;
+perspective: 1200px;
 }
-#hmcWrap {
-transform-origin: center center;
-transition: transform 0.3s ease-in;
+/* Two-face flip — rotate the whole card */
+#hmcWrap.flipped {
+transform: rotateY(180deg);
 }
-#hmcWrap.flip-out {
-transform: rotateY(-90deg) scale(0.95);
-transition: transform 0.3s ease-in;
+/* Each face: hidden when facing away */
+.hmc-face {
+padding: 14px 18px;
+backface-visibility: hidden;
+-webkit-backface-visibility: hidden;
 }
-#hmcWrap.flip-in {
-transform: rotateY(0deg);
-transition: transform 0.35s ease-out;
+/* Back face pre-rotated 180° so it starts hidden */
+.hmc-back {
+position: absolute;
+inset: 0;
+background: #fff;
+border-radius: 18px;
+transform: rotateY(180deg);
 }
 .hmc-tag {
 font-size: 11px;
@@ -961,9 +972,16 @@ font-size: 12.5px; color: #758682;
   border-radius: 28px;
   overflow: hidden;
   aspect-ratio: 3 / 4;
-  background-image: url('https://images.unsplash.com/photo-1664575603992-0f17b771dd91?w=900&h=1200&fit=crop&q=80');
+  background-image: url('https://plus.unsplash.com/premium_photo-1686244745019-b8d2be4dc066?w=900&h=1200&fit=crop&q=80');
   background-size: cover;
-  background-position: center 40%;
+  background-position: center top;
+  position: relative;
+}
+.stats-portrait-icon {
+  position: absolute;
+  top: 20px; left: 20px;
+  width: 52px; height: 52px;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.28));
 }
 .stats-card-dark {
   background: #0A0A0A;
@@ -1170,7 +1188,7 @@ font-size: 12.5px; color: #758682;
 .hero-text { align-items: center; }
 .hero-stats { justify-content: center; }
 .hero-domains { justify-content: center; max-width: 100%; }
-.hero-match-card { left: 50%; transform: translateX(-50%); bottom: -28px; }
+.hmc-float-wrap { left: 50%; transform: translateX(-50%); bottom: -28px; }
 }
 @media (max-width: 600px) {
 .nav { padding: 0 20px; }
@@ -1274,14 +1292,30 @@ font-size: 12.5px; color: #758682;
         alt="Financial analyst working at laptop"
         class="hero-photo"
       >
-      <div class="hero-match-card" id="hmcWrap" aria-live="polite">
-        <div class="hmc-badge"><span class="dot"></span> New match</div>
-        <div class="hmc-role" id="hmcRole">Earnings Analysis Trainer</div>
-        <div class="hmc-rate" id="hmcRate">$70–90 / hr</div>
-        <div class="hmc-tags" id="hmcTags">
-          <span class="hmc-tag">Financial AI</span>
-          <span class="hmc-tag">CFA or MBA</span>
-          <span class="hmc-tag">Remote</span>
+      <div class="hmc-float-wrap">
+        <div class="hero-match-card" id="hmcWrap" aria-live="polite">
+          <!-- FRONT FACE -->
+          <div class="hmc-face hmc-front" id="hmcFront">
+            <div class="hmc-badge"><span class="dot"></span> New match</div>
+            <div class="hmc-role">Earnings Analysis Trainer</div>
+            <div class="hmc-rate">$70–90 / hr</div>
+            <div class="hmc-tags">
+              <span class="hmc-tag">Financial AI</span>
+              <span class="hmc-tag">CFA or MBA</span>
+              <span class="hmc-tag">Remote</span>
+            </div>
+          </div>
+          <!-- BACK FACE (pre-loaded with next card) -->
+          <div class="hmc-face hmc-back" id="hmcBack">
+            <div class="hmc-badge"><span class="dot"></span> New match</div>
+            <div class="hmc-role">Medical Content Reviewer</div>
+            <div class="hmc-rate">$80–110 / hr</div>
+            <div class="hmc-tags">
+              <span class="hmc-tag">Clinical AI</span>
+              <span class="hmc-tag">RN or MD</span>
+              <span class="hmc-tag">Remote</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1322,7 +1356,9 @@ font-size: 12.5px; color: #758682;
 <!-- STATS -->
 <section class="section-stats">
   <div class="stats-card-wrap">
-    <div class="stats-portrait"></div>
+    <div class="stats-portrait">
+      <img src="PowerToFly-Icon.svg" alt="" class="stats-portrait-icon" aria-hidden="true">
+    </div>
     <div class="stats-card-dark">
       <div>
         <div class="stat-big-num">5,000+</div>
@@ -1778,46 +1814,48 @@ font-size: 12.5px; color: #758682;
 </footer>
 
 <script>
-/* ===== Match card cycler ===== */
+/* ===== Match card cycler — true two-face flip ===== */
 (function() {
-  const matches = [
-    { role: 'Earnings Analysis Trainer',    rate: '$70–90 / hr',  tags: ['Financial AI', 'CFA or MBA', 'Remote'] },
-    { role: 'Medical Content Reviewer',     rate: '$80–110 / hr', tags: ['Clinical AI', 'RN or MD', 'Remote'] },
-    { role: 'Contract Annotation Specialist', rate: '$75–100 / hr', tags: ['Legal AI', 'JD or Paralegal', 'Remote'] },
+  var matches = [
+    { role: 'Earnings Analysis Trainer',     rate: '$70–90 / hr',  tags: ['Financial AI', 'CFA or MBA', 'Remote'] },
+    { role: 'Medical Content Reviewer',      rate: '$80–110 / hr', tags: ['Clinical AI', 'RN or MD', 'Remote'] },
+    { role: 'Contract Annotation Specialist',rate: '$75–100 / hr', tags: ['Legal AI', 'JD or Paralegal', 'Remote'] },
   ];
-  let idx = 0;
-  const wrap = document.getElementById('hmcWrap');
-  const roleEl = document.getElementById('hmcRole');
-  const rateEl = document.getElementById('hmcRate');
-  const tagsEl = document.getElementById('hmcTags');
-  if (!wrap || !roleEl || !rateEl || !tagsEl) return;
+  var idx = 0;           // index currently visible
+  var flipped = false;   // false = front visible, true = back visible
+
+  var wrap  = document.getElementById('hmcWrap');
+  var front = document.getElementById('hmcFront');
+  var back  = document.getElementById('hmcBack');
+  if (!wrap || !front || !back) return;
+
+  function renderFace(face, match) {
+    face.innerHTML =
+      '<div class="hmc-badge"><span class="dot"></span> New match</div>' +
+      '<div class="hmc-role">' + match.role + '</div>' +
+      '<div class="hmc-rate">' + match.rate + '</div>' +
+      '<div class="hmc-tags">' + match.tags.map(function(t){ return '<span class="hmc-tag">' + t + '</span>'; }).join('') + '</div>';
+  }
+
+  // Back face is pre-loaded in HTML with match[1] — keep in sync with idx=1
+  var preloaded = 1;
 
   function nextMatch() {
-    // flip out
-    wrap.classList.add('flip-out');
+    var nextIdx = (idx + 1) % matches.length;
+    var afterIdx = (nextIdx + 1) % matches.length;
+
+    // The hidden face should already have nextIdx loaded — flip to reveal it
+    flipped = !flipped;
+    wrap.classList.toggle('flipped', flipped);
+    idx = nextIdx;
+
+    // After the transition completes (650ms), load afterIdx into the now-hidden face
     setTimeout(function() {
-      // swap content at midpoint
-      idx = (idx + 1) % matches.length;
-      const m = matches[idx];
-      roleEl.textContent = m.role;
-      rateEl.textContent = m.rate;
-      tagsEl.innerHTML = m.tags.map(t => '<span class="hmc-tag">' + t + '</span>').join('');
-      // flip in from opposite side
-      wrap.classList.remove('flip-out');
-      wrap.style.transition = 'none';
-      wrap.style.transform = 'rotateY(90deg)';
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() {
-          wrap.style.transition = '';
-          wrap.classList.add('flip-in');
-          setTimeout(function() {
-            wrap.classList.remove('flip-in');
-            wrap.style.transform = '';
-          }, 380);
-        });
-      });
-    }, 320);
+      var hiddenFace = flipped ? front : back;
+      renderFace(hiddenFace, matches[afterIdx]);
+    }, 700);
   }
+
   setInterval(nextMatch, 3500);
 })();
 
