@@ -265,7 +265,7 @@ width: 100%;
 height: 100%;
 min-height: 700px;
 object-fit: cover;
-object-position: center 35%;
+object-position: right 35%;
 border-radius: 28px;
 display: block;
 }
@@ -1271,11 +1271,11 @@ font-size: 12.5px; color: #758682;
           <!-- BACK FACE (pre-loaded with next card) -->
           <div class="hmc-face hmc-back" id="hmcBack">
             <div class="hmc-badge"><span class="dot"></span> New match</div>
-            <div class="hmc-role">Medical Content Reviewer</div>
-            <div class="hmc-rate">$80–110 / hr</div>
+            <div class="hmc-role">Investment Research Reviewer</div>
+            <div class="hmc-rate">$80–100 / hr</div>
             <div class="hmc-tags">
-              <span class="hmc-tag">Clinical AI</span>
-              <span class="hmc-tag">RN or MD</span>
+              <span class="hmc-tag">Financial AI</span>
+              <span class="hmc-tag">Finance degree</span>
               <span class="hmc-tag">Remote</span>
             </div>
           </div>
@@ -1284,6 +1284,60 @@ font-size: 12.5px; color: #758682;
     </div>
   </div>
 
+</div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" style="background: var(--bg);">
+<div class="section-narrow">
+  <div class="section-head">
+    <h2>How it works</h2>
+  </div>
+  <div class="how-inner">
+
+    <div class="how-portrait-card">
+      <img src="PowerToFly-Icon.svg" alt="" class="how-portrait-icon" aria-hidden="true">
+    </div>
+
+    <div class="steps" id="stepsContainer">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h4>Apply and verify</h4>
+          <p>Submit your profile and verify your credentials in under 10 minutes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h4>Get matched to a project</h4>
+          <p>We surface opportunities aligned with your domain, availability, and preferred rate.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h4>Take the short training</h4>
+          <p>A brief async orientation to project guidelines — typically 30–60 minutes, no prior AI experience needed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h4>Contribute your expertise</h4>
+          <p>Review, annotate, or generate content in your field at your own pace, on your schedule.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h4>Get paid weekly</h4>
+          <p>Payments are processed automatically every week. No invoicing, no chasing checks.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 </section>
 
@@ -1525,59 +1579,6 @@ font-size: 12.5px; color: #758682;
 </section>
 
 
-<!-- HOW IT WORKS -->
-<section class="section" style="background: var(--bg);">
-<div class="section-narrow">
-  <div class="section-head">
-    <h2>How it works</h2>
-  </div>
-  <div class="how-inner">
-
-    <div class="how-portrait-card">
-      <img src="PowerToFly-Icon.svg" alt="" class="how-portrait-icon" aria-hidden="true">
-    </div>
-
-    <div class="steps" id="stepsContainer">
-      <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-content">
-          <h4>Apply and verify</h4>
-          <p>Submit your profile and verify your credentials in under 10 minutes.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-content">
-          <h4>Get matched to a project</h4>
-          <p>We surface opportunities aligned with your domain, availability, and preferred rate.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <div class="step-content">
-          <h4>Take the short training</h4>
-          <p>A brief async orientation to project guidelines — typically 30–60 minutes, no prior AI experience needed.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <div class="step-content">
-          <h4>Contribute your expertise</h4>
-          <p>Review, annotate, or generate content in your field at your own pace, on your schedule.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">05</div>
-        <div class="step-content">
-          <h4>Get paid weekly</h4>
-          <p>Payments are processed automatically every week. No invoicing, no chasing checks.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-</section>
 
 <!-- FAQ -->
 <section class="section" style="background: var(--bg-soft);">
@@ -1751,9 +1752,9 @@ font-size: 12.5px; color: #758682;
 /* ===== Match card cycler — true two-face flip ===== */
 (function() {
   var matches = [
-    { role: 'Earnings Analysis Trainer',     rate: '$70–90 / hr',  tags: ['Financial AI', 'CFA or MBA', 'Remote'] },
-    { role: 'Medical Content Reviewer',      rate: '$80–110 / hr', tags: ['Clinical AI', 'RN or MD', 'Remote'] },
-    { role: 'Contract Annotation Specialist',rate: '$75–100 / hr', tags: ['Legal AI', 'JD or Paralegal', 'Remote'] },
+    { role: 'Earnings Analysis Trainer',    rate: '$70–90 / hr',  tags: ['Financial AI', 'CFA or MBA', 'Remote'] },
+    { role: 'Investment Research Reviewer', rate: '$80–100 / hr', tags: ['Financial AI', 'Finance degree', 'Remote'] },
+    { role: 'Financial Model Validator',    rate: '$75–95 / hr',  tags: ['Financial AI', 'Excel / Python', 'Remote'] },
   ];
   var idx = 0;           // index currently visible
   var flipped = false;   // false = front visible, true = back visible
