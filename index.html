@@ -321,6 +321,71 @@ color: var(--ink-3);
 white-space: nowrap;
 }
 
+/* ===== Hero avatar stack + live match toast ===== */
+.av-stack {
+  display: inline-flex;
+  align-items: center;
+}
+.av {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 9px; font-weight: 700;
+  color: #0A0A0A;
+  margin-left: -7px;
+  flex-shrink: 0;
+  background: var(--av-bg, #ccc);
+}
+.av:first-child { margin-left: 0; }
+.stat-chip--av { gap: 10px; }
+.match-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px 9px 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  margin-top: 8px;
+}
+.match-toast.fading { opacity: 0; transform: translateY(5px); }
+.match-live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #4FE8A9;
+  flex-shrink: 0;
+  animation: pulse-live 2s ease-out infinite;
+}
+@keyframes pulse-live {
+  0%   { box-shadow: 0 0 0 0   rgba(79,232,169,0.55); }
+  60%  { box-shadow: 0 0 0 5px rgba(79,232,169,0);    }
+  100% { box-shadow: 0 0 0 0   rgba(79,232,169,0);    }
+}
+.match-av-sm {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 8px; font-weight: 700;
+  color: #0A0A0A;
+  flex-shrink: 0;
+}
+.match-name { color: var(--ink); font-weight: 600; }
+.match-sep  { color: var(--ink-3); margin: 0 2px; }
+.match-logo-sm {
+  height: 14px; width: auto;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.6);
+  flex-shrink: 0;
+}
+
 /* ===== Opportunities Grid ===== */
 .opp-grid {
 display: grid;
@@ -1016,7 +1081,16 @@ font-size: 12.5px; color: #758682;
   </div>
 
   <div class="hero-stats" role="list">
-    <div class="stat-chip" role="listitem"><span class="stat-chip-val">5,000+</span>&nbsp;experts matched</div>
+    <div class="stat-chip stat-chip--av" role="listitem">
+      <div class="av-stack" aria-hidden="true">
+        <div class="av" style="--av-bg:#5BCFFF">DO</div>
+        <div class="av" style="--av-bg:#4FE8A9">MT</div>
+        <div class="av" style="--av-bg:#D5FF66">SR</div>
+        <div class="av" style="--av-bg:#FFB86C">KA</div>
+        <div class="av" style="--av-bg:#c4b5fd">JL</div>
+      </div>
+      <span class="stat-chip-val">5,000+</span>&nbsp;experts matched
+    </div>
     <div class="stat-chip" role="listitem"><span class="stat-chip-val">140+</span>&nbsp;AI companies</div>
     <div class="stat-chip" role="listitem">Avg&nbsp;<span class="stat-chip-val">$65–120</span>&nbsp;/ hr</div>
   </div>
@@ -1031,6 +1105,13 @@ font-size: 12.5px; color: #758682;
     <span class="domain-pill">Creative</span>
     <span class="domain-pill">Operations</span>
     <span class="domain-pill">Education</span>
+  </div>
+
+  <div class="match-toast" id="matchToast" role="status" aria-live="polite">
+    <span class="match-live-dot" aria-hidden="true"></span>
+    <div class="match-av-sm" id="matchAv" aria-hidden="true"></div>
+    <span><span class="match-name" id="matchName"></span><span class="match-sep">·</span><span id="matchRole"></span> just matched with</span>
+    <img class="match-logo-sm" id="matchLogo" src="" alt="">
   </div>
 
 </div>
@@ -1565,6 +1646,45 @@ drawer.setAttribute('aria-hidden', true);
       btn.setAttribute('aria-expanded', 'true');
     }
   });
+})();
+
+// Live match toast cycler
+(function(){
+  const matches = [
+    { initials:'DO', bg:'#5BCFFF', name:'Danielle O.', role:'Clinical AI',  logo:'logos/google.png',  co:'Google'  },
+    { initials:'MT', bg:'#4FE8A9', name:'Marcus T.',   role:'Legal AI',     logo:'logos/zapier.png',  co:'Zapier'  },
+    { initials:'SR', bg:'#D5FF66', name:'Sofia R.',    role:'Language AI',  logo:'logos/zillow.png',  co:'Zillow'  },
+    { initials:'KA', bg:'#FFB86C', name:'Kwame A.',    role:'Code AI',      logo:'logos/visa.png',    co:'Visa'    },
+    { initials:'JL', bg:'#c4b5fd', name:'Jamie L.',    role:'Finance AI',   logo:'logos/nestle.png',  co:'Nestlé'  },
+  ];
+  const toast  = document.getElementById('matchToast');
+  const avEl   = document.getElementById('matchAv');
+  const nameEl = document.getElementById('matchName');
+  const roleEl = document.getElementById('matchRole');
+  const logoEl = document.getElementById('matchLogo');
+  if (!toast) return;
+  let idx = 0;
+
+  function show(m) {
+    avEl.style.background = m.bg;
+    avEl.textContent      = m.initials;
+    nameEl.textContent    = m.name;
+    roleEl.textContent    = m.role;
+    logoEl.src            = m.logo;
+    logoEl.alt            = m.co;
+  }
+
+  function cycle() {
+    toast.classList.add('fading');
+    setTimeout(function() {
+      idx = (idx + 1) % matches.length;
+      show(matches[idx]);
+      toast.classList.remove('fading');
+    }, 280);
+  }
+
+  show(matches[0]);
+  setInterval(cycle, 3500);
 })();
 </script>
 </body>
