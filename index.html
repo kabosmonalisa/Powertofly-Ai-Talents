@@ -323,6 +323,12 @@ display: flex;
 flex-wrap: wrap;
 gap: 6px;
 }
+#hmcWrap {
+transition: opacity 0.35s ease;
+}
+#hmcWrap.fading {
+opacity: 0;
+}
 .hmc-tag {
 font-size: 11px;
 font-weight: 500;
@@ -1203,11 +1209,11 @@ font-size: 12.5px; color: #758682;
         alt="Financial analyst working at laptop"
         class="hero-photo"
       >
-      <div class="hero-match-card" aria-label="Job match card">
+      <div class="hero-match-card" id="hmcWrap" aria-live="polite">
         <div class="hmc-badge"><span class="dot"></span> New match</div>
-        <div class="hmc-role">Earnings Analysis Trainer</div>
-        <div class="hmc-rate">$70–90 / hr</div>
-        <div class="hmc-tags">
+        <div class="hmc-role" id="hmcRole">Earnings Analysis Trainer</div>
+        <div class="hmc-rate" id="hmcRate">$70–90 / hr</div>
+        <div class="hmc-tags" id="hmcTags">
           <span class="hmc-tag">Financial AI</span>
           <span class="hmc-tag">CFA or MBA</span>
           <span class="hmc-tag">Remote</span>
@@ -1686,6 +1692,36 @@ font-size: 12.5px; color: #758682;
 </footer>
 
 <script>
+/* ===== Match card cycler ===== */
+(function() {
+  const matches = [
+    { role: 'Earnings Analysis Trainer',      rate: '$70–90 / hr',  tags: ['Financial AI', 'CFA or MBA', 'Remote'] },
+    { role: 'Financial Data Evaluator',        rate: '$65–85 / hr',  tags: ['Financial AI', 'Analyst exp', 'Remote'] },
+    { role: 'Investment Research Reviewer',    rate: '$75–95 / hr',  tags: ['Financial AI', 'Equity research', 'Remote'] },
+    { role: 'Risk Assessment Trainer',         rate: '$70–90 / hr',  tags: ['Financial AI', 'Risk mgmt', 'Remote'] },
+    { role: 'Market Intelligence Annotator',   rate: '$65–80 / hr',  tags: ['Financial AI', 'Market analysis', 'Remote'] },
+  ];
+  let idx = 0;
+  const wrap = document.getElementById('hmcWrap');
+  const roleEl = document.getElementById('hmcRole');
+  const rateEl = document.getElementById('hmcRate');
+  const tagsEl = document.getElementById('hmcTags');
+  if (!wrap || !roleEl || !rateEl || !tagsEl) return;
+
+  function nextMatch() {
+    wrap.classList.add('fading');
+    setTimeout(function() {
+      idx = (idx + 1) % matches.length;
+      const m = matches[idx];
+      roleEl.textContent = m.role;
+      rateEl.textContent = m.rate;
+      tagsEl.innerHTML = m.tags.map(t => '<span class="hmc-tag">' + t + '</span>').join('');
+      wrap.classList.remove('fading');
+    }, 350);
+  }
+  setInterval(nextMatch, 3000);
+})();
+
 (function() {
 const btn = document.getElementById('hamburger');
 const drawer = document.getElementById('mobileDrawer');
