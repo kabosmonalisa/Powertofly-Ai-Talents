@@ -272,7 +272,7 @@ display: block;
 /* Float wrapper handles positioning + bobbing animation */
 .hmc-float-wrap {
 position: absolute;
-bottom: -20px;
+bottom: 14%;
 left: -32px;
 z-index: 10;
 animation: floatY 5s ease-in-out infinite;
@@ -981,7 +981,7 @@ font-size: 12.5px; color: #758682;
   position: absolute;
   top: 20px; left: 20px;
   width: 52px; height: 52px;
-  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.28));
+  filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgba(0,0,0,0.45));
 }
 .stats-card-dark {
   background: #0A0A0A;
@@ -1494,6 +1494,29 @@ font-size: 12.5px; color: #758682;
 </div>
 </section>
 
+<!-- STATS -->
+<section class="section-stats">
+  <div class="stats-card-wrap">
+    <div class="stats-portrait">
+      <img src="PowerToFly-Icon.svg" alt="" class="stats-portrait-icon" aria-hidden="true">
+    </div>
+    <div class="stats-card-dark">
+      <div>
+        <div class="stat-big-num" data-count="5" data-suffix=",000+">5,000+</div>
+        <div class="stat-big-label">Experts matched to projects</div>
+      </div>
+      <div>
+        <div class="stat-big-num" data-count="140" data-suffix="+">140+</div>
+        <div class="stat-big-label">AI companies hiring now</div>
+      </div>
+      <div>
+        <div class="stat-big-num">$65–120</div>
+        <div class="stat-big-label">Average hourly rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- WHAT YOU CAN EXPECT -->
 <section class="section" style="background: var(--bg-soft);">
 <div class="section-narrow">
@@ -1566,29 +1589,6 @@ font-size: 12.5px; color: #758682;
 
   </div>
 </div>
-</section>
-
-<!-- STATS -->
-<section class="section-stats">
-  <div class="stats-card-wrap">
-    <div class="stats-portrait">
-      <img src="PowerToFly-Icon.svg" alt="" class="stats-portrait-icon" aria-hidden="true">
-    </div>
-    <div class="stats-card-dark">
-      <div>
-        <div class="stat-big-num" data-count="5" data-suffix=",000+">5,000+</div>
-        <div class="stat-big-label">Experts matched to projects</div>
-      </div>
-      <div>
-        <div class="stat-big-num" data-count="140" data-suffix="+">140+</div>
-        <div class="stat-big-label">AI companies hiring now</div>
-      </div>
-      <div>
-        <div class="stat-big-num">$65–120</div>
-        <div class="stat-big-label">Average hourly rate</div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- HOW IT WORKS -->
