@@ -284,35 +284,38 @@ animation: floatY 5s ease-in-out infinite;
 .hmc-badge {
 display: inline-flex;
 align-items: center;
-gap: 6px;
+gap: 5px;
 font-size: 11px;
-font-weight: 700;
+font-weight: 600;
 letter-spacing: 0.04em;
 text-transform: uppercase;
-color: #0A2A1F;
-background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
+color: #0A8C66;
+background: rgba(79,232,169,0.16);
 padding: 4px 10px;
 border-radius: 999px;
 margin-bottom: 12px;
 }
+.hmc-badge .dot {
+width: 6px; height: 6px;
+border-radius: 50%;
+background: #4FE8A9;
+flex-shrink: 0;
+}
 .hmc-role {
 font-family: 'Inter Tight', sans-serif;
-font-size: 16px;
+font-size: 15px;
 font-weight: 700;
 letter-spacing: -0.02em;
 color: var(--ink);
 line-height: 1.2;
-margin-bottom: 6px;
+margin-bottom: 4px;
 }
 .hmc-rate {
 font-family: 'Inter Tight', sans-serif;
-font-size: 20px;
-font-weight: 800;
-letter-spacing: -0.03em;
-background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
+font-size: 18px;
+font-weight: 700;
+letter-spacing: -0.02em;
+color: var(--ink);
 margin-bottom: 12px;
 }
 .hmc-tags {
@@ -324,6 +327,7 @@ gap: 6px;
 font-size: 11px;
 font-weight: 500;
 color: var(--ink-3);
+background: var(--bg-soft);
 border: 1px solid var(--line);
 border-radius: 999px;
 padding: 3px 9px;
@@ -1204,12 +1208,12 @@ font-size: 12.5px; color: #758682;
   <div class="hero-visual">
     <div class="hero-photo-wrap">
       <img
-        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&h=1100&fit=crop&q=85"
+        src="https://images.unsplash.com/photo-1664575603992-0f17b771dd91?w=900&h=1100&fit=crop&q=85"
         alt="Financial analyst working at laptop"
         class="hero-photo"
       >
       <div class="hero-match-card" aria-label="Job match card">
-        <div class="hmc-badge">✓ New match</div>
+        <div class="hmc-badge"><span class="dot"></span> New match</div>
         <div class="hmc-role">Earnings Analysis Trainer</div>
         <div class="hmc-rate">$70–90 / hr</div>
         <div class="hmc-tags">
