@@ -745,85 +745,52 @@ font-size: 12.5px; color: #758682;
 }
 
 /* ===== Benefits (sticky scroll stack) ===== */
-.benefits-stack { padding-bottom: 4vh; max-width: 1180px; margin: 0 auto; }
+/* ===== Benefit cards — 3-col row ===== */
+.benefits-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
 .benefit-card {
-  position: sticky;
-  top: 14vh;
-  border-radius: 24px;
+  border-radius: 20px;
   border: 1px solid rgba(10,10,10,0.09);
   box-shadow: var(--shadow-card);
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  min-height: 340px;
-  background: var(--bg-soft);
-  transition: box-shadow 220ms ease;
-}
-.benefit-card:nth-child(2) { z-index: 2; margin-top: 36vh; }
-.benefit-card:nth-child(3) { z-index: 3; margin-top: 36vh; }
-.benefit-sparkle-col {
+  background: var(--bg);
+  padding: 32px 28px 36px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  border-right: 1px solid rgba(10,10,10,0.07);
+  flex-direction: column;
+  gap: 12px;
 }
 .benefit-sparkle {
-  width: 160px;
-  height: 160px;
+  width: 52px;
+  height: 52px;
   animation: floatY 4s ease-in-out infinite;
+  margin-bottom: 4px;
 }
 .benefit-card:nth-child(2) .benefit-sparkle { animation-delay: -1.3s; }
 .benefit-card:nth-child(3) .benefit-sparkle { animation-delay: -2.7s; }
-.benefit-text-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 48px 52px;
-  gap: 16px;
-}
 .benefit-card h3 {
   font-family: 'Inter Tight', sans-serif;
-  font-size: 28px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 1.2;
   color: var(--ink);
 }
 .benefit-card p {
-  font-size: 17px;
+  font-size: 15px;
   color: var(--ink-3);
-  line-height: 1.65;
-  max-width: 48ch;
+  line-height: 1.6;
 }
 .benefit-insight {
   font-family: 'Inter Tight', sans-serif;
-  font-size: 18px !important;
+  font-size: 14px !important;
   font-weight: 600;
-  color: var(--ink) !important;
-  letter-spacing: -0.015em;
-  line-height: 1.3 !important;
-}
-.benefit-bullets {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 4px;
-}
-.benefit-bullets li {
-  font-size: 15px;
-  color: var(--ink-3);
-  line-height: 1.5;
-  padding-left: 18px;
-  position: relative;
-}
-.benefit-bullets li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  color: var(--iri-green);
-  font-size: 13px;
+  color: var(--ink-2) !important;
+  letter-spacing: -0.01em;
+  line-height: 1.45 !important;
 }
 
 /* ===== How It Works ===== */
@@ -1178,10 +1145,7 @@ font-size: 12.5px; color: #758682;
 .nav-links { display: none; }
 .footer-cols { grid-template-columns: 1fr 1fr; }
 .opp-grid { grid-template-columns: repeat(2, 1fr); }
-.benefit-card { grid-template-columns: 1fr; min-height: auto; }
-.benefit-sparkle-col { border-right: none; border-bottom: 1px solid rgba(10,10,10,0.07); padding: 32px; }
-.benefit-card:nth-child(2) { margin-top: 0; }
-.benefit-card:nth-child(3) { margin-top: 0; }
+.benefits-row { grid-template-columns: 1fr 1fr; }
 .how-inner { grid-template-columns: 1fr; gap: 48px; }
 .how-portrait-card { aspect-ratio: 4 / 3; }
 .hero-inner { grid-template-columns: 1fr; gap: 48px; text-align: center; }
@@ -1205,8 +1169,7 @@ font-size: 12.5px; color: #758682;
 .opp-grid { grid-template-columns: 1fr; }
 .hero-stats { gap: 8px; }
 .mission { padding: 80px 20px; }
-.benefit-text-col { padding: 28px 24px 32px; }
-.benefit-sparkle { width: 120px; height: 120px; }
+.benefits-row { grid-template-columns: 1fr; }
 .closing-cta { padding: 80px 20px 72px; }
 }
 
@@ -1321,6 +1284,50 @@ font-size: 12.5px; color: #758682;
     </div>
   </div>
 
+</div>
+</section>
+
+<!-- WHAT YOU CAN EXPECT -->
+<section class="section" style="background: var(--bg-soft); padding-top: 72px; padding-bottom: 80px;">
+<div class="section-narrow">
+  <div class="section-head">
+    <h2>What you can expect</h2>
+  </div>
+  <div class="benefits-row">
+
+    <div class="benefit-card">
+      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+        <path d="M 14,90 A 76,24 0 0 0 166,90" fill="none" stroke="url(#sg1)" stroke-width="16" stroke-linecap="round" transform="rotate(-20 90 90)"/>
+        <circle cx="90" cy="90" r="48" fill="url(#sg1)"/>
+        <path d="M 14,90 A 76,24 0 0 1 166,90" fill="none" stroke="url(#sg1)" stroke-width="16" stroke-linecap="round" stroke-opacity="0.6" transform="rotate(-20 90 90)"/>
+      </svg>
+      <h3>Work from anywhere</h3>
+      <p class="benefit-insight">AI that reflects the world needs people from across it.</p>
+      <p>Every project is fully remote. Your geography, cultural context, and lived experience are features — not limitations.</p>
+    </div>
+
+    <div class="benefit-card">
+      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+        <text x="90" y="128" font-family="Inter Tight, Inter, sans-serif" font-weight="800" font-size="148" fill="url(#sg2)" text-anchor="middle">$</text>
+      </svg>
+      <h3>Earn what your expertise is worth</h3>
+      <p class="benefit-insight">Be an active beneficiary of AI's growth — not a bystander.</p>
+      <p>Rates reflect your knowledge, not entry-level hours. Domain experts earn $65–130/hr, paid automatically every week.</p>
+    </div>
+
+    <div class="benefit-card">
+      <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="sg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
+        <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg3)"/>
+      </svg>
+      <h3>Build with frontier AI</h3>
+      <p class="benefit-insight">AI built without diverse experts fails the people it's meant to serve.</p>
+      <p>Your domain expertise is the trusted talent layer the industry needs to build AI that works for everyone.</p>
+    </div>
+
+  </div>
 </div>
 </section>
 
@@ -1517,79 +1524,6 @@ font-size: 12.5px; color: #758682;
   </div>
 </section>
 
-<!-- WHAT YOU CAN EXPECT -->
-<section class="section" style="background: var(--bg-soft);">
-<div class="section-narrow">
-  <div class="section-head">
-    <h2>What you can expect</h2>
-  </div>
-  <div class="benefits-stack">
-
-    <div class="benefit-card">
-      <div class="benefit-sparkle-col">
-        <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs><linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-          <!-- ring back arc -->
-          <path d="M 14,90 A 76,24 0 0 0 166,90" fill="none" stroke="url(#sg1)" stroke-width="16" stroke-linecap="round" transform="rotate(-20 90 90)"/>
-          <!-- planet body -->
-          <circle cx="90" cy="90" r="48" fill="url(#sg1)"/>
-          <!-- ring front arc — slightly lighter for depth -->
-          <path d="M 14,90 A 76,24 0 0 1 166,90" fill="none" stroke="url(#sg1)" stroke-width="16" stroke-linecap="round" stroke-opacity="0.6" transform="rotate(-20 90 90)"/>
-        </svg>
-      </div>
-      <div class="benefit-text-col">
-        <h3>Work from anywhere</h3>
-        <p class="benefit-insight">AI that reflects the world needs people from across it.</p>
-        <p>Every project is fully remote. Your geography, cultural context, and lived experience are features — not limitations.</p>
-        <ul class="benefit-bullets">
-          <li>Available globally, across time zones</li>
-          <li>Your regional perspective shapes model behavior</li>
-          <li>Flexible hours that fit around your existing work</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="benefit-card">
-      <div class="benefit-sparkle-col">
-        <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs><linearGradient id="sg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-          <text x="90" y="128" font-family="Inter Tight, Inter, sans-serif" font-weight="800" font-size="148" fill="url(#sg2)" text-anchor="middle">$</text>
-        </svg>
-      </div>
-      <div class="benefit-text-col">
-        <h3>Earn what your expertise is worth</h3>
-        <p class="benefit-insight">Be an active beneficiary of AI's growth — not a bystander.</p>
-        <p>Rates reflect your knowledge, not entry-level hours. Domain experts on PowerToFly AI earn $65–130/hr, paid automatically every week.</p>
-        <ul class="benefit-bullets">
-          <li>No invoicing, no chasing checks</li>
-          <li>Set your own availability and preferred rate</li>
-          <li>Stay at the forefront of a $1T labor shift</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="benefit-card">
-      <div class="benefit-sparkle-col">
-        <svg class="benefit-sparkle" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs><linearGradient id="sg3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs>
-          <path d="M 90,2 L 104,76 L 178,90 L 104,104 L 90,178 L 76,104 L 2,90 L 76,76 Z" fill="url(#sg3)"/>
-        </svg>
-      </div>
-      <div class="benefit-text-col">
-        <h3>Build with frontier AI</h3>
-        <p class="benefit-insight">AI built without diverse experts fails the people it's meant to serve.</p>
-        <p>High-profile alignment failures at major labs trace back to non-representative training. Your domain expertise is the trusted talent layer the industry needs.</p>
-        <ul class="benefit-bullets">
-          <li>Work with teams at leading AI labs</li>
-          <li>Close the gap between AI outputs and real-world needs</li>
-          <li>Shape models that millions of people will use</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-</div>
-</section>
 
 <!-- HOW IT WORKS -->
 <section class="section" style="background: var(--bg);">
