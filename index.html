@@ -1159,11 +1159,11 @@ font-size: 12.5px; color: #758682;
 .benefits-row { grid-template-columns: 1fr 1fr; }
 .how-inner { grid-template-columns: 1fr; gap: 48px; }
 .how-portrait-card { aspect-ratio: 4 / 3; }
-.hero-inner { grid-template-columns: 1fr; gap: 48px; text-align: center; }
-.hero-text { align-items: center; }
-.hero-stats { justify-content: center; }
-.hero-domains { justify-content: center; max-width: 100%; }
-.hmc-float-wrap { left: 50%; transform: translateX(-50%); bottom: -28px; }
+.hero-inner { grid-template-columns: 1fr; gap: 32px; text-align: left; }
+.hero-text { align-items: flex-start; }
+.hero-stats { justify-content: flex-start; }
+.hero-domains { justify-content: flex-start; max-width: 100%; }
+.hmc-float-wrap { left: 20px; transform: none; bottom: 20px; }
 }
 @media (max-width: 600px) {
 .nav { padding: 0 20px; }
@@ -1178,16 +1178,18 @@ font-size: 12.5px; color: #758682;
 .footer-brand svg { width: 120px; height: auto; }
 .hero { padding: 64px 20px 48px; min-height: auto; }
 .hero-glow { width: 500px; height: 400px; }
-.hero-photo { height: 420px; }
+.hero-photo { height: 300px; object-fit: cover; object-position: 35% 20%; }
 .opp-grid { grid-template-columns: 1fr; }
-.hero-stats { gap: 8px; flex-wrap: wrap; justify-content: center; }
+.hero-stats { gap: 8px; flex-wrap: wrap; }
 .hero-domains { gap: 8px; }
 .mission { padding: 80px 20px; }
 .benefits-row { grid-template-columns: 1fr; }
 .closing-cta { padding: 80px 20px 72px; }
-.hero-match-card { width: 270px; }
-.hmc-float-wrap { bottom: 16px; left: 50%; transform: translateX(-50%); }
+.hero-match-card { width: 230px; font-size: 13px; }
+.hmc-float-wrap { bottom: 16px; left: 16px; transform: none; }
 .stat-big-num { font-size: clamp(44px, 12vw, 72px); }
+.logo-strip-viewport { mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%); }
+.logo-strip-track img { height: 36px; }
 }
 
 </style>
@@ -1240,8 +1242,8 @@ font-size: 12.5px; color: #758682;
   <div class="hero-text">
     <h1 class="display">
       Your expertise is<br>
-      the <span class="italic-accent">advantage</span><br>
-      <span style="font-style:normal;">AI can't fake.</span>
+      the <span style="font-style:italic;">advantage</span><br>
+      AI can't fake.
     </h1>
 
     <p class="hero-sub">
