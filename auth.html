@@ -342,6 +342,18 @@ body {
 }
 .btn-skip:hover { color: var(--ink); }
 
+/* ===== Thank you state ===== */
+.ty-check {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  animation: tyPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes tyPop {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 500px) {
   .auth-card { padding: 36px 24px 32px; border-radius: 20px; }
@@ -471,7 +483,7 @@ body {
         </div>
         <h1 class="auth-heading">Almost there</h1>
         <p class="auth-sub">Help us match you faster by sharing your professional profile.</p>
-        <form class="auth-form" onsubmit="return false">
+        <form class="auth-form" onsubmit="goToThankYou();return false">
           <div class="field">
             <label for="su-linkedin">LinkedIn profile</label>
             <input type="url" id="su-linkedin" placeholder="linkedin.com/in/yourname" autocomplete="off">
@@ -488,6 +500,30 @@ body {
           </div>
           <button class="btn-auth" type="submit">Complete profile</button>
         </form>
+        <p class="auth-note" style="margin-top:12px">
+          <button class="btn-skip" onclick="goToThankYou()">Skip for now</button>
+        </p>
+      </div>
+
+      <!-- Thank You -->
+      <div id="signupThankYou" style="display:none">
+        <div class="ty-check" aria-hidden="true">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <circle cx="26" cy="26" r="26" fill="url(#tyGrad)"/>
+            <path d="M16 26.5l7.5 7.5 12.5-14" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="tyGrad" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#5BCFFF"/>
+                <stop offset="50%" stop-color="#4FE8A9"/>
+                <stop offset="100%" stop-color="#D5FF66"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="auth-heading" style="margin-top:20px">You're in.</h1>
+        <p class="auth-sub" style="margin-bottom:24px">We'll review your profile and start matching you to projects that fit your expertise. This usually takes less than 24 hours.<br><br>In the meantime, browse what's open right now.</p>
+        <a href="index.html#opportunities" class="btn-auth" style="display:block;text-align:center;text-decoration:none">Browse open opportunities →</a>
+        <p class="auth-note" style="margin-top:16px">We'll email you when your first match is ready.</p>
       </div>
 
     </div>
@@ -518,6 +554,11 @@ function handleFile(input) {
   var el = document.getElementById('uploadName');
   el.textContent = name;
   el.style.display = name ? 'block' : 'none';
+}
+function goToThankYou() {
+  document.getElementById('signupStep2').style.display = 'none';
+  document.getElementById('signupThankYou').style.display = 'block';
+  document.title = 'Welcome — PowerToFly AI';
 }
 </script>
 
