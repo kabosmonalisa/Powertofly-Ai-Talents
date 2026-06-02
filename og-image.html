@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OG Image — PowerToFly AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Inter+Tight:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 52px 72px 52px;
+  background: radial-gradient(ellipse 1400px 900px at 50% -80px,
+    rgba(79,232,169,0.28) 0%,
+    rgba(213,255,102,0.14) 32%,
+    #FAFAF6 65%);
+}
+.top { display: flex; align-items: center; position: relative; z-index: 2; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-wordmark { font-family: 'Inter Tight', sans-serif; font-size: 52px; font-weight: 800; letter-spacing: -0.04em; color: #0A0A0A; }
+.brand-ai {
+  padding: 8px 18px; border-radius: 999px;
+  background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
+  font-family: 'Inter Tight', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: 0.04em; color: #0A2A1F;
+  box-shadow: 0 4px 16px rgba(79,232,169,0.35);
+}
+
+.headline-wrap { position: relative; z-index: 2; flex: 1; display: flex; align-items: center; }
+.headline { font-family: 'Inter Tight', sans-serif; font-weight: 800; font-size: 96px; line-height: 0.93; letter-spacing: -0.048em; color: #0A0A0A; }
+.headline em { font-style: italic; font-weight: 700; color: #0A0A0A; }
+
+.bottom { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; }
+.pills { display: flex; align-items: center; gap: 10px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px; border-radius: 999px;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #2A2A2A;
+  background: rgba(255,255,255,0.85); border: 1.5px solid rgba(10,10,10,0.09);
+}
+.pill-dot { width: 7px; height: 7px; border-radius: 50%; background: #00C47A; box-shadow: 0 0 6px rgba(0,196,122,0.6); }
+.cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 16px 32px; border-radius: 999px;
+  background: #0A0A0A; color: #fff;
+  font-family: 'Inter Tight', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.01em;
+}
+.accent-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #5BCFFF, #4FE8A9, #D5FF66); }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">
+    <span class="brand-wordmark">PowerToFly</span>
+    <span class="brand-ai">AI</span>
+  </div>
+</div>
+<div class="headline-wrap">
+  <h1 class="headline"><span style="white-space:nowrap">Your AI is only as good as</span><br>the <em>humans</em> behind it.</h1>
+</div>
+<div class="accent-bar"></div>
+</body>
+</html>

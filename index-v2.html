@@ -3,7 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PowerToFly AI — Round 04 (synthesis)</title>
+<title>PowerToFly AI — Your AI is only as good as the humans behind it.</title>
+<meta name="description" content="115K+ domain-qualified experts who look like the world your AI is being built for.">
+<meta property="og:title" content="Your AI is only as good as the humans behind it.">
+<meta property="og:description" content="115K+ domain-qualified experts who look like the world your AI is being built for.">
+<meta property="og:image" content="https://kabosmonalisa.github.io/Powertofly-Ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kabosmonalisa.github.io/Powertofly-Ai/index-v2.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your AI is only as good as the humans behind it.">
+<meta name="twitter:description" content="115K+ domain-qualified experts who look like the world your AI is being built for.">
+<meta name="twitter:image" content="https://kabosmonalisa.github.io/Powertofly-Ai/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
@@ -53,6 +65,13 @@ img { display: block; max-width: 100%; }
   color: transparent;
   letter-spacing: -0.025em;
 }
+.italic-plain {
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-style: italic;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.025em;
+}
 .italic-purple {
   font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
   font-style: italic;
@@ -68,10 +87,16 @@ img { display: block; max-width: 100%; }
 /* ===== Nav ===== */
 .nav {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: saturate(140%) blur(10px);
-  border-bottom: 1px solid var(--line);
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: 1px solid transparent;
   padding: 0 32px;
+  transition: background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease;
+}
+.nav.scrolled {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--line);
 }
 .nav-inner {
   max-width: 1280px; margin: 0 auto;
@@ -189,7 +214,7 @@ img { display: block; max-width: 100%; }
 /* ===== Hero ===== */
 .hero {
   position: relative;
-  padding: 120px 32px 100px;
+  padding: 88px 32px 72px;
   background: radial-gradient(ellipse 1100px 720px at 50% -10%, rgba(79,232,169,0.22) 0%, rgba(213,255,102,0.12) 35%, #ffffff 70%);
   overflow: hidden;
 }
@@ -212,18 +237,17 @@ img { display: block; max-width: 100%; }
 h1.hero-headline {
   font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
   font-weight: 700;
-  font-size: clamp(44px, 7vw, 80px);
-  line-height: 0.95;
+  font-size: clamp(36px, 5.5vw, 68px);
+  line-height: 1.0;
   letter-spacing: -0.04em;
   margin: 0 auto;
-  max-width: 16ch;
+  max-width: none;
 }
 .hero-sub {
-  max-width: none;
+  max-width: 52ch;
   margin: 24px auto 0;
   font-size: 18px; line-height: 1.55;
   color: var(--ink-2);
-  white-space: nowrap;
 }
 .hero-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
 
@@ -1016,7 +1040,6 @@ h1.hero-headline {
 
   /* Hero */
   .hero { padding: 64px 20px 0; }
-  .hero-sub { white-space: normal; font-size: 16px; }
   .hero-stage { aspect-ratio: 4/3; margin-top: 32px; overflow: hidden; border-radius: 16px; }
   .hero-photo { width: 100%; border-radius: 16px; }
 
@@ -1064,6 +1087,234 @@ h1.hero-headline {
   .sc-left { padding: 32px 24px; }
   .sc-card:nth-child(2), .sc-card:nth-child(3) { margin-top: 8vh; }
   .sc-ctas { flex-direction: column; align-items: center; }
+
+  /* Hero mobile */
+  .hero { padding: 52px 20px 48px; }
+  h1.hero-headline { font-size: clamp(30px, 7.5vw, 44px); line-height: 1.05; }
+  h1.hero-headline span[style*="nowrap"] { white-space: normal; }
+  .fh-wrap { margin-top: 20px; }
+  .fh-below-text { font-size: 14px; padding: 0 16px; margin-top: 20px; white-space: normal; }
+
+  /* Mobile drawer fix */
+  .mobile-drawer .btn { display: flex; width: 100%; justify-content: center; box-sizing: border-box; }
+  .mobile-drawer .drawer-cta { gap: 12px; }
+}
+
+/* ===== Figma-style hero carousel ===== */
+.fh-wrap {
+  position: relative;
+  margin-top: 40px;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  width: 100vw;
+}
+.fh-track-container {
+  overflow-x: clip;
+  position: relative;
+  padding: 12px 0 0;
+}
+.fh-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: calc((100vw - 20vw) / 2 - 12px);
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+.fh-slide {
+  flex: 0 0 20vw;
+  aspect-ratio: 7/8;
+  border-radius: 16px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  cursor: pointer;
+}
+.fh-slide { opacity: 1; }
+.fh-slide .fh-media {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+.fh-slide .fh-media.loaded { opacity: 1; }
+.fh-slide:hover { transform: scale(1.02); }
+
+/* Controls */
+.fh-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.fh-ctrl-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0,0,0,0.08);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--ink);
+  transition: background 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.fh-ctrl-btn:hover { background: #fff; }
+
+/* Floating card */
+.fh-card-outer {
+  position: absolute;
+  top: 72%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 3px;
+  border-radius: 24px;
+  z-index: 20;
+  min-width: min(640px, 90vw);
+}
+.fh-card-shadow {
+  position: absolute;
+  inset: 2px;
+  background: rgb(225,225,225);
+  border-radius: 22px;
+  box-shadow: rgba(0,0,0,0.14) 0px 28px 80px;
+  transition: background 0.4s ease;
+}
+.fh-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.fh-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.fh-text-area {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+.fh-ghost { display: none; }
+.fh-typed {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(22px, 2.4vw, 34px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+}
+.fh-cursor {
+  display: block;
+  flex-shrink: 0;
+  border-left: 2.5px solid var(--ink);
+  height: 1.15em;
+  margin-left: 3px;
+  align-self: center;
+  animation: fhBlink 1s infinite;
+}
+@keyframes fhBlink {
+  0%, 100% { border-left-color: var(--ink); }
+  50% { border-left-color: transparent; }
+}
+.fh-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.fh-suffix {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.fh-cta {
+  background: var(--ink);
+  color: #fff;
+  padding: 16px 32px;
+  border-radius: 999px;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.fh-cta:hover {
+  box-shadow: 0 12px 28px rgba(79,232,169,0.3), 0 4px 12px rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+
+/* Text below carousel */
+.fh-below-text {
+  max-width: none;
+  margin: 40px auto 0;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  padding: 0 24px;
+  white-space: nowrap;
+}
+
+/* Full-width logos below hero */
+.fh-logos-strip {
+  width: 100%;
+  padding: 64px 0;
+  overflow: hidden;
+  background: var(--bg);
+  text-align: center;
+}
+.fh-logos-inner {
+  display: flex;
+  align-items: center;
+}
+.fh-logos-label { display: none; }
+.fh-logos-track-wrap {
+  overflow: hidden;
+  flex: 1;
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+.fh-logos-track {
+  display: flex;
+  gap: 64px;
+  align-items: center;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.fh-logos-track:hover { animation-play-state: paused; }
+.fh-logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+  filter: grayscale(1) opacity(0.45);
+  transition: filter 220ms ease;
+}
+.fh-logo-img:hover { filter: grayscale(0) opacity(1); }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .fh-slide { flex: 0 0 72vw; aspect-ratio: 4/5; }
+  .fh-track { padding-left: calc((100vw - 72vw) / 2 - 6px); }
+  .fh-card-outer { min-width: calc(100vw - 40px); top: 68%; }
+  .fh-controls { right: 16px; bottom: 16px; }
+  .fh-cta { padding: 12px 22px; font-size: 14px; }
+  .fh-typed { font-size: clamp(18px, 4vw, 26px); }
+  .fh-card { padding: 18px 20px 20px; }
 }
 </style>
 </head>
@@ -1138,79 +1389,48 @@ h1.hero-headline {
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <h1 class="hero-headline">Your AI is only as good as the <span class="italic-accent">humans</span> behind it.</h1>
+    <h1 class="hero-headline"><span style="white-space:nowrap">Your AI is only as good as</span><br>the <em class="italic-plain">humans</em> behind it.</h1>
 
-    <p class="hero-sub">115K+ domain-qualified experts who look like the world your AI is being built for.</p>
-
-    <div class="hero-ctas">
-      <a href="book.html" class="btn btn-primary">Book a discovery call →</a>
-    </div>
-
-    <div class="hero-ticker-wrap">
-      <div class="hero-typewriter-line">
-        <span class="cohort-suffix">Ready to deploy</span><span class="cohort-live-dot" aria-hidden="true"></span><span class="cohort-type-word" id="cohortWord"></span><span class="cohort-cursor"></span>
-      </div>
-    </div>
-
-    <!-- Photo stage with floating cards -->
-    <div class="hero-stage">
-      <div class="hero-photo" role="img" aria-label="Portrait of AI engineer"></div>
-
-      <!-- (1) Profile card -->
-      <div class="fcard card-profile" id="profileCard">
-        <div class="profile-row">
-          <div class="profile-avatar">
-            <img data-avatar-img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=160&h=160&fit=crop&crop=faces&q=80" alt="">
-          </div>
-          <div class="profile-info">
-            <div class="profile-name" data-name>Adaeze O.</div>
-            <div class="profile-role" data-role>Healthcare RAG engineer</div>
-          </div>
-          <span class="profile-match"><span class="dot"></span> <span data-match>Verified fellow</span></span>
+    <!-- Figma-style hero carousel -->
+    <div class="fh-wrap">
+      <div class="fh-track-container">
+        <div class="fh-track" id="fhTrack"></div>
+        <div class="fh-controls">
+          <button class="fh-ctrl-btn" id="fhPause" aria-label="Pause/Play">⏸</button>
         </div>
-        <div class="profile-meta">
-          <span>Skills</span>
-          <div class="logos">
-            <span class="logo-chip" data-logo1>RAG</span>
-            <span class="logo-chip" data-logo2>FT</span>
-            <span class="logo-chip" data-logo3>EV</span>
-            <span class="logo-chip" data-logo4>LLM</span>
+      </div>
+
+      <!-- Floating typewriter card -->
+      <div class="fh-card-outer" id="fhCardOuter">
+        <div class="fh-card-shadow" id="fhCardShadow"></div>
+        <div class="fh-card">
+          <div class="fh-card-top">
+            <span class="fh-suffix"><span style="color:#00C47A">●</span> Ready to deploy</span>
+          </div>
+          <div class="fh-card-bottom">
+            <div class="fh-text-area" id="fhTextArea">
+              <div class="fh-ghost" id="fhGhost" aria-hidden="true"></div>
+              <span class="fh-typed" id="fhTyped"></span><span class="fh-cursor" id="fhCursor"></span>
+            </div>
+            <a href="book.html" class="fh-cta">Get started →</a>
           </div>
         </div>
       </div>
-
-      <!-- (2) Typewriter input -->
-      <div class="fcard card-input">
-        <div class="input-head">
-          <span class="spinner"></span>
-          Talent search
-        </div>
-        <div class="input-field">
-          <span class="typed" id="typed"></span><span class="caret"></span>
-        </div>
-        <div class="input-actions">
-          <span class="input-chip">🔍 12 fellows matched</span>
-          <span class="input-send">
-            <svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 11V1M2 5l4-4 4 4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-        </div>
-      </div>
-
-      <!-- (3) Cycling pill -->
-      <div class="fcard card-pill">
-        <div class="pill"><span class="dot"></span><span class="pill-text" id="pillText">Hire your AI team</span></div>
-      </div>
-
-      <!-- (4) Logo marquee -->
-      <div class="fcard card-marquee">
-        <span class="fcard-label" style="white-space:nowrap;"></span>
-        <div class="marquee-track-wrap">
-          <div class="marquee-track" id="marquee"></div>
-        </div>
-      </div>
     </div>
+
+    <p class="fh-below-text">115K+ domain-qualified experts who look like the world your AI is being built for.</p>
   </div>
 </section>
+
+<!-- FULL WIDTH LOGOS -->
+<div class="fh-logos-strip">
+  <div class="fh-logos-inner">
+    <span class="fh-logos-label"></span>
+    <div class="fh-logos-track-wrap">
+      <div class="fh-logos-track" id="fhLogosTrack"></div>
+    </div>
+  </div>
+</div>
 
 <!-- SERVICES -->
 <section class="section section-services">
@@ -1697,6 +1917,176 @@ h1.hero-headline {
     });
   }, { threshold: 0.5 });
   nums.forEach(el => observer.observe(el));
+})();
+
+/* Figma-style hero carousel */
+(function(){
+  const track = document.getElementById('fhTrack');
+  if (!track) return;
+
+  // Slides: alternating video/static, women at both ends (first+last = women for seamless loop)
+  // Men at positions 2, 6, 9, 12 — never adjacent
+  const slides = [
+    { type: 'img',   src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&h=700&fit=crop&crop=faces', label: 'Data Scientists' },      // static · woman ← START
+    { type: 'video', src: 'https://videos.pexels.com/video-files/12908928/12908928-uhd_1440_2560_24fps.mp4', label: 'Healthcare Professionals' },          // video  · woman
+    { type: 'img',   src: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?w=500&h=700&fit=crop&crop=faces', label: 'ML Engineers' },            // static · man
+    { type: 'video', src: 'https://videos.pexels.com/video-files/8034784/8034784-uhd_1440_2560_25fps.mp4',   label: 'Software Engineers' },               // video  · woman
+    { type: 'img',   src: 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=500&h=700&fit=crop', label: 'AI/ML Specialists' }, // static · woman
+    { type: 'video', src: 'https://videos.pexels.com/video-files/4065629/4065629-uhd_1440_2732_25fps.mp4',   label: 'UX Designers' },                     // video
+    { type: 'img',   src: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=500&h=700&fit=crop', label: 'DevOps Engineers' }, // static · man
+    { type: 'video', src: 'https://videos.pexels.com/video-files/7679430/7679430-uhd_1440_2732_25fps.mp4',   label: 'Finance Experts' },                  // video
+    { type: 'img',   src: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=500&h=700&fit=crop&crop=faces', label: 'Sales Leaders' },        // static · woman
+    { type: 'video', src: 'https://videos.pexels.com/video-files/4489881/4489881-uhd_1440_2732_25fps.mp4',   label: 'Mechanics' },                        // video  · man
+    { type: 'img',   src: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=faces', label: 'Research Scientists' },  // static · woman
+    { type: 'video', src: 'https://videos.pexels.com/video-files/6130029/6130029-hd_1920_1080_30fps.mp4',    label: 'Operations' },                       // video
+    { type: 'img',   src: 'https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=500&h=700&fit=crop&crop=faces', label: 'Solutions Architects' }, // static · man
+    { type: 'video', src: 'https://videos.pexels.com/video-files/8636287/8636287-uhd_2560_1440_25fps.mp4',   label: 'Product Managers' }                  // video  ← END (neutral, loops to woman)
+  ];
+
+  const cohorts = slides.map(s => s.label);
+  const N = slides.length;
+  const TRANSITION = 'transform 0.65s cubic-bezier(0.4, 0, 0.2, 1)';
+  const tints = [
+    'rgb(200,220,215)','rgb(215,210,220)','rgb(200,215,225)','rgb(210,205,218)',
+    'rgb(225,215,200)','rgb(210,225,215)','rgb(220,200,215)','rgb(205,212,222)',
+    'rgb(215,220,200)','rgb(212,210,205)','rgb(200,210,220)','rgb(218,208,222)',
+    'rgb(208,218,210)','rgb(205,218,210)'
+  ];
+
+  function makeSlideEl(slide, active) {
+    const div = document.createElement('div');
+    div.className = 'fh-slide' + (active ? ' active' : '');
+    if (slide.type === 'video') {
+      const v = document.createElement('video');
+      v.src = slide.src; v.autoplay = true; v.muted = true; v.loop = true; v.playsInline = true;
+      v.setAttribute('playsinline','');
+      v.className = 'fh-media loaded';
+      v.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      div.appendChild(v);
+    } else {
+      const img = document.createElement('img');
+      img.alt = slide.label; img.className = 'fh-media';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+      img.onload = () => img.classList.add('loaded');
+      img.src = slide.src;
+      div.appendChild(img);
+    }
+    return div;
+  }
+
+  // Build track: [clone of last] + [all real slides] + [clone of first]
+  // This enables seamless infinite loop in both directions
+  track.appendChild(makeSlideEl(slides[N-1], false)); // clone of last
+  slides.forEach((s, i) => track.appendChild(makeSlideEl(s, i === 0)));
+  track.appendChild(makeSlideEl(slides[0], false)); // clone of first
+
+  // trackPos: 1 = real slide 0, 2 = real slide 1, ... N = real slide N-1
+  let trackPos = 1;
+  let ci = 0; // real slide index
+  let charI = 0, deleting = false, paused = false;
+
+  function slideW() {
+    const el = track.querySelector('.fh-slide');
+    return el ? el.offsetWidth + 14 : 0;
+  }
+
+  function moveTo(pos, animate) {
+    track.style.transition = animate ? TRANSITION : 'none';
+    track.style.transform = `translateX(-${pos * slideW()}px)`;
+  }
+
+  function setActive(realIdx) {
+    track.querySelectorAll('.fh-slide').forEach((s, i) => {
+      s.classList.toggle('active', i === realIdx + 1);
+    });
+    const shadow = document.getElementById('fhCardShadow');
+    if (shadow) shadow.style.background = tints[realIdx % N];
+  }
+
+  // Seamless loop: after transition ends on a clone, snap to the real slide instantly
+  track.addEventListener('transitionend', () => {
+    if (trackPos === N + 1) { // landed on clone-of-first
+      trackPos = 1;
+      moveTo(trackPos, false);
+    } else if (trackPos === 0) { // landed on clone-of-last
+      trackPos = N;
+      moveTo(trackPos, false);
+    }
+  });
+
+  // Initial position
+  moveTo(trackPos, false);
+  setActive(ci);
+
+  // Build ghost for typewriter measurement
+  const ghost = document.getElementById('fhGhost');
+  if (ghost) cohorts.forEach(c => {
+    const s = document.createElement('div'); s.textContent = c; ghost.appendChild(s);
+  });
+
+  // Typewriter
+  const typedEl = document.getElementById('fhTyped');
+  const TYPE_SPEED = 55, DEL_SPEED = 28, HOLD = 2400, PAUSE_BETWEEN = 380;
+
+  function typeTick() {
+    if (paused) { setTimeout(typeTick, 200); return; }
+    const word = cohorts[ci];
+    if (!deleting) {
+      charI++;
+      typedEl.textContent = word.slice(0, charI);
+      typedEl.style.width = typedEl.scrollWidth + 'px';
+      if (charI === word.length) { deleting = true; setTimeout(typeTick, HOLD); return; }
+    } else {
+      charI--;
+      typedEl.textContent = word.slice(0, charI);
+      typedEl.style.width = charI > 0 ? typedEl.scrollWidth + 'px' : '0px';
+      if (charI === 0) {
+        deleting = false;
+        ci = (ci + 1) % N;
+        trackPos = trackPos + 1; // advance into clone then transitionend snaps back
+        moveTo(trackPos, true);
+        setActive(ci);
+        setTimeout(typeTick, PAUSE_BETWEEN);
+        return;
+      }
+    }
+    setTimeout(typeTick, deleting ? DEL_SPEED : TYPE_SPEED);
+  }
+
+  setTimeout(typeTick, 900);
+
+  // Controls
+  function jumpTo(newCi, dir) {
+    ci = newCi;
+    trackPos = ci + 1;
+    charI = 0; deleting = false;
+    typedEl.textContent = ''; typedEl.style.width = '0';
+    moveTo(trackPos, true);
+    setActive(ci);
+    setTimeout(typeTick, 300);
+  }
+  const pauseBtn = document.getElementById('fhPause');
+  pauseBtn?.addEventListener('click', () => {
+    paused = !paused;
+    pauseBtn.textContent = paused ? '▶' : '⏸';
+  });
+
+  // Nav transparency on scroll
+  (function(){
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+    const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Logo strip
+  const fhLogoTrack = document.getElementById('fhLogosTrack');
+  if (fhLogoTrack) {
+    const logos = ['avery-dennison','expedia','google','nestle','shure','sp-global','stryker','veracode','visa','zapier','zillow'];
+    const html = logos.map(n => `<img class="fh-logo-img" src="logos/${n}.png" alt="${n}">`).join('');
+    fhLogoTrack.innerHTML = html + html;
+  }
 })();
 </script>
 
