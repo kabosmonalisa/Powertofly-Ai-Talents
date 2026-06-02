@@ -15,28 +15,24 @@
   --bg:     #ffffff;
   --bg-soft:#FAFAF6;
   --line:   rgba(10,10,10,0.09);
+  --shadow-card: 0 1px 2px rgba(15,30,26,0.04), 0 8px 28px rgba(15,30,26,0.10);
   --accent: #0A8C66;
   --green:  #4FE8A9;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { height: 100%; }
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  color: var(--ink);
-  background: var(--bg);
-  height: 100%;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+html, body { height: 100%; overflow: hidden; -webkit-font-smoothing: antialiased; }
+body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: var(--bg); }
 
 /* ── Header ── */
 .hd {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 0 40px;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  padding: 0 32px; height: 62px;
+  display: flex; flex-direction: column; justify-content: flex-end;
 }
 .hd-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 18px 0 14px;
+  padding-bottom: 14px;
 }
 .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); }
 .brand img { height: 20px; width: auto; }
@@ -51,307 +47,325 @@ body {
 .hd-count { font-size: 13px; color: var(--ink-3); font-weight: 500; }
 .hd-back {
   font-size: 13px; color: var(--ink-3); background: none; border: none;
-  cursor: pointer; padding: 0; display: flex; align-items: center; gap: 5px;
+  cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 0;
   transition: color 160ms;
 }
 .hd-back:hover { color: var(--ink); }
 .prog-track { height: 2px; background: var(--line); }
-.prog-fill {
-  height: 100%; background: var(--ink);
-  transition: width 400ms cubic-bezier(0.4,0,0.2,1);
+.prog-fill { height: 100%; background: var(--ink); transition: width 400ms cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Layout ── */
+.layout-left {
+  position: fixed; top: 62px; left: 0; bottom: 0;
+  width: 42%;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--line);
+  overflow: hidden;
+}
+.slides-wrap {
+  position: fixed; top: 62px; left: 42%; right: 0; bottom: 0;
+  overflow: hidden;
 }
 
+/* ── Left panel phases ── */
+.panel-phase {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 48px 44px;
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+.panel-phase.ph-out { opacity: 0; transform: translateY(16px); pointer-events: none; }
+.panel-phase.ph-in  { opacity: 1; transform: translateY(0); }
+
+/* Photo frame */
+.p-photo {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #e4e4e0;
+  box-shadow: 0 20px 50px rgba(10,20,16,0.16);
+}
+.p-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
+/* Floating mini-cards — same shadow + border system as main pages */
+.fcard {
+  position: absolute;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  padding: 14px 16px;
+}
+
+/* Stat card */
+.fc-stat { display: flex; flex-direction: column; gap: 4px; }
+.fc-stat-num {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 800; font-size: 26px;
+  letter-spacing: -0.03em; color: var(--ink); line-height: 1;
+}
+.fc-stat-label { font-size: 12px; color: var(--ink-3); font-weight: 500; }
+
+/* Profile mini-card */
+.fc-profile { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
+.fc-profile-row { display: flex; align-items: center; gap: 10px; }
+.fc-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+  border: 1.5px solid #fff; box-shadow: 0 0 0 1px var(--line);
+  background: #ddd;
+}
+.fc-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fc-name { font-weight: 600; font-size: 13.5px; color: var(--ink); }
+.fc-role { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+.fc-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 999px;
+  background: rgba(79,232,169,0.14); color: var(--accent);
+  font-size: 11px; font-weight: 600;
+}
+.fc-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.fc-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.fc-tag {
+  padding: 3px 9px; border-radius: 6px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  font-size: 11px; font-weight: 700; color: var(--ink-2);
+}
+
+/* Pill badge */
+.fc-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--ink); color: #fff;
+  padding: 10px 16px; border-radius: 999px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 10px 24px rgba(10,10,10,0.28);
+}
+.fc-pill-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+}
+
+/* Domain tags cloud */
+.fc-domains { display: flex; flex-direction: column; gap: 6px; min-width: 190px; }
+.fc-domains-row { display: flex; gap: 5px; }
+.fc-domain {
+  padding: 4px 10px; border-radius: 7px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  font-size: 12px; font-weight: 500; color: var(--ink-2);
+}
+.fc-domain.active {
+  background: var(--ink); color: #fff; border-color: var(--ink);
+}
+
+/* Eyebrow label inside panel */
+.p-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+.p-headline {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 800; font-size: 22px; letter-spacing: -0.025em;
+  line-height: 1.15; color: var(--ink); margin-bottom: 16px;
+}
+
+/* Dark confirmation panel */
+.p-dark {
+  background: var(--ink);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 52px 48px; gap: 24px;
+}
+.p-dark .p-eyebrow { color: var(--green); }
+.p-dark .p-headline { color: #fff; font-size: 28px; }
+.p-dark-sub { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.p-check-ring {
+  width: 64px; height: 64px; border-radius: 18px;
+  border: 1.5px solid rgba(79,232,169,0.35);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green);
+}
+.p-stat-row { display: flex; gap: 32px; }
+.p-stat-item { display: flex; flex-direction: column; gap: 4px; }
+.p-stat-n {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 800; font-size: 32px; letter-spacing: -0.04em;
+  color: #fff; line-height: 1;
+}
+.p-stat-l { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 500; }
+
 /* ── Slides ── */
-.slides-wrap { position: fixed; inset: 0; overflow: hidden; }
 .slide {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  padding: 84px 40px 80px;
+  padding: 24px 52px 72px;
   transition: transform 460ms cubic-bezier(0.77,0,0.175,1), opacity 360ms ease;
   pointer-events: none;
 }
 .slide.state-below  { transform: translateY(56px);  opacity: 0; }
 .slide.state-active { transform: translateY(0);      opacity: 1; pointer-events: all; }
 .slide.state-above  { transform: translateY(-56px);  opacity: 0; }
-
-.slide-inner {
-  width: 100%; max-width: 580px;
-  display: flex; flex-direction: column; gap: 26px;
-}
+.slide-inner { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 24px; }
 
 /* Question number */
-.q-num {
-  font-size: 13px; font-weight: 600; color: var(--ink-3);
-  display: flex; align-items: center; gap: 6px;
-}
-.q-arrow {
-  width: 18px; height: 18px; background: var(--ink);
-  border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
+.q-num { font-size: 13px; font-weight: 600; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
+.q-arrow { width: 18px; height: 18px; background: var(--ink); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.q-text { font-family: 'Inter Tight', sans-serif; font-size: clamp(24px, 3.2vw, 36px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); }
+.q-sub { font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -12px; }
+.q-opt { font-size: 13px; color: var(--ink-3); font-style: italic; font-weight: 400; margin-left: 6px; }
 
-/* Question text */
-.q-text {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(26px, 4vw, 40px);
-  font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
-  color: var(--ink);
-}
-.q-sub { font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -14px; }
-.q-opt { font-size: 13px; color: var(--ink-3); font-style: italic; margin-left: 6px; font-weight: 400; }
-
-/* ── Inputs ── */
+/* Inputs */
 .tf-input {
-  width: 100%; background: none;
-  border: none; border-bottom: 2px solid var(--line);
-  padding: 10px 0;
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(18px, 2.5vw, 26px);
-  color: var(--ink); outline: none;
-  transition: border-color 200ms;
-  caret-color: var(--accent);
+  width: 100%; background: none; border: none; border-bottom: 2px solid var(--line);
+  padding: 10px 0; font-family: 'Inter', sans-serif;
+  font-size: clamp(17px, 2vw, 24px); color: var(--ink); outline: none;
+  transition: border-color 200ms; caret-color: var(--accent);
 }
 .tf-input::placeholder { color: var(--ink-3); opacity: 0.4; }
 .tf-input:focus { border-color: var(--green); }
 
 .tf-textarea {
-  width: 100%; background: none;
-  border: none; border-bottom: 2px solid var(--line);
+  width: 100%; background: none; border: none; border-bottom: 2px solid var(--line);
   padding: 10px 0; font-family: 'Inter', sans-serif;
-  font-size: clamp(16px, 2vw, 20px); color: var(--ink);
-  outline: none; resize: none;
-  transition: border-color 200ms; caret-color: var(--accent);
-  min-height: 90px; line-height: 1.6;
+  font-size: clamp(15px, 1.8vw, 19px); color: var(--ink);
+  outline: none; resize: none; transition: border-color 200ms;
+  caret-color: var(--accent); min-height: 88px; line-height: 1.6;
 }
 .tf-textarea::placeholder { color: var(--ink-3); opacity: 0.4; }
 .tf-textarea:focus { border-color: var(--green); }
 
-/* Stacked field group (name/email/pass slide) */
-.field-stack { display: flex; flex-direction: column; gap: 0; }
-.field-stack .field-item { display: flex; flex-direction: column; gap: 4px; padding: 6px 0 16px; border-bottom: 1px solid var(--line); }
-.field-stack .field-item:last-child { border-bottom: none; }
-.field-stack label { font-size: 12px; font-weight: 600; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; }
-.field-stack input {
+/* Stacked field group */
+.field-stack { display: flex; flex-direction: column; }
+.field-item { display: flex; flex-direction: column; gap: 4px; padding: 8px 0 14px; border-bottom: 1px solid var(--line); }
+.field-item:last-child { border-bottom: none; }
+.field-item label { font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; }
+.field-item input {
   background: none; border: none; outline: none;
   font-family: 'Inter', sans-serif; font-size: 18px; color: var(--ink);
   caret-color: var(--accent); padding: 4px 0;
 }
-.field-stack input::placeholder { color: var(--ink-3); opacity: 0.4; }
+.field-item input::placeholder { color: var(--ink-3); opacity: 0.4; }
 
 /* Select */
 .tf-select-wrap { position: relative; }
 .tf-select {
-  width: 100%; background: none;
-  border: none; border-bottom: 2px solid var(--line);
-  padding: 10px 32px 10px 0;
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(18px, 2.5vw, 26px);
-  color: var(--ink); outline: none; cursor: pointer;
-  appearance: none; -webkit-appearance: none;
-  transition: border-color 200ms;
+  width: 100%; background: none; border: none; border-bottom: 2px solid var(--line);
+  padding: 10px 32px 10px 0; font-family: 'Inter', sans-serif;
+  font-size: clamp(17px, 2vw, 24px); color: var(--ink); outline: none; cursor: pointer;
+  appearance: none; -webkit-appearance: none; transition: border-color 200ms;
 }
 .tf-select:focus { border-color: var(--green); }
-.tf-select-arrow {
-  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-  pointer-events: none; color: var(--ink-3);
-}
+.tf-select-arr { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--ink-3); }
 
 /* File upload */
 .file-drop {
   display: flex; flex-direction: column; align-items: center; gap: 10px;
-  padding: 28px 24px; border-radius: 14px;
-  border: 1.5px dashed var(--line);
+  padding: 26px 20px; border-radius: 14px; border: 1.5px dashed var(--line);
   background: var(--bg-soft); cursor: pointer; text-align: center;
   transition: border-color 180ms, background 180ms;
 }
-.file-drop:hover, .file-drop.has-file {
-  border-color: var(--green); border-style: solid;
-  background: rgba(79,232,169,0.04);
-}
-.file-icon {
-  width: 44px; height: 44px; border-radius: 10px;
-  background: var(--bg); border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center; color: var(--ink-3);
-}
-.file-text { font-size: 15px; font-weight: 600; color: var(--ink-2); }
-.file-hint { font-size: 13px; color: var(--ink-3); }
+.file-drop:hover, .file-drop.has-file { border-color: var(--green); border-style: solid; background: rgba(79,232,169,0.04); }
+.file-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
+.file-text { font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.file-hint { font-size: 12px; color: var(--ink-3); }
 input[type="file"] { display: none; }
 
-/* ── Choice pills ── */
+/* Choices */
 .choices { display: flex; flex-direction: column; gap: 7px; }
 .choices.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .choice {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 15px; border-radius: 10px;
-  border: 1.5px solid var(--line);
-  background: var(--bg-soft); cursor: pointer;
-  transition: border-color 180ms, background 180ms, box-shadow 180ms;
-  font-size: 15px; font-weight: 500; color: var(--ink-2);
-  user-select: none;
+  display: flex; align-items: center; gap: 11px; padding: 11px 14px;
+  border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg-soft);
+  cursor: pointer; font-size: 14px; font-weight: 500; color: var(--ink-2);
+  transition: border-color 180ms, background 180ms, box-shadow 180ms; user-select: none;
 }
 .choice:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.04); }
 .choice input { display: none; }
-.choice.sel {
-  border-color: var(--green);
-  background: rgba(79,232,169,0.09);
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.12);
-  color: var(--ink);
-}
+.choice.sel { border-color: var(--green); background: rgba(79,232,169,0.09); box-shadow: 0 0 0 3px rgba(79,232,169,0.12); color: var(--ink); }
 .choice-key {
-  min-width: 22px; height: 22px; border-radius: 5px;
-  border: 1.5px solid var(--line); background: var(--bg);
-  font-size: 11px; font-weight: 700;
+  min-width: 21px; height: 21px; border-radius: 5px; border: 1.5px solid var(--line);
+  background: var(--bg); font-size: 11px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
-  color: var(--ink-3); flex-shrink: 0;
-  transition: background 180ms, border-color 180ms, color 180ms;
+  color: var(--ink-3); flex-shrink: 0; transition: background 180ms, border-color 180ms, color 180ms;
 }
 .choice.sel .choice-key { background: var(--ink); border-color: var(--ink); color: #fff; }
-
-/* Other free text */
 .other-wrap { display: none; }
 .other-wrap.vis { display: block; }
 .other-wrap input {
-  width: 100%; background: none; border: none;
-  border-bottom: 1.5px solid var(--line);
-  padding: 8px 0; font-family: 'Inter', sans-serif;
-  font-size: 17px; color: var(--ink); outline: none;
-  transition: border-color 200ms; caret-color: var(--accent);
+  width: 100%; background: none; border: none; border-bottom: 1.5px solid var(--line);
+  padding: 8px 0; font-family: 'Inter', sans-serif; font-size: 16px; color: var(--ink);
+  outline: none; transition: border-color 200ms; caret-color: var(--accent);
 }
 .other-wrap input:focus { border-color: var(--green); }
 .other-wrap input::placeholder { color: var(--ink-3); opacity: 0.5; }
 
 /* Language tags */
-.lang-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-.lang-tag {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 11px; border-radius: 999px;
-  background: rgba(79,232,169,0.1); border: 1px solid rgba(79,232,169,0.28);
-  font-size: 13px; font-weight: 500; color: var(--ink-2);
-}
+.lang-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.lang-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; background: rgba(79,232,169,0.1); border: 1px solid rgba(79,232,169,0.28); font-size: 13px; font-weight: 500; color: var(--ink-2); }
 .lang-tag button { background: none; border: none; cursor: pointer; color: var(--ink-3); font-size: 16px; line-height: 1; padding: 0; }
 
 /* Honesty note */
-.honesty {
-  padding: 13px 15px; border-radius: 10px;
-  background: var(--bg-soft); border: 1px solid var(--line);
-  font-size: 14px; color: var(--ink-3); line-height: 1.6;
-}
+.honesty { padding: 12px 14px; border-radius: 10px; background: var(--bg-soft); border: 1px solid var(--line); font-size: 13px; color: var(--ink-3); line-height: 1.6; }
 
-/* Webinar options */
+/* Webinar */
 .webinar-list { display: flex; flex-direction: column; gap: 7px; }
 .webinar-opt {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px; border-radius: 12px;
-  border: 1.5px solid var(--line); background: var(--bg-soft); cursor: pointer;
-  transition: border-color 180ms, background 180ms, box-shadow 180ms;
-  user-select: none;
+  padding: 13px 15px; border-radius: 11px; border: 1.5px solid var(--line);
+  background: var(--bg-soft); cursor: pointer;
+  transition: border-color 180ms, background 180ms, box-shadow 180ms; user-select: none;
 }
 .webinar-opt:hover { border-color: rgba(79,232,169,0.5); }
-.webinar-opt.sel {
-  border-color: var(--green);
-  background: rgba(79,232,169,0.08);
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.12);
-}
+.webinar-opt.sel { border-color: var(--green); background: rgba(79,232,169,0.08); box-shadow: 0 0 0 3px rgba(79,232,169,0.12); }
 .webinar-opt input { display: none; }
-.webinar-date { font-size: 15px; font-weight: 600; color: var(--ink); }
-.webinar-time { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
-.webinar-spots {
-  font-size: 12px; font-weight: 600; color: var(--accent);
-  padding: 3px 9px; border-radius: 999px;
-  background: rgba(10,140,102,0.08); white-space: nowrap; flex-shrink: 0;
-}
+.webinar-date { font-size: 14px; font-weight: 600; color: var(--ink); }
+.webinar-time { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.webinar-spots { font-size: 11px; font-weight: 600; color: var(--accent); padding: 3px 8px; border-radius: 999px; background: rgba(10,140,102,0.08); white-space: nowrap; flex-shrink: 0; }
 
-/* ── CTA row ── */
+/* CTA */
 .cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .btn-ok {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 13px 24px; background: var(--ink); color: #fff;
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
-  border: none; border-radius: 10px; cursor: pointer;
-  transition: box-shadow 200ms, transform 150ms;
+  padding: 13px 22px; background: var(--ink); color: #fff;
+  font-family: 'Inter Tight', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+  border: none; border-radius: 10px; cursor: pointer; transition: box-shadow 200ms, transform 150ms;
 }
-.btn-ok:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.18); transform: translateY(-1px); }
+.btn-ok:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.2); transform: translateY(-1px); }
 .key-hint { font-size: 12px; color: var(--ink-3); display: flex; align-items: center; gap: 5px; }
-.key-pill {
-  padding: 2px 7px; border-radius: 5px;
-  border: 1px solid var(--line); background: var(--bg-soft);
-  font-size: 11px; font-weight: 600; color: var(--ink-3);
-}
-.skip-link {
-  font-size: 13px; color: var(--ink-3); background: none; border: none;
-  cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px;
-  transition: color 160ms;
-}
+.key-pill { padding: 2px 7px; border-radius: 5px; border: 1px solid var(--line); background: var(--bg-soft); font-size: 11px; font-weight: 600; color: var(--ink-3); }
+.skip-link { font-size: 13px; color: var(--ink-3); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; transition: color 160ms; }
 .skip-link:hover { color: var(--ink); }
 .error-msg { font-size: 13px; color: #C0392B; font-weight: 500; display: none; }
 .error-msg.show { display: block; }
 
-/* ── Confirmation ── */
-.confirm-check {
-  width: 56px; height: 56px; border-radius: 14px;
-  background: var(--bg-soft); border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--accent);
-}
-.confirm-title {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(30px, 5vw, 50px);
-  font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--ink);
-}
-.confirm-sub { font-size: 16px; color: var(--ink-3); line-height: 1.6; max-width: 46ch; }
-.confirm-card {
-  display: flex; align-items: center; gap: 14px;
-  padding: 16px 18px; border-radius: 12px;
-  background: var(--bg-soft); border: 1px solid var(--line); max-width: 380px;
-}
-.confirm-card-icon {
-  width: 38px; height: 38px; flex-shrink: 0;
-  background: var(--bg); border: 1px solid var(--line); border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-}
-.confirm-card-label { font-size: 12px; color: var(--ink-3); }
-.confirm-card-val { font-size: 15px; font-weight: 600; color: var(--ink); }
+/* Confirmation */
+.confirm-check { width: 52px; height: 52px; border-radius: 14px; background: var(--bg-soft); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--accent); }
+.confirm-title { font-family: 'Inter Tight', sans-serif; font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--ink); }
+.confirm-sub { font-size: 15px; color: var(--ink-3); line-height: 1.6; max-width: 44ch; }
+.confirm-card { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-radius: 12px; background: var(--bg-soft); border: 1px solid var(--line); max-width: 360px; }
+.confirm-card-icon { width: 36px; height: 36px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--line); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+.confirm-card-label { font-size: 11px; color: var(--ink-3); }
+.confirm-card-val { font-size: 14px; font-weight: 600; color: var(--ink); }
 .confirm-actions { display: flex; gap: 9px; flex-wrap: wrap; }
-.btn-cal {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 12px 18px; border-radius: 10px;
-  border: 1.5px solid var(--line); background: var(--bg-soft);
-  font-size: 14px; font-weight: 600; color: var(--ink-2);
-  cursor: pointer; text-decoration: none;
-  transition: border-color 180ms;
-}
+.btn-cal { display: inline-flex; align-items: center; gap: 7px; padding: 11px 18px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg-soft); font-size: 14px; font-weight: 600; color: var(--ink-2); cursor: pointer; text-decoration: none; transition: border-color 180ms; }
 .btn-cal:hover { border-color: rgba(10,10,10,0.3); }
-.btn-community {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 12px 18px; border-radius: 10px;
-  background: var(--ink); color: #fff;
-  font-size: 14px; font-weight: 600;
-  cursor: pointer; text-decoration: none;
-  transition: box-shadow 180ms, transform 150ms;
-}
-.btn-community:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.18); transform: translateY(-1px); }
+.btn-community { display: inline-flex; align-items: center; gap: 7px; padding: 11px 18px; border-radius: 10px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: box-shadow 180ms, transform 150ms; }
+.btn-community:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.2); transform: translateY(-1px); }
 
-/* ── Footer arrows ── */
-.foot {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  display: flex; align-items: center; justify-content: flex-end;
-  padding: 16px 40px; pointer-events: none;
-}
+/* Footer arrows */
+.foot { position: fixed; bottom: 0; left: 42%; right: 0; display: flex; align-items: center; justify-content: flex-end; padding: 16px 32px; pointer-events: none; }
 .foot-arrows { display: flex; gap: 5px; pointer-events: all; }
-.foot-arrow {
-  width: 34px; height: 34px; border-radius: 8px;
-  border: 1.5px solid var(--line); background: var(--bg-soft);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; color: var(--ink-3);
-  transition: border-color 160ms, color 160ms;
-}
+.foot-arrow { width: 33px; height: 33px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--bg-soft); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink-3); transition: border-color 160ms, color 160ms; }
 .foot-arrow:hover { border-color: var(--ink-3); color: var(--ink); }
 
 /* ── Mobile ── */
-@media (max-width: 600px) {
-  .hd { padding: 0 20px; }
-  .foot { padding: 14px 20px; }
-  .slide { padding: 76px 20px 72px; }
+@media (max-width: 760px) {
+  .layout-left { display: none; }
+  .slides-wrap { left: 0; }
+  .foot { left: 0; }
+  .slide { padding: 24px 24px 72px; }
+}
+@media (max-width: 480px) {
   .choices.grid-2 { grid-template-columns: 1fr; }
   .key-hint { display: none; }
 }
@@ -359,6 +373,7 @@ input[type="file"] { display: none; }
 </head>
 <body>
 
+<!-- Header -->
 <header class="hd">
   <div class="hd-row">
     <a href="index.html" class="brand">
@@ -376,6 +391,169 @@ input[type="file"] { display: none; }
   <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
 </header>
 
+<!-- Left panel -->
+<div class="layout-left" id="layoutLeft">
+
+  <!-- Phase 1: Welcome + Account -->
+  <div class="panel-phase ph-in" id="ph-1">
+    <p class="p-eyebrow">AI talent community</p>
+    <p class="p-headline">Real experts.<br>Real opportunities.</p>
+    <div class="p-photo" style="height: 340px;">
+      <img src="photos/premium_photo-1664474633055-6d181d654320.avif" alt="AI expert" loading="eager">
+    </div>
+    <!-- Stat card top-right -->
+    <div class="fcard fc-stat" style="top:28px;right:28px;transform:rotate(1.5deg)">
+      <div class="fc-stat-num">115K+</div>
+      <div class="fc-stat-label">Experts worldwide</div>
+    </div>
+    <!-- Profile card bottom-left -->
+    <div class="fcard fc-profile" style="bottom:28px;left:24px;transform:rotate(-1.5deg)">
+      <div class="fc-profile-row">
+        <div class="fc-avatar"><img src="photos/photo-1609436132311-e4b0c9370469.avif" alt=""></div>
+        <div>
+          <div class="fc-name">Amara O.</div>
+          <div class="fc-role">AI evaluator · Healthcare</div>
+        </div>
+      </div>
+      <div class="fc-badge"><span class="fc-badge-dot"></span>Available now</div>
+    </div>
+  </div>
+
+  <!-- Phase 2: Profile (location / linkedin / cv) -->
+  <div class="panel-phase ph-out" id="ph-2">
+    <p class="p-eyebrow">Building your profile</p>
+    <p class="p-headline">We verify every expert before placement.</p>
+    <div class="p-photo" style="height: 320px;">
+      <img src="photos/premium_photo-1690407617542-2f210cf20d7e.avif" alt="Professional" loading="lazy">
+    </div>
+    <!-- Verified badge -->
+    <div class="fcard" style="top:26px;right:26px;transform:rotate(1deg);padding:12px 16px;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:32px;height:32px;border-radius:8px;background:rgba(79,232,169,0.12);border:1px solid rgba(79,232,169,0.3);display:flex;align-items:center;justify-content:center;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A8C66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--ink)">Verified profiles</div>
+          <div style="font-size:11px;color:var(--ink-3);">ID + background checked</div>
+        </div>
+      </div>
+    </div>
+    <!-- Pill bottom -->
+    <div style="position:absolute;bottom:32px;right:28px;transform:rotate(-1deg);">
+      <div class="fc-pill"><span class="fc-pill-dot"></span>Trusted by Google, Nestlé &amp; more</div>
+    </div>
+  </div>
+
+  <!-- Phase 3: Expertise + AI level -->
+  <div class="panel-phase ph-out" id="ph-3">
+    <p class="p-eyebrow">Domain matching</p>
+    <p class="p-headline">Your expertise is exactly what AI needs.</p>
+    <div class="p-photo" style="height: 300px;">
+      <img src="https://images.unsplash.com/photo-1573497019418-b400bb3ab074?w=700&h=600&fit=crop&crop=faces&q=80" alt="Expert" loading="lazy">
+    </div>
+    <!-- Domain tags -->
+    <div class="fcard fc-domains" style="bottom:32px;left:24px;transform:rotate(-1.5deg)">
+      <div style="font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">50+ domains</div>
+      <div class="fc-domains-row">
+        <span class="fc-domain active">Healthcare</span>
+        <span class="fc-domain">Legal</span>
+      </div>
+      <div class="fc-domains-row">
+        <span class="fc-domain">Finance</span>
+        <span class="fc-domain active">Software</span>
+        <span class="fc-domain">Science</span>
+      </div>
+      <div class="fc-domains-row">
+        <span class="fc-domain">Education</span>
+        <span class="fc-domain active">Data</span>
+      </div>
+    </div>
+    <!-- Stat -->
+    <div class="fcard fc-stat" style="top:26px;right:26px;transform:rotate(1.5deg)">
+      <div class="fc-stat-num">50+</div>
+      <div class="fc-stat-label">Expert domains</div>
+    </div>
+  </div>
+
+  <!-- Phase 4: Goals + Hours -->
+  <div class="panel-phase ph-out" id="ph-4">
+    <p class="p-eyebrow">Flexible opportunities</p>
+    <p class="p-headline">Work on your terms, from anywhere.</p>
+    <div class="p-photo" style="height: 320px;">
+      <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=700&h=600&fit=crop&crop=faces&q=80" alt="Flexible work" loading="lazy">
+    </div>
+    <!-- Availability card -->
+    <div class="fcard" style="top:26px;right:26px;transform:rotate(1.5deg);min-width:190px;">
+      <div style="font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">Work style</div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>100% remote
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>Set your hours
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>No experience required
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:32px;left:24px;transform:rotate(-1deg);">
+      <div class="fc-pill"><span class="fc-pill-dot"></span>Paid per task</div>
+    </div>
+  </div>
+
+  <!-- Phase 5: Languages + Why + Webinar -->
+  <div class="panel-phase ph-out" id="ph-5">
+    <p class="p-eyebrow">Almost there</p>
+    <p class="p-headline">Join a community of AI experts worldwide.</p>
+    <div class="p-photo" style="height: 300px;">
+      <img src="photos/premium_photo-1664474633055-6d181d654320.avif" alt="Community" loading="lazy">
+    </div>
+    <!-- Webinar card -->
+    <div class="fcard" style="bottom:32px;left:24px;transform:rotate(-1.5deg);min-width:210px;">
+      <div style="font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">Live onboarding</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <span style="font-size:13px;font-weight:500;color:var(--ink-2);">Thu 12 June · 11am ET</span>
+          <span style="font-size:11px;font-weight:600;color:var(--accent);padding:2px 7px;border-radius:999px;background:rgba(10,140,102,0.09);">12 left</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <span style="font-size:13px;font-weight:500;color:var(--ink-2);">Tue 17 June · 2pm ET</span>
+          <span style="font-size:11px;font-weight:600;color:var(--accent);padding:2px 7px;border-radius:999px;background:rgba(10,140,102,0.09);">18 left</span>
+        </div>
+      </div>
+    </div>
+    <div class="fcard fc-stat" style="top:26px;right:26px;transform:rotate(1.5deg)">
+      <div class="fc-stat-num">40+</div>
+      <div class="fc-stat-label">Countries represented</div>
+    </div>
+  </div>
+
+  <!-- Phase 6: Confirmation (dark) -->
+  <div class="panel-phase ph-out p-dark" id="ph-6">
+    <div class="p-check-ring">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div>
+      <p class="p-eyebrow">Welcome aboard</p>
+      <p class="p-headline">You're part of something big.</p>
+    </div>
+    <p class="p-dark-sub">Every piece of training data you create makes AI smarter, safer, and more useful for everyone.</p>
+    <div class="p-stat-row">
+      <div class="p-stat-item">
+        <div class="p-stat-n">115K+</div>
+        <div class="p-stat-l">Experts worldwide</div>
+      </div>
+      <div class="p-stat-item">
+        <div class="p-stat-n">50+</div>
+        <div class="p-stat-l">AI projects</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Slides -->
 <div class="slides-wrap">
 
   <!-- 0: Welcome -->
@@ -390,24 +568,15 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <!-- 1: Account (name + email + password, one screen) -->
+  <!-- 1: Account -->
   <div class="slide state-below" data-index="1">
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1 →</div>
       <div class="q-text">Create your account.</div>
       <div class="field-stack">
-        <div class="field-item">
-          <label>Full name</label>
-          <input type="text" id="fullname" placeholder="Your name" autocomplete="name" onkeydown="if(e=>e.key==='Enter')document.getElementById('email').focus()">
-        </div>
-        <div class="field-item">
-          <label>Email</label>
-          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
-        </div>
-        <div class="field-item">
-          <label>Password</label>
-          <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password" onkeydown="handleEnter(event, next)">
-        </div>
+        <div class="field-item"><label>Full name</label><input type="text" id="fullname" placeholder="Your name" autocomplete="name"></div>
+        <div class="field-item"><label>Email</label><input type="email" id="email" placeholder="you@example.com" autocomplete="email"></div>
+        <div class="field-item"><label>Password</label><input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password" onkeydown="handleEnter(event,next)"></div>
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
@@ -422,13 +591,13 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 →</div>
       <div class="q-text">Where are you based?</div>
-      <p class="q-sub">Your location won't hold you back — we have opportunities worldwide.</p>
+      <p class="q-sub">Your location won't hold you back — opportunities worldwide.</p>
       <div class="tf-select-wrap">
         <select class="tf-select" id="country">
           <option value="">Select your country…</option>
           <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahrain</option><option>Bangladesh</option><option>Belarus</option><option>Belgium</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Brazil</option><option>Bulgaria</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Chile</option><option>China</option><option>Colombia</option><option>Costa Rica</option><option>Croatia</option><option>Cyprus</option><option>Czech Republic</option><option>Denmark</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Estonia</option><option>Ethiopia</option><option>Finland</option><option>France</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Guatemala</option><option>Honduras</option><option>Hungary</option><option>India</option><option>Indonesia</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kosovo</option><option>Kuwait</option><option>Latvia</option><option>Lebanon</option><option>Lithuania</option><option>Luxembourg</option><option>Malaysia</option><option>Malta</option><option>Mexico</option><option>Moldova</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Myanmar</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nigeria</option><option>North Macedonia</option><option>Norway</option><option>Pakistan</option><option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>South Africa</option><option>South Korea</option><option>Spain</option><option>Sri Lanka</option><option>Sweden</option><option>Switzerland</option><option>Taiwan</option><option>Tanzania</option><option>Thailand</option><option>Tunisia</option><option>Turkey</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
         </select>
-        <span class="tf-select-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        <span class="tf-select-arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
@@ -490,9 +659,7 @@ input[type="file"] { display: none; }
         <label class="choice" data-val="Data &amp; analytics"><input type="radio" name="expertise"><span class="choice-key">K</span>Data &amp; analytics</label>
         <label class="choice" data-val="Other"><input type="radio" name="expertise"><span class="choice-key">L</span>Other</label>
       </div>
-      <div class="other-wrap" id="expertiseOtherWrap">
-        <input type="text" id="expertiseOther" placeholder="Describe your field…" onkeydown="handleEnter(event,next)">
-      </div>
+      <div class="other-wrap" id="expertiseOtherWrap"><input type="text" id="expertiseOther" placeholder="Describe your field…" onkeydown="handleEnter(event,next)"></div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
         <span class="error-msg" id="err-5">Pick one to continue.</span>
@@ -523,7 +690,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>7 →</div>
       <div class="q-text">Your experience with AI?</div>
-      <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work — accurate answers get you to the right opportunities faster.</div>
+      <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work — accurate answers get you there faster.</div>
       <div class="choices" id="aiLevelGrid">
         <label class="choice" data-val="New to AI"><input type="radio" name="aiLevel"><span class="choice-key">A</span><span><strong>New to AI</strong> — curious but haven't used AI tools yet</span></label>
         <label class="choice" data-val="Beginner"><input type="radio" name="aiLevel"><span class="choice-key">B</span><span><strong>Beginner</strong> — used ChatGPT a little</span></label>
@@ -586,7 +753,7 @@ input[type="file"] { display: none; }
           <option value="">Add a language…</option>
           <option>Arabic</option><option>Bengali</option><option>Chinese (Mandarin)</option><option>Chinese (Cantonese)</option><option>Dutch</option><option>English</option><option>French</option><option>German</option><option>Greek</option><option>Hebrew</option><option>Hindi</option><option>Indonesian</option><option>Italian</option><option>Japanese</option><option>Korean</option><option>Malay</option><option>Norwegian</option><option>Persian (Farsi)</option><option>Polish</option><option>Portuguese</option><option>Romanian</option><option>Russian</option><option>Spanish</option><option>Swahili</option><option>Swedish</option><option>Tagalog</option><option>Thai</option><option>Turkish</option><option>Ukrainian</option><option>Urdu</option><option>Vietnamese</option>
         </select>
-        <span class="tf-select-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        <span class="tf-select-arr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="lang-tags" id="langTags"></div>
       <div class="cta-row">
@@ -596,12 +763,12 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <!-- 11: Why — optional, intent signal -->
+  <!-- 11: Why — optional -->
   <div class="slide state-below" data-index="11">
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
       <div class="q-text">Why do you want to do AI training work? <span class="q-opt">Optional</span></div>
-      <p class="q-sub">A few sentences is plenty. This helps us understand what you're looking for.</p>
+      <p class="q-sub">A few sentences is plenty.</p>
       <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4"></textarea>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
@@ -614,26 +781,22 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="12">
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>12 →</div>
-      <div class="q-text">Last step — pick your onboarding session.</div>
-      <p class="q-sub">Join a live webinar to learn how it works and find out what's next.</p>
+      <div class="q-text">Pick your onboarding session.</div>
+      <p class="q-sub">A live session to learn how it works and what's next.</p>
       <div class="webinar-list">
-        <label class="webinar-opt" data-val="Thursday, 12 June 2026 · 11:00 am ET">
-          <input type="radio" name="webinar">
+        <label class="webinar-opt" data-val="Thursday, 12 June 2026 · 11:00 am ET"><input type="radio" name="webinar">
           <div><div class="webinar-date">Thursday, 12 June 2026</div><div class="webinar-time">11:00 am ET · 4:00 pm BST · 5:00 pm CET</div></div>
           <span class="webinar-spots">12 spots left</span>
         </label>
-        <label class="webinar-opt" data-val="Tuesday, 17 June 2026 · 2:00 pm ET">
-          <input type="radio" name="webinar">
+        <label class="webinar-opt" data-val="Tuesday, 17 June 2026 · 2:00 pm ET"><input type="radio" name="webinar">
           <div><div class="webinar-date">Tuesday, 17 June 2026</div><div class="webinar-time">2:00 pm ET · 7:00 pm BST · 8:00 pm CET</div></div>
           <span class="webinar-spots">18 spots left</span>
         </label>
-        <label class="webinar-opt" data-val="Thursday, 19 June 2026 · 10:00 am ET">
-          <input type="radio" name="webinar">
+        <label class="webinar-opt" data-val="Thursday, 19 June 2026 · 10:00 am ET"><input type="radio" name="webinar">
           <div><div class="webinar-date">Thursday, 19 June 2026</div><div class="webinar-time">10:00 am ET · 3:00 pm BST · 4:00 pm CET</div></div>
           <span class="webinar-spots">24 spots left</span>
         </label>
-        <label class="webinar-opt" data-val="Wednesday, 25 June 2026 · 6:00 pm ET">
-          <input type="radio" name="webinar">
+        <label class="webinar-opt" data-val="Wednesday, 25 June 2026 · 6:00 pm ET"><input type="radio" name="webinar">
           <div><div class="webinar-date">Wednesday, 25 June 2026</div><div class="webinar-time">6:00 pm ET · 11:00 pm BST</div></div>
           <span class="webinar-spots">30 spots left</span>
         </label>
@@ -648,26 +811,16 @@ input[type="file"] { display: none; }
   <!-- 13: Confirmation -->
   <div class="slide state-below" data-index="13">
     <div class="slide-inner">
-      <div class="confirm-check">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
+      <div class="confirm-check"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       <div class="confirm-title">You're in.</div>
-      <p class="confirm-sub">We've saved your spot for <strong id="confirmedDate"></strong>. Check your email for the details — we'll also send helpful content while you wait.</p>
+      <p class="confirm-sub">We've saved your spot for <strong id="confirmedDate"></strong>. Check your email for the details.</p>
       <div class="confirm-card">
-        <div class="confirm-card-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <div>
-          <div class="confirm-card-label">Your onboarding webinar</div>
-          <div class="confirm-card-val" id="confirmedDateDetail"></div>
-        </div>
+        <div class="confirm-card-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div><div class="confirm-card-label">Your onboarding webinar</div><div class="confirm-card-val" id="confirmedDateDetail"></div></div>
       </div>
       <div class="confirm-actions">
-        <a href="#" class="btn-cal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Add to calendar
-        </a>
-        <a href="#" class="btn-community">Join community space →</a>
+        <a href="#" class="btn-cal"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Add to calendar</a>
+        <a href="#" class="btn-community">Join community →</a>
       </div>
     </div>
   </div>
@@ -677,19 +830,26 @@ input[type="file"] { display: none; }
 <!-- Footer arrows -->
 <footer class="foot" id="foot">
   <div class="foot-arrows">
-    <button class="foot-arrow" onclick="goBack()" title="Previous">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-    </button>
-    <button class="foot-arrow" onclick="next()" title="Next">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
+    <button class="foot-arrow" onclick="goBack()" title="Previous"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
+    <button class="foot-arrow" onclick="next()" title="Next"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
   </div>
 </footer>
 
 <script>
-const TOTAL = 12; // slides 1–12
+const TOTAL = 12;
 let cur = 0, animating = false;
 const slides = Array.from(document.querySelectorAll('.slide'));
+
+// Panel phases mapped per slide index
+const PHASE_MAP = {
+  0: 'ph-1', 1: 'ph-1',
+  2: 'ph-2', 3: 'ph-2', 4: 'ph-2',
+  5: 'ph-3', 6: 'ph-3', 7: 'ph-3',
+  8: 'ph-4', 9: 'ph-4',
+  10: 'ph-5', 11: 'ph-5', 12: 'ph-5',
+  13: 'ph-6'
+};
+let curPhase = null;
 
 const profile = {
   fullname:'', email:'', password:'', country:'',
@@ -702,16 +862,27 @@ const profile = {
 function render(idx) {
   if (animating) return;
   animating = true;
+
   slides.forEach((s,i) => {
     s.className = 'slide ' + (i === idx ? 'state-active' : i < idx ? 'state-above' : 'state-below');
   });
   cur = idx;
   updateMeta();
+  updatePanel();
+
   setTimeout(() => {
     const inp = slides[cur].querySelector('input:not([type=radio]):not([type=checkbox]):not([type=file]), textarea');
     if (inp) inp.focus();
     animating = false;
   }, 460);
+}
+
+function updatePanel() {
+  const phId = PHASE_MAP[cur];
+  if (phId === curPhase) return;
+  if (curPhase) document.getElementById(curPhase).classList.replace('ph-in','ph-out');
+  document.getElementById(phId).classList.replace('ph-out','ph-in');
+  curPhase = phId;
 }
 
 function updateMeta() {
@@ -730,7 +901,6 @@ function next() {
   if (cur === 12) { finalise(); render(13); return; }
   if (cur < 13) render(cur + 1);
 }
-
 function goBack() { if (cur > 0) render(cur - 1); }
 
 document.addEventListener('keydown', e => {
@@ -738,7 +908,6 @@ document.addEventListener('keydown', e => {
     e.preventDefault(); next();
   }
 });
-
 function handleEnter(e, fn) { if (e.key === 'Enter') { e.preventDefault(); fn(); } }
 
 // ── Validation ──
@@ -758,60 +927,33 @@ function validate(idx) {
   if (idx === 2) return req('err-2', document.getElementById('country').value !== '');
   if (idx === 3) return req('err-3', document.getElementById('linkedin').value.trim().length > 0);
   if (idx === 4) return req('err-4', !!document.getElementById('resumeFile').files[0], 'Please upload your CV.');
-  if (idx === 5) return req('err-5', !!document.querySelector('input[name="expertise"]:checked'), 'Pick one to continue.');
-  if (idx === 6) return req('err-6', !!document.querySelector('input[name="years"]:checked'), 'Pick one to continue.');
-  if (idx === 7) return req('err-7', !!document.querySelector('input[name="aiLevel"]:checked'), 'Pick one to continue.');
-  if (idx === 8) return req('err-8', document.querySelectorAll('input[name="goals"]:checked').length > 0, 'Pick at least one.');
-  if (idx === 9) return req('err-9', !!document.querySelector('input[name="hours"]:checked'), 'Pick one to continue.');
-  if (idx === 10 || idx === 11) return true; // optional
-  if (idx === 12) return req('err-12', !!document.querySelector('input[name="webinar"]:checked'), 'Pick a date to continue.');
+  if (idx === 5) return req('err-5', !!document.querySelector('#expertiseGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 6) return req('err-6', !!document.querySelector('#yearsGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 7) return req('err-7', !!document.querySelector('#aiLevelGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 8) return req('err-8', document.querySelectorAll('#goalsGrid .choice.sel').length > 0, 'Pick at least one.');
+  if (idx === 9) return req('err-9', !!document.querySelector('#hoursGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 10 || idx === 11) return true;
+  if (idx === 12) return req('err-12', !!document.querySelector('.webinar-opt.sel'), 'Pick a date to continue.');
   return true;
 }
-
 function req(errId, cond, msg) {
-  if (!cond) {
-    const el = document.getElementById(errId);
-    if (el) { if (msg) el.textContent = msg; el.classList.add('show'); }
-    return false;
-  }
+  if (!cond) { const el = document.getElementById(errId); if (el) { if (msg) el.textContent = msg; el.classList.add('show'); } return false; }
   return true;
 }
 
-// ── Data collection ──
+// ── Collect ──
 function collect(idx) {
-  if (idx === 1) {
-    profile.fullname = document.getElementById('fullname').value.trim();
-    profile.email    = document.getElementById('email').value.trim();
-    profile.password = document.getElementById('password').value;
-  }
+  if (idx === 1) { profile.fullname = document.getElementById('fullname').value.trim(); profile.email = document.getElementById('email').value.trim(); profile.password = document.getElementById('password').value; }
   if (idx === 2) profile.country = document.getElementById('country').value;
   if (idx === 3) profile.linkedin = document.getElementById('linkedin').value.trim();
   if (idx === 4) profile.resume = document.getElementById('resumeFile').files[0] || null;
-  if (idx === 5) {
-    const c = document.querySelector('.choice.sel[data-val]');
-    profile.expertise = document.querySelector('#expertiseGrid .choice.sel') ? document.querySelector('#expertiseGrid .choice.sel').dataset.val : '';
-    profile.expertiseOther = document.getElementById('expertiseOther').value.trim();
-  }
-  if (idx === 6) {
-    const c = document.querySelector('#yearsGrid .choice.sel');
-    profile.yearsExperience = c ? c.dataset.val : '';
-  }
-  if (idx === 7) {
-    const c = document.querySelector('#aiLevelGrid .choice.sel');
-    profile.aiLevel = c ? c.dataset.val : '';
-  }
-  if (idx === 8) {
-    profile.goals = [...document.querySelectorAll('#goalsGrid .choice.sel')].map(c => c.dataset.val);
-  }
-  if (idx === 9) {
-    const c = document.querySelector('#hoursGrid .choice.sel');
-    profile.weeklyHours = c ? c.dataset.val : '';
-  }
+  if (idx === 5) { const c = document.querySelector('#expertiseGrid .choice.sel'); profile.expertise = c ? c.dataset.val : ''; profile.expertiseOther = document.getElementById('expertiseOther').value.trim(); }
+  if (idx === 6) { const c = document.querySelector('#yearsGrid .choice.sel'); profile.yearsExperience = c ? c.dataset.val : ''; }
+  if (idx === 7) { const c = document.querySelector('#aiLevelGrid .choice.sel'); profile.aiLevel = c ? c.dataset.val : ''; }
+  if (idx === 8) { profile.goals = [...document.querySelectorAll('#goalsGrid .choice.sel')].map(c => c.dataset.val); }
+  if (idx === 9) { const c = document.querySelector('#hoursGrid .choice.sel'); profile.weeklyHours = c ? c.dataset.val : ''; }
   if (idx === 11) profile.whyText = document.getElementById('whyText').value.trim();
-  if (idx === 12) {
-    const c = document.querySelector('.webinar-opt.sel');
-    profile.webinarDate = c ? c.dataset.val : '';
-  }
+  if (idx === 12) { const c = document.querySelector('.webinar-opt.sel'); profile.webinarDate = c ? c.dataset.val : ''; }
 }
 
 function finalise() {
@@ -820,14 +962,14 @@ function finalise() {
   console.log('Profile:', JSON.parse(JSON.stringify(profile)));
 }
 
-// ── Choice interaction ──
+// ── Choices ──
 document.querySelectorAll('.choice').forEach(ch => {
   ch.addEventListener('click', () => {
     const inp = ch.querySelector('input');
     if (inp.type === 'radio') {
       ch.closest('.choices').querySelectorAll('.choice').forEach(c => c.classList.remove('sel'));
       ch.classList.add('sel'); inp.checked = true;
-      if (cur !== 8) setTimeout(next, 260); // auto-advance on radio (not multi-select)
+      if (cur !== 8) setTimeout(next, 260);
     } else {
       inp.checked = !inp.checked;
       ch.classList.toggle('sel', inp.checked);
@@ -838,7 +980,6 @@ document.querySelectorAll('.choice').forEach(ch => {
   });
 });
 
-// ── Webinar ──
 document.querySelectorAll('.webinar-opt').forEach(opt => {
   opt.addEventListener('click', () => {
     document.querySelectorAll('.webinar-opt').forEach(o => o.classList.remove('sel'));
@@ -846,7 +987,7 @@ document.querySelectorAll('.webinar-opt').forEach(opt => {
   });
 });
 
-// ── File upload ──
+// ── File ──
 document.getElementById('resumeFile').addEventListener('change', function() {
   const f = this.files[0];
   document.getElementById('resumeText').textContent = f ? f.name : 'Click to upload';
@@ -855,13 +996,8 @@ document.getElementById('resumeFile').addEventListener('change', function() {
 
 // ── Languages ──
 const langs = new Set();
-function addLang(val) {
-  if (!val || langs.has(val)) return;
-  langs.add(val); profile.languages = [...langs]; renderLangs();
-}
-function removeLang(val) {
-  langs.delete(val); profile.languages = [...langs]; renderLangs();
-}
+function addLang(val) { if (!val || langs.has(val)) return; langs.add(val); profile.languages = [...langs]; renderLangs(); }
+function removeLang(val) { langs.delete(val); profile.languages = [...langs]; renderLangs(); }
 function renderLangs() {
   document.getElementById('langTags').innerHTML = [...langs].map(l =>
     `<span class="lang-tag">${l} <button onclick="removeLang('${l}')" title="Remove">×</button></span>`
