@@ -15,11 +15,8 @@
   --bg:     #ffffff;
   --bg-soft:#FAFAF6;
   --line:   rgba(10,10,10,0.09);
-  --iri-cyan:  #5BCFFF;
-  --iri-green: #4FE8A9;
-  --iri-lime:  #D5FF66;
-  --accent:    #0A8C66;
-  --grad: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
+  --accent: #0A8C66;
+  --green:  #4FE8A9;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; }
@@ -35,12 +32,11 @@ body {
 /* ── Header ── */
 .hd {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 0 32px;
-  display: flex; flex-direction: column;
+  padding: 0 40px;
 }
 .hd-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 0 12px;
+  padding: 18px 0 14px;
 }
 .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); }
 .brand img { height: 20px; width: auto; }
@@ -48,183 +44,131 @@ body {
   font-family: 'Inter Tight', sans-serif;
   font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
   padding: 3px 9px; border-radius: 999px;
-  background: var(--grad);
+  background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
   color: #0A2A1F;
 }
-.hd-right {
-  display: flex; align-items: center; gap: 20px;
-}
-.hd-count {
-  font-size: 13px; color: var(--ink-3); font-weight: 500;
-}
+.hd-right { display: flex; align-items: center; gap: 20px; }
+.hd-count { font-size: 13px; color: var(--ink-3); font-weight: 500; }
 .hd-back {
   font-size: 13px; color: var(--ink-3); background: none; border: none;
   cursor: pointer; padding: 0; display: flex; align-items: center; gap: 5px;
   transition: color 160ms;
 }
 .hd-back:hover { color: var(--ink); }
-
-/* Progress bar */
-.prog-track {
-  height: 2px; background: var(--line); border-radius: 99px; overflow: hidden;
-}
+.prog-track { height: 2px; background: var(--line); }
 .prog-fill {
-  height: 100%;
-  background: var(--grad);
-  border-radius: 99px;
+  height: 100%; background: var(--ink);
   transition: width 400ms cubic-bezier(0.4,0,0.2,1);
 }
 
-/* ── Slides viewport ── */
-.slides-wrap {
-  position: fixed; inset: 0;
-  overflow: hidden;
-}
+/* ── Slides ── */
+.slides-wrap { position: fixed; inset: 0; overflow: hidden; }
 .slide {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  padding: 80px 24px 80px;
-  transition: transform 480ms cubic-bezier(0.77,0,0.175,1),
-              opacity 380ms ease;
+  padding: 84px 40px 80px;
+  transition: transform 460ms cubic-bezier(0.77,0,0.175,1), opacity 360ms ease;
   pointer-events: none;
 }
-.slide.state-below  { transform: translateY(60px);  opacity: 0; }
+.slide.state-below  { transform: translateY(56px);  opacity: 0; }
 .slide.state-active { transform: translateY(0);      opacity: 1; pointer-events: all; }
-.slide.state-above  { transform: translateY(-60px);  opacity: 0; }
+.slide.state-above  { transform: translateY(-56px);  opacity: 0; }
 
-/* ── Slide inner ── */
 .slide-inner {
-  width: 100%; max-width: 620px;
-  display: flex; flex-direction: column; gap: 28px;
+  width: 100%; max-width: 580px;
+  display: flex; flex-direction: column; gap: 26px;
 }
 
-/* Question number badge */
+/* Question number */
 .q-num {
-  display: inline-flex; align-items: center; gap: 7px;
   font-size: 13px; font-weight: 600; color: var(--ink-3);
+  display: flex; align-items: center; gap: 6px;
 }
-.q-num-arrow {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px;
-  background: var(--grad);
-  border-radius: 4px;
+.q-arrow {
+  width: 18px; height: 18px; background: var(--ink);
+  border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.q-num-arrow svg { display: block; }
 
 /* Question text */
 .q-text {
   font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(26px, 4.5vw, 42px);
+  font-size: clamp(26px, 4vw, 40px);
   font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
   color: var(--ink);
 }
-.q-text em {
-  font-style: italic;
-  background: var(--grad);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.q-sub {
-  font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -14px;
-}
+.q-sub { font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -14px; }
+.q-opt { font-size: 13px; color: var(--ink-3); font-style: italic; margin-left: 6px; font-weight: 400; }
 
-/* ── Text inputs ── */
+/* ── Inputs ── */
 .tf-input {
-  width: 100%;
-  background: none;
+  width: 100%; background: none;
   border: none; border-bottom: 2px solid var(--line);
   padding: 10px 0;
   font-family: 'Inter', sans-serif;
   font-size: clamp(18px, 2.5vw, 26px);
   color: var(--ink); outline: none;
   transition: border-color 200ms;
-  caret-color: var(--iri-green);
+  caret-color: var(--accent);
 }
-.tf-input::placeholder { color: var(--ink-3); opacity: 0.45; }
-.tf-input:focus { border-color: var(--iri-green); }
+.tf-input::placeholder { color: var(--ink-3); opacity: 0.4; }
+.tf-input:focus { border-color: var(--green); }
 
 .tf-textarea {
-  width: 100%;
-  background: none;
+  width: 100%; background: none;
   border: none; border-bottom: 2px solid var(--line);
-  padding: 10px 0;
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(16px, 2vw, 20px);
-  color: var(--ink); outline: none; resize: none;
-  transition: border-color 200ms;
-  caret-color: var(--iri-green);
-  min-height: 100px;
-  line-height: 1.6;
+  padding: 10px 0; font-family: 'Inter', sans-serif;
+  font-size: clamp(16px, 2vw, 20px); color: var(--ink);
+  outline: none; resize: none;
+  transition: border-color 200ms; caret-color: var(--accent);
+  min-height: 90px; line-height: 1.6;
 }
-.tf-textarea::placeholder { color: var(--ink-3); opacity: 0.45; }
-.tf-textarea:focus { border-color: var(--iri-green); }
+.tf-textarea::placeholder { color: var(--ink-3); opacity: 0.4; }
+.tf-textarea:focus { border-color: var(--green); }
+
+/* Stacked field group (name/email/pass slide) */
+.field-stack { display: flex; flex-direction: column; gap: 0; }
+.field-stack .field-item { display: flex; flex-direction: column; gap: 4px; padding: 6px 0 16px; border-bottom: 1px solid var(--line); }
+.field-stack .field-item:last-child { border-bottom: none; }
+.field-stack label { font-size: 12px; font-weight: 600; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; }
+.field-stack input {
+  background: none; border: none; outline: none;
+  font-family: 'Inter', sans-serif; font-size: 18px; color: var(--ink);
+  caret-color: var(--accent); padding: 4px 0;
+}
+.field-stack input::placeholder { color: var(--ink-3); opacity: 0.4; }
 
 /* Select */
 .tf-select-wrap { position: relative; }
 .tf-select {
-  width: 100%;
-  background: none;
+  width: 100%; background: none;
   border: none; border-bottom: 2px solid var(--line);
-  padding: 10px 36px 10px 0;
+  padding: 10px 32px 10px 0;
   font-family: 'Inter', sans-serif;
   font-size: clamp(18px, 2.5vw, 26px);
   color: var(--ink); outline: none; cursor: pointer;
   appearance: none; -webkit-appearance: none;
   transition: border-color 200ms;
 }
-.tf-select:focus { border-color: var(--iri-green); }
-.tf-select option { font-size: 16px; }
+.tf-select:focus { border-color: var(--green); }
 .tf-select-arrow {
-  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
   pointer-events: none; color: var(--ink-3);
 }
 
-/* ── Choice pills ── */
-.choices { display: flex; flex-direction: column; gap: 8px; }
-.choices.grid-2 {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-}
-.choice {
-  display: flex; align-items: center; gap: 12px;
-  padding: 13px 16px;
-  border-radius: 10px; border: 1.5px solid var(--line);
-  background: var(--bg-soft); cursor: pointer;
-  transition: border-color 180ms, background 180ms, box-shadow 180ms;
-  font-size: 15px; font-weight: 500; color: var(--ink-2);
-  user-select: none;
-}
-.choice:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.05); }
-.choice input { display: none; }
-.choice.sel {
-  border-color: #4FE8A9;
-  background: rgba(79,232,169,0.1);
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.15);
-  color: var(--ink);
-}
-.choice-key {
-  min-width: 22px; height: 22px;
-  border-radius: 5px; border: 1.5px solid var(--line);
-  background: var(--bg); font-size: 11px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--ink-3); flex-shrink: 0;
-  transition: background 180ms, border-color 180ms, color 180ms;
-}
-.choice.sel .choice-key {
-  background: var(--iri-green); border-color: var(--iri-green); color: #0A2A1F;
-}
-
-/* ── File upload ── */
+/* File upload */
 .file-drop {
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
-  padding: 32px 24px;
-  border-radius: 14px; border: 1.5px dashed var(--line);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 28px 24px; border-radius: 14px;
+  border: 1.5px dashed var(--line);
   background: var(--bg-soft); cursor: pointer; text-align: center;
   transition: border-color 180ms, background 180ms;
 }
-.file-drop:hover,
-.file-drop.has-file { border-color: #4FE8A9; border-style: solid; background: rgba(79,232,169,0.04); }
+.file-drop:hover, .file-drop.has-file {
+  border-color: var(--green); border-style: solid;
+  background: rgba(79,232,169,0.04);
+}
 .file-icon {
-  width: 48px; height: 48px; border-radius: 12px;
+  width: 44px; height: 44px; border-radius: 10px;
   background: var(--bg); border: 1px solid var(--line);
   display: flex; align-items: center; justify-content: center; color: var(--ink-3);
 }
@@ -232,35 +176,80 @@ body {
 .file-hint { font-size: 13px; color: var(--ink-3); }
 input[type="file"] { display: none; }
 
+/* ── Choice pills ── */
+.choices { display: flex; flex-direction: column; gap: 7px; }
+.choices.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.choice {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 15px; border-radius: 10px;
+  border: 1.5px solid var(--line);
+  background: var(--bg-soft); cursor: pointer;
+  transition: border-color 180ms, background 180ms, box-shadow 180ms;
+  font-size: 15px; font-weight: 500; color: var(--ink-2);
+  user-select: none;
+}
+.choice:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.04); }
+.choice input { display: none; }
+.choice.sel {
+  border-color: var(--green);
+  background: rgba(79,232,169,0.09);
+  box-shadow: 0 0 0 3px rgba(79,232,169,0.12);
+  color: var(--ink);
+}
+.choice-key {
+  min-width: 22px; height: 22px; border-radius: 5px;
+  border: 1.5px solid var(--line); background: var(--bg);
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3); flex-shrink: 0;
+  transition: background 180ms, border-color 180ms, color 180ms;
+}
+.choice.sel .choice-key { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* Other free text */
+.other-wrap { display: none; }
+.other-wrap.vis { display: block; }
+.other-wrap input {
+  width: 100%; background: none; border: none;
+  border-bottom: 1.5px solid var(--line);
+  padding: 8px 0; font-family: 'Inter', sans-serif;
+  font-size: 17px; color: var(--ink); outline: none;
+  transition: border-color 200ms; caret-color: var(--accent);
+}
+.other-wrap input:focus { border-color: var(--green); }
+.other-wrap input::placeholder { color: var(--ink-3); opacity: 0.5; }
+
 /* Language tags */
-.lang-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.lang-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .lang-tag {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px; border-radius: 999px;
-  background: rgba(79,232,169,0.12); border: 1px solid rgba(79,232,169,0.3);
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 11px; border-radius: 999px;
+  background: rgba(79,232,169,0.1); border: 1px solid rgba(79,232,169,0.28);
   font-size: 13px; font-weight: 500; color: var(--ink-2);
 }
-.lang-tag button {
-  background: none; border: none; cursor: pointer;
-  color: var(--ink-3); font-size: 16px; line-height: 1;
-  padding: 0; margin: 0;
+.lang-tag button { background: none; border: none; cursor: pointer; color: var(--ink-3); font-size: 16px; line-height: 1; padding: 0; }
+
+/* Honesty note */
+.honesty {
+  padding: 13px 15px; border-radius: 10px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  font-size: 14px; color: var(--ink-3); line-height: 1.6;
 }
 
 /* Webinar options */
-.webinar-list { display: flex; flex-direction: column; gap: 8px; }
+.webinar-list { display: flex; flex-direction: column; gap: 7px; }
 .webinar-opt {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 18px;
-  border-radius: 12px; border: 1.5px solid var(--line);
-  background: var(--bg-soft); cursor: pointer;
+  padding: 14px 16px; border-radius: 12px;
+  border: 1.5px solid var(--line); background: var(--bg-soft); cursor: pointer;
   transition: border-color 180ms, background 180ms, box-shadow 180ms;
   user-select: none;
 }
 .webinar-opt:hover { border-color: rgba(79,232,169,0.5); }
 .webinar-opt.sel {
-  border-color: #4FE8A9;
-  background: rgba(79,232,169,0.09);
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.15);
+  border-color: var(--green);
+  background: rgba(79,232,169,0.08);
+  box-shadow: 0 0 0 3px rgba(79,232,169,0.12);
 }
 .webinar-opt input { display: none; }
 .webinar-date { font-size: 15px; font-weight: 600; color: var(--ink); }
@@ -268,149 +257,108 @@ input[type="file"] { display: none; }
 .webinar-spots {
   font-size: 12px; font-weight: 600; color: var(--accent);
   padding: 3px 9px; border-radius: 999px;
-  background: rgba(10,140,102,0.09); white-space: nowrap;
-}
-
-/* Honesty note */
-.honesty {
-  padding: 14px 16px; border-radius: 10px;
-  background: rgba(79,232,169,0.07);
-  border: 1px solid rgba(79,232,169,0.25);
-  font-size: 14px; color: var(--ink-3); line-height: 1.6;
+  background: rgba(10,140,102,0.08); white-space: nowrap; flex-shrink: 0;
 }
 
 /* ── CTA row ── */
-.cta-row {
-  display: flex; align-items: center; gap: 14px;
-}
+.cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .btn-ok {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 13px 24px;
-  background: var(--ink); color: #fff;
+  padding: 13px 24px; background: var(--ink); color: #fff;
   font-family: 'Inter Tight', sans-serif;
   font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
   border: none; border-radius: 10px; cursor: pointer;
   transition: box-shadow 200ms, transform 150ms;
 }
-.btn-ok:hover {
-  box-shadow: 0 10px 28px rgba(79,232,169,0.28), 0 4px 10px rgba(0,0,0,0.15);
-  transform: translateY(-1px);
-}
-.btn-ok svg { flex-shrink: 0; }
+.btn-ok:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.18); transform: translateY(-1px); }
 .key-hint { font-size: 12px; color: var(--ink-3); display: flex; align-items: center; gap: 5px; }
 .key-pill {
-  display: inline-flex; align-items: center; gap: 3px;
   padding: 2px 7px; border-radius: 5px;
   border: 1px solid var(--line); background: var(--bg-soft);
   font-size: 11px; font-weight: 600; color: var(--ink-3);
 }
-.error-msg {
-  font-size: 13px; color: #D94040; font-weight: 500;
-  display: none;
+.skip-link {
+  font-size: 13px; color: var(--ink-3); background: none; border: none;
+  cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px;
+  transition: color 160ms;
 }
+.skip-link:hover { color: var(--ink); }
+.error-msg { font-size: 13px; color: #C0392B; font-weight: 500; display: none; }
 .error-msg.show { display: block; }
 
-/* Other free text */
-.other-wrap { display: none; margin-top: 6px; }
-.other-wrap.vis { display: block; }
-.other-wrap input {
-  width: 100%; background: none;
-  border: none; border-bottom: 1.5px solid var(--line);
-  padding: 8px 0;
-  font-family: 'Inter', sans-serif; font-size: 17px; color: var(--ink);
-  outline: none; transition: border-color 200ms;
-  caret-color: var(--iri-green);
-}
-.other-wrap input:focus { border-color: var(--iri-green); }
-.other-wrap input::placeholder { color: var(--ink-3); opacity: 0.5; }
-
 /* ── Confirmation ── */
-.confirm-wrap {
-  display: flex; flex-direction: column; gap: 24px;
-}
-.confirm-icon {
-  width: 72px; height: 72px; border-radius: 20px;
-  background: var(--grad);
-  display: flex; align-items: center; justify-content: center; font-size: 32px;
+.confirm-check {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
 }
 .confirm-title {
   font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(32px, 5vw, 52px);
-  font-weight: 800; letter-spacing: -0.035em; line-height: 1.05;
-  color: var(--ink);
+  font-size: clamp(30px, 5vw, 50px);
+  font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--ink);
 }
-.confirm-sub {
-  font-size: 16px; color: var(--ink-3); line-height: 1.6; max-width: 48ch;
-}
+.confirm-sub { font-size: 16px; color: var(--ink-3); line-height: 1.6; max-width: 46ch; }
 .confirm-card {
   display: flex; align-items: center; gap: 14px;
-  padding: 16px 20px; border-radius: 14px;
-  background: var(--bg-soft); border: 1px solid var(--line);
-  max-width: 400px;
+  padding: 16px 18px; border-radius: 12px;
+  background: var(--bg-soft); border: 1px solid var(--line); max-width: 380px;
 }
 .confirm-card-icon {
-  width: 40px; height: 40px; flex-shrink: 0;
-  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
-  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
 }
 .confirm-card-label { font-size: 12px; color: var(--ink-3); }
 .confirm-card-val { font-size: 15px; font-weight: 600; color: var(--ink); }
-.confirm-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.confirm-actions { display: flex; gap: 9px; flex-wrap: wrap; }
 .btn-cal {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 12px 20px; border-radius: 10px;
+  padding: 12px 18px; border-radius: 10px;
   border: 1.5px solid var(--line); background: var(--bg-soft);
   font-size: 14px; font-weight: 600; color: var(--ink-2);
   cursor: pointer; text-decoration: none;
-  transition: border-color 180ms, background 180ms;
+  transition: border-color 180ms;
 }
-.btn-cal:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.05); }
+.btn-cal:hover { border-color: rgba(10,10,10,0.3); }
 .btn-community {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 12px 20px; border-radius: 10px;
+  padding: 12px 18px; border-radius: 10px;
   background: var(--ink); color: #fff;
   font-size: 14px; font-weight: 600;
   cursor: pointer; text-decoration: none;
   transition: box-shadow 180ms, transform 150ms;
 }
-.btn-community:hover {
-  box-shadow: 0 10px 24px rgba(79,232,169,0.25), 0 4px 10px rgba(0,0,0,0.15);
-  transform: translateY(-1px);
-}
+.btn-community:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.18); transform: translateY(-1px); }
 
-/* ── Footer nav ── */
+/* ── Footer arrows ── */
 .foot {
   position: fixed; bottom: 0; left: 0; right: 0;
   display: flex; align-items: center; justify-content: flex-end;
-  padding: 16px 32px;
-  pointer-events: none;
+  padding: 16px 40px; pointer-events: none;
 }
-.foot-arrows {
-  display: flex; gap: 6px; pointer-events: all;
-}
+.foot-arrows { display: flex; gap: 5px; pointer-events: all; }
 .foot-arrow {
-  width: 36px; height: 36px; border-radius: 8px;
+  width: 34px; height: 34px; border-radius: 8px;
   border: 1.5px solid var(--line); background: var(--bg-soft);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--ink-3);
-  transition: border-color 160ms, color 160ms, background 160ms;
+  transition: border-color 160ms, color 160ms;
 }
 .foot-arrow:hover { border-color: var(--ink-3); color: var(--ink); }
-.foot-arrow:disabled { opacity: 0.3; cursor: default; }
 
 /* ── Mobile ── */
 @media (max-width: 600px) {
   .hd { padding: 0 20px; }
   .foot { padding: 14px 20px; }
+  .slide { padding: 76px 20px 72px; }
   .choices.grid-2 { grid-template-columns: 1fr; }
-  .slide { padding: 74px 20px 72px; }
   .key-hint { display: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <header class="hd">
   <div class="hd-row">
     <a href="index.html" class="brand">
@@ -425,83 +373,58 @@ input[type="file"] { display: none; }
       </button>
     </div>
   </div>
-  <div class="prog-track">
-    <div class="prog-fill" id="progFill" style="width:0%"></div>
-  </div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
 </header>
 
-<!-- Slides -->
-<div class="slides-wrap" id="slidesWrap">
+<div class="slides-wrap">
 
   <!-- 0: Welcome -->
   <div class="slide state-below" data-index="0">
     <div class="slide-inner">
-      <div class="q-text">Join the <em>AI talent</em> community.</div>
-      <p class="q-sub">We work with experts in every field to train and improve AI — no matter where you live. This takes about 4 minutes.</p>
+      <div class="q-text">Join the AI talent community.</div>
+      <p class="q-sub">We work with experts in every field to train and improve AI — no matter where you live. About 4 minutes.</p>
       <div class="cta-row">
-        <button class="btn-ok" onclick="next()">
-          Get started
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
+        <button class="btn-ok" onclick="next()">Get started <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
         <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
       </div>
     </div>
   </div>
 
-  <!-- 1: Full name -->
+  <!-- 1: Account (name + email + password, one screen) -->
   <div class="slide state-below" data-index="1">
     <div class="slide-inner">
-      <div class="q-num">
-        <span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        1 →
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1 →</div>
+      <div class="q-text">Create your account.</div>
+      <div class="field-stack">
+        <div class="field-item">
+          <label>Full name</label>
+          <input type="text" id="fullname" placeholder="Your name" autocomplete="name" onkeydown="if(e=>e.key==='Enter')document.getElementById('email').focus()">
+        </div>
+        <div class="field-item">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="field-item">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password" onkeydown="handleEnter(event, next)">
+        </div>
       </div>
-      <div class="q-text">What's your full name?</div>
-      <input class="tf-input" id="fullname" type="text" placeholder="Your name" autocomplete="name" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
         <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
-        <span class="error-msg" id="err-1">Please enter your name.</span>
+        <span class="error-msg" id="err-1"></span>
       </div>
     </div>
   </div>
 
-  <!-- 2: Email -->
+  <!-- 2: Country -->
   <div class="slide state-below" data-index="2">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 →</div>
-      <div class="q-text">And your email address?</div>
-      <input class="tf-input" id="email" type="email" placeholder="you@example.com" autocomplete="email" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
-      <div class="cta-row">
-        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
-        <span class="error-msg" id="err-2">Please enter a valid email.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3: Password -->
-  <div class="slide state-below" data-index="3">
-    <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 →</div>
-      <div class="q-text">Create a password.</div>
-      <p class="q-sub">At least 8 characters.</p>
-      <input class="tf-input" id="password" type="password" placeholder="••••••••" autocomplete="new-password" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
-      <div class="cta-row">
-        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
-        <span class="error-msg" id="err-3">Minimum 8 characters.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4: Country -->
-  <div class="slide state-below" data-index="4">
-    <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 →</div>
       <div class="q-text">Where are you based?</div>
       <p class="q-sub">Your location won't hold you back — we have opportunities worldwide.</p>
       <div class="tf-select-wrap">
-        <select class="tf-select" id="country" onchange="clearErr(this)">
+        <select class="tf-select" id="country">
           <option value="">Select your country…</option>
           <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahrain</option><option>Bangladesh</option><option>Belarus</option><option>Belgium</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Brazil</option><option>Bulgaria</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Chile</option><option>China</option><option>Colombia</option><option>Costa Rica</option><option>Croatia</option><option>Cyprus</option><option>Czech Republic</option><option>Denmark</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Estonia</option><option>Ethiopia</option><option>Finland</option><option>France</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Guatemala</option><option>Honduras</option><option>Hungary</option><option>India</option><option>Indonesia</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kosovo</option><option>Kuwait</option><option>Latvia</option><option>Lebanon</option><option>Lithuania</option><option>Luxembourg</option><option>Malaysia</option><option>Malta</option><option>Mexico</option><option>Moldova</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Myanmar</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nigeria</option><option>North Macedonia</option><option>Norway</option><option>Pakistan</option><option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>South Africa</option><option>South Korea</option><option>Spain</option><option>Sri Lanka</option><option>Sweden</option><option>Switzerland</option><option>Taiwan</option><option>Tanzania</option><option>Thailand</option><option>Tunisia</option><option>Turkey</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
         </select>
@@ -510,29 +433,29 @@ input[type="file"] { display: none; }
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
         <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
-        <span class="error-msg" id="err-4">Please select your country.</span>
+        <span class="error-msg" id="err-2">Please select your country.</span>
       </div>
     </div>
   </div>
 
-  <!-- 5: LinkedIn -->
-  <div class="slide state-below" data-index="5">
+  <!-- 3: LinkedIn -->
+  <div class="slide state-below" data-index="3">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 →</div>
       <div class="q-text">Your LinkedIn profile URL.</div>
-      <input class="tf-input" id="linkedin" type="url" placeholder="https://linkedin.com/in/yourname" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
+      <input class="tf-input" id="linkedin" type="url" placeholder="https://linkedin.com/in/yourname" onkeydown="handleEnter(event,next)">
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
         <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
-        <span class="error-msg" id="err-5">Please enter your LinkedIn URL.</span>
+        <span class="error-msg" id="err-3">Please enter your LinkedIn URL.</span>
       </div>
     </div>
   </div>
 
-  <!-- 6: Resume -->
-  <div class="slide state-below" data-index="6">
+  <!-- 4: Resume -->
+  <div class="slide state-below" data-index="4">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4 →</div>
       <div class="q-text">Upload your resume or CV.</div>
       <p class="q-sub">PDF or Word · Max 10 MB</p>
       <label class="file-drop" id="resumeLabel" for="resumeFile">
@@ -543,15 +466,15 @@ input[type="file"] { display: none; }
       <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-6">Please upload your CV.</span>
+        <span class="error-msg" id="err-4">Please upload your CV.</span>
       </div>
     </div>
   </div>
 
-  <!-- 7: Expertise -->
-  <div class="slide state-below" data-index="7">
+  <!-- 5: Expertise -->
+  <div class="slide state-below" data-index="5">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>7 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5 →</div>
       <div class="q-text">Your main area of expertise?</div>
       <div class="choices grid-2" id="expertiseGrid">
         <label class="choice" data-val="Healthcare &amp; medicine"><input type="radio" name="expertise"><span class="choice-key">A</span>Healthcare &amp; medicine</label>
@@ -572,15 +495,15 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-7">Pick one to continue.</span>
+        <span class="error-msg" id="err-5">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 8: Years -->
-  <div class="slide state-below" data-index="8">
+  <!-- 6: Years -->
+  <div class="slide state-below" data-index="6">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>8 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6 →</div>
       <div class="q-text">Years of experience in that field?</div>
       <div class="choices" id="yearsGrid">
         <label class="choice" data-val="Less than 2 years"><input type="radio" name="years"><span class="choice-key">A</span>Less than 2 years</label>
@@ -590,16 +513,16 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-8">Pick one to continue.</span>
+        <span class="error-msg" id="err-6">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 9: AI level -->
-  <div class="slide state-below" data-index="9">
+  <!-- 7: AI level -->
+  <div class="slide state-below" data-index="7">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>9 →</div>
-      <div class="q-text">How would you describe your experience with AI?</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>7 →</div>
+      <div class="q-text">Your experience with AI?</div>
       <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work — accurate answers get you to the right opportunities faster.</div>
       <div class="choices" id="aiLevelGrid">
         <label class="choice" data-val="New to AI"><input type="radio" name="aiLevel"><span class="choice-key">A</span><span><strong>New to AI</strong> — curious but haven't used AI tools yet</span></label>
@@ -609,35 +532,15 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-9">Pick one to continue.</span>
+        <span class="error-msg" id="err-7">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 10: AI work types -->
-  <div class="slide state-below" data-index="10">
+  <!-- 8: Goals -->
+  <div class="slide state-below" data-index="8">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 →</div>
-      <div class="q-text">Which kinds of AI work interest you?</div>
-      <p class="q-sub">Optional — pick any that apply.</p>
-      <div class="choices" id="aiWorkGrid">
-        <label class="choice" data-val="Reviewing and rating AI answers"><input type="checkbox" name="aiWork"><span class="choice-key">A</span>Reviewing and rating AI answers</label>
-        <label class="choice" data-val="Writing prompts and examples"><input type="checkbox" name="aiWork"><span class="choice-key">B</span>Writing prompts and examples</label>
-        <label class="choice" data-val="Correcting or improving AI output"><input type="checkbox" name="aiWork"><span class="choice-key">C</span>Correcting or improving AI output</label>
-        <label class="choice" data-val="Using my expert knowledge to check AI in my field"><input type="checkbox" name="aiWork"><span class="choice-key">D</span>Using my expert knowledge to check AI in my field</label>
-        <label class="choice" data-val="Not sure yet"><input type="checkbox" name="aiWork"><span class="choice-key">E</span>Not sure yet</label>
-      </div>
-      <div class="cta-row">
-        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 11: Goals -->
-  <div class="slide state-below" data-index="11">
-    <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>8 →</div>
       <div class="q-text">What are you looking for?</div>
       <p class="q-sub">Pick any that apply.</p>
       <div class="choices" id="goalsGrid">
@@ -649,16 +552,16 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-11">Pick at least one.</span>
+        <span class="error-msg" id="err-8">Pick at least one.</span>
       </div>
     </div>
   </div>
 
-  <!-- 12: Hours -->
-  <div class="slide state-below" data-index="12">
+  <!-- 9: Hours -->
+  <div class="slide state-below" data-index="9">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>12 →</div>
-      <div class="q-text">How many hours per week could you commit?</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>9 →</div>
+      <div class="q-text">Hours per week you could commit?</div>
       <div class="choices grid-2" id="hoursGrid">
         <label class="choice" data-val="Under 5 hours"><input type="radio" name="hours"><span class="choice-key">A</span>Under 5 hours</label>
         <label class="choice" data-val="5–10 hours"><input type="radio" name="hours"><span class="choice-key">B</span>5–10 hours</label>
@@ -667,17 +570,17 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-12">Pick one to continue.</span>
+        <span class="error-msg" id="err-9">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 13: Languages -->
-  <div class="slide state-below" data-index="13">
+  <!-- 10: Languages — optional -->
+  <div class="slide state-below" data-index="10">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>13 →</div>
-      <div class="q-text">Languages you speak fluently?</div>
-      <p class="q-sub">Optional — used for some projects.</p>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 →</div>
+      <div class="q-text">Languages you speak fluently? <span class="q-opt">Optional</span></div>
+      <p class="q-sub">Some projects need specific language coverage.</p>
       <div class="tf-select-wrap">
         <select class="tf-select" id="langSelect" onchange="addLang(this.value); this.value=''">
           <option value="">Add a language…</option>
@@ -688,32 +591,32 @@ input[type="file"] { display: none; }
       <div class="lang-tags" id="langTags"></div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <button class="skip-link" onclick="next()">Skip for now</button>
       </div>
     </div>
   </div>
 
-  <!-- 14: Why text -->
-  <div class="slide state-below" data-index="14">
+  <!-- 11: Why — optional, intent signal -->
+  <div class="slide state-below" data-index="11">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>14 →</div>
-      <div class="q-text">Why do you want to do AI training work?</div>
-      <p class="q-sub">A few sentences is plenty.</p>
-      <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4" oninput="clearErr(this)"></textarea>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
+      <div class="q-text">Why do you want to do AI training work? <span class="q-opt">Optional</span></div>
+      <p class="q-sub">A few sentences is plenty. This helps us understand what you're looking for.</p>
+      <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4"></textarea>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-14">Please write a few sentences.</span>
+        <button class="skip-link" onclick="next()">Skip for now</button>
       </div>
     </div>
   </div>
 
-  <!-- 15: Webinar -->
-  <div class="slide state-below" data-index="15">
+  <!-- 12: Webinar -->
+  <div class="slide state-below" data-index="12">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>15 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>12 →</div>
       <div class="q-text">Last step — pick your onboarding session.</div>
-      <p class="q-sub">Join a live webinar to learn how it works, meet the team, and find out what's next.</p>
-      <div class="webinar-list" id="webinarList">
+      <p class="q-sub">Join a live webinar to learn how it works and find out what's next.</p>
+      <div class="webinar-list">
         <label class="webinar-opt" data-val="Thursday, 12 June 2026 · 11:00 am ET">
           <input type="radio" name="webinar">
           <div><div class="webinar-date">Thursday, 12 June 2026</div><div class="webinar-time">11:00 am ET · 4:00 pm BST · 5:00 pm CET</div></div>
@@ -737,154 +640,131 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">Reserve my spot →</button>
-        <span class="error-msg" id="err-15">Pick a date to continue.</span>
+        <span class="error-msg" id="err-12">Pick a date to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 16: Confirmation -->
-  <div class="slide state-below" data-index="16">
+  <!-- 13: Confirmation -->
+  <div class="slide state-below" data-index="13">
     <div class="slide-inner">
-      <div class="confirm-wrap">
-        <div class="confirm-icon">🎉</div>
-        <div class="confirm-title">You're in!</div>
-        <p class="confirm-sub">We've saved your spot for <strong id="confirmedDate"></strong>. Check your email for the details — we'll be in touch with helpful content while you wait.</p>
-        <div class="confirm-card">
-          <div class="confirm-card-icon">📅</div>
-          <div>
-            <div class="confirm-card-label">Your onboarding webinar</div>
-            <div class="confirm-card-val" id="confirmedDateDetail"></div>
-          </div>
+      <div class="confirm-check">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="confirm-title">You're in.</div>
+      <p class="confirm-sub">We've saved your spot for <strong id="confirmedDate"></strong>. Check your email for the details — we'll also send helpful content while you wait.</p>
+      <div class="confirm-card">
+        <div class="confirm-card-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         </div>
-        <div class="confirm-actions">
-          <a href="#" class="btn-cal">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Add to calendar
-          </a>
-          <a href="#" class="btn-community">Join community →</a>
+        <div>
+          <div class="confirm-card-label">Your onboarding webinar</div>
+          <div class="confirm-card-val" id="confirmedDateDetail"></div>
         </div>
+      </div>
+      <div class="confirm-actions">
+        <a href="#" class="btn-cal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Add to calendar
+        </a>
+        <a href="#" class="btn-community">Join community space →</a>
       </div>
     </div>
   </div>
 
 </div>
 
-<!-- Footer nav arrows -->
+<!-- Footer arrows -->
 <footer class="foot" id="foot">
   <div class="foot-arrows">
-    <button class="foot-arrow" id="arrowUp" onclick="goBack()" title="Previous (↑)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    <button class="foot-arrow" onclick="goBack()" title="Previous">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
     </button>
-    <button class="foot-arrow" onclick="next()" title="Next (↓)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    <button class="foot-arrow" onclick="next()" title="Next">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
   </div>
 </footer>
 
 <script>
-const TOTAL = 15; // slides 1–15 are "questions" (0 = welcome, 16 = confirm)
-let cur = 0;
-let animating = false;
-
+const TOTAL = 12; // slides 1–12
+let cur = 0, animating = false;
 const slides = Array.from(document.querySelectorAll('.slide'));
 
 const profile = {
   fullname:'', email:'', password:'', country:'',
   linkedin:'', resume:null,
   expertise:'', expertiseOther:'', yearsExperience:'',
-  aiLevel:'', aiWorkTypes:[],
-  goals:[], weeklyHours:'', languages:[],
-  whyText:'', webinarDate:''
+  aiLevel:'', goals:[], weeklyHours:'',
+  languages:[], whyText:'', webinarDate:''
 };
 
-// ── Render ──
-function render(newIdx, dir) {
+function render(idx) {
   if (animating) return;
   animating = true;
-
-  const prev = slides[cur];
-  const next_ = slides[newIdx];
-
-  // Assign states
   slides.forEach((s,i) => {
-    s.className = 'slide';
-    if (i === newIdx) s.classList.add('state-active');
-    else if (i < newIdx) s.classList.add('state-above');
-    else s.classList.add('state-below');
+    s.className = 'slide ' + (i === idx ? 'state-active' : i < idx ? 'state-above' : 'state-below');
   });
-
-  cur = newIdx;
+  cur = idx;
   updateMeta();
-
-  // Focus first input
   setTimeout(() => {
-    const inp = slides[cur].querySelector('input:not([type=radio]):not([type=checkbox]):not([type=file]), textarea, select');
+    const inp = slides[cur].querySelector('input:not([type=radio]):not([type=checkbox]):not([type=file]), textarea');
     if (inp) inp.focus();
     animating = false;
-  }, 480);
+  }, 460);
 }
 
 function updateMeta() {
-  const isConfirm = cur === 16;
-  const isWelcome = cur === 0;
-
+  const isConfirm = cur === 13, isWelcome = cur === 0;
   document.getElementById('progFill').style.width =
     isConfirm ? '100%' : isWelcome ? '0%' : (cur / TOTAL * 100) + '%';
-
   document.getElementById('hdCount').textContent =
-    isConfirm || isWelcome ? '' : cur + ' / ' + TOTAL;
-
-  const back = document.getElementById('btnBack');
-  back.style.display = (cur > 0 && !isConfirm) ? '' : 'none';
-
+    (isConfirm || isWelcome) ? '' : cur + ' / ' + TOTAL;
+  document.getElementById('btnBack').style.display = (cur > 0 && !isConfirm) ? '' : 'none';
   document.getElementById('foot').style.display = isConfirm ? 'none' : '';
 }
 
-// ── Navigation ──
 function next() {
   if (!validate(cur)) return;
   collect(cur);
-  if (cur === 15) { finalise(); render(16, 1); return; }
-  if (cur < 16) render(cur + 1, 1);
+  if (cur === 12) { finalise(); render(13); return; }
+  if (cur < 13) render(cur + 1);
 }
 
-function goBack() {
-  if (cur > 0) render(cur - 1, -1);
-}
+function goBack() { if (cur > 0) render(cur - 1); }
 
-// ── Keyboard ──
 document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-    const focused = document.activeElement;
-    if (focused && (focused.tagName === 'SELECT')) return; // let select open
-    e.preventDefault();
-    next();
+  if (e.key === 'Enter' && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'SELECT') {
+    e.preventDefault(); next();
   }
 });
 
-function handleEnter(e, fn) {
-  if (e.key === 'Enter') { e.preventDefault(); fn(); }
-}
+function handleEnter(e, fn) { if (e.key === 'Enter') { e.preventDefault(); fn(); } }
 
 // ── Validation ──
 function validate(idx) {
-  clearAllErrors();
+  document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
   if (idx === 0) return true;
-  if (idx === 1) return req('err-1', document.getElementById('fullname').value.trim());
-  if (idx === 2) return req('err-2', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim()), 'Please enter a valid email.');
-  if (idx === 3) return req('err-3', document.getElementById('password').value.length >= 8, 'Minimum 8 characters.');
-  if (idx === 4) return req('err-4', document.getElementById('country').value !== '');
-  if (idx === 5) return req('err-5', document.getElementById('linkedin').value.trim().length > 0);
-  if (idx === 6) return req('err-6', !!document.getElementById('resumeFile').files[0], 'Please upload your CV.');
-  if (idx === 7) return req('err-7', !!document.querySelector('input[name="expertise"]:checked'), 'Pick one to continue.');
-  if (idx === 8) return req('err-8', !!document.querySelector('input[name="years"]:checked'), 'Pick one to continue.');
-  if (idx === 9) return req('err-9', !!document.querySelector('input[name="aiLevel"]:checked'), 'Pick one to continue.');
-  if (idx === 10) return true; // optional
-  if (idx === 11) return req('err-11', document.querySelectorAll('input[name="goals"]:checked').length > 0, 'Pick at least one.');
-  if (idx === 12) return req('err-12', !!document.querySelector('input[name="hours"]:checked'), 'Pick one to continue.');
-  if (idx === 13) return true; // optional
-  if (idx === 14) return req('err-14', document.getElementById('whyText').value.trim().length >= 20, 'Please write a few sentences.');
-  if (idx === 15) return req('err-15', !!document.querySelector('input[name="webinar"]:checked'), 'Pick a date to continue.');
+  if (idx === 1) {
+    const n = document.getElementById('fullname').value.trim();
+    const em = document.getElementById('email').value.trim();
+    const pw = document.getElementById('password').value;
+    const err = document.getElementById('err-1');
+    if (!n) { err.textContent = 'Please enter your name.'; err.classList.add('show'); return false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { err.textContent = 'Please enter a valid email.'; err.classList.add('show'); return false; }
+    if (pw.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.classList.add('show'); return false; }
+    return true;
+  }
+  if (idx === 2) return req('err-2', document.getElementById('country').value !== '');
+  if (idx === 3) return req('err-3', document.getElementById('linkedin').value.trim().length > 0);
+  if (idx === 4) return req('err-4', !!document.getElementById('resumeFile').files[0], 'Please upload your CV.');
+  if (idx === 5) return req('err-5', !!document.querySelector('input[name="expertise"]:checked'), 'Pick one to continue.');
+  if (idx === 6) return req('err-6', !!document.querySelector('input[name="years"]:checked'), 'Pick one to continue.');
+  if (idx === 7) return req('err-7', !!document.querySelector('input[name="aiLevel"]:checked'), 'Pick one to continue.');
+  if (idx === 8) return req('err-8', document.querySelectorAll('input[name="goals"]:checked').length > 0, 'Pick at least one.');
+  if (idx === 9) return req('err-9', !!document.querySelector('input[name="hours"]:checked'), 'Pick one to continue.');
+  if (idx === 10 || idx === 11) return true; // optional
+  if (idx === 12) return req('err-12', !!document.querySelector('input[name="webinar"]:checked'), 'Pick a date to continue.');
   return true;
 }
 
@@ -897,50 +777,40 @@ function req(errId, cond, msg) {
   return true;
 }
 
-function clearAllErrors() {
-  document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
-}
-
-function clearErr(el) {
-  const slide = el.closest('.slide-inner');
-  if (slide) slide.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
-}
-
 // ── Data collection ──
 function collect(idx) {
-  if (idx === 1) profile.fullname = document.getElementById('fullname').value.trim();
-  if (idx === 2) profile.email = document.getElementById('email').value.trim();
-  if (idx === 3) profile.password = document.getElementById('password').value;
-  if (idx === 4) profile.country = document.getElementById('country').value;
-  if (idx === 5) profile.linkedin = document.getElementById('linkedin').value.trim();
-  if (idx === 6) profile.resume = document.getElementById('resumeFile').files[0] || null;
-  if (idx === 7) {
-    const c = document.querySelector('input[name="expertise"]:checked');
-    profile.expertise = c ? c.closest('.choice').dataset.val : '';
+  if (idx === 1) {
+    profile.fullname = document.getElementById('fullname').value.trim();
+    profile.email    = document.getElementById('email').value.trim();
+    profile.password = document.getElementById('password').value;
+  }
+  if (idx === 2) profile.country = document.getElementById('country').value;
+  if (idx === 3) profile.linkedin = document.getElementById('linkedin').value.trim();
+  if (idx === 4) profile.resume = document.getElementById('resumeFile').files[0] || null;
+  if (idx === 5) {
+    const c = document.querySelector('.choice.sel[data-val]');
+    profile.expertise = document.querySelector('#expertiseGrid .choice.sel') ? document.querySelector('#expertiseGrid .choice.sel').dataset.val : '';
     profile.expertiseOther = document.getElementById('expertiseOther').value.trim();
   }
+  if (idx === 6) {
+    const c = document.querySelector('#yearsGrid .choice.sel');
+    profile.yearsExperience = c ? c.dataset.val : '';
+  }
+  if (idx === 7) {
+    const c = document.querySelector('#aiLevelGrid .choice.sel');
+    profile.aiLevel = c ? c.dataset.val : '';
+  }
   if (idx === 8) {
-    const c = document.querySelector('input[name="years"]:checked');
-    profile.yearsExperience = c ? c.closest('.choice').dataset.val : '';
+    profile.goals = [...document.querySelectorAll('#goalsGrid .choice.sel')].map(c => c.dataset.val);
   }
   if (idx === 9) {
-    const c = document.querySelector('input[name="aiLevel"]:checked');
-    profile.aiLevel = c ? c.closest('.choice').dataset.val : '';
+    const c = document.querySelector('#hoursGrid .choice.sel');
+    profile.weeklyHours = c ? c.dataset.val : '';
   }
-  if (idx === 10) {
-    profile.aiWorkTypes = [...document.querySelectorAll('input[name="aiWork"]:checked')].map(i => i.closest('.choice').dataset.val);
-  }
-  if (idx === 11) {
-    profile.goals = [...document.querySelectorAll('input[name="goals"]:checked')].map(i => i.closest('.choice').dataset.val);
-  }
+  if (idx === 11) profile.whyText = document.getElementById('whyText').value.trim();
   if (idx === 12) {
-    const c = document.querySelector('input[name="hours"]:checked');
-    profile.weeklyHours = c ? c.closest('.choice').dataset.val : '';
-  }
-  if (idx === 14) profile.whyText = document.getElementById('whyText').value.trim();
-  if (idx === 15) {
-    const c = document.querySelector('input[name="webinar"]:checked');
-    profile.webinarDate = c ? c.closest('.webinar-opt').dataset.val : '';
+    const c = document.querySelector('.webinar-opt.sel');
+    profile.webinarDate = c ? c.dataset.val : '';
   }
 }
 
@@ -950,73 +820,55 @@ function finalise() {
   console.log('Profile:', JSON.parse(JSON.stringify(profile)));
 }
 
-// ── Choice pill interaction ──
+// ── Choice interaction ──
 document.querySelectorAll('.choice').forEach(ch => {
   ch.addEventListener('click', () => {
     const inp = ch.querySelector('input');
     if (inp.type === 'radio') {
       ch.closest('.choices').querySelectorAll('.choice').forEach(c => c.classList.remove('sel'));
-      ch.classList.add('sel');
-      inp.checked = true;
-      // Auto-advance on radio after short delay
-      setTimeout(() => {
-        if (cur !== 10) next(); // not for optional multi
-      }, 280);
+      ch.classList.add('sel'); inp.checked = true;
+      if (cur !== 8) setTimeout(next, 260); // auto-advance on radio (not multi-select)
     } else {
       inp.checked = !inp.checked;
       ch.classList.toggle('sel', inp.checked);
     }
-    // Show Other field for expertise
     if (inp.name === 'expertise') {
       document.getElementById('expertiseOtherWrap').classList.toggle('vis', ch.dataset.val === 'Other');
     }
   });
 });
 
-// Webinar options
+// ── Webinar ──
 document.querySelectorAll('.webinar-opt').forEach(opt => {
   opt.addEventListener('click', () => {
     document.querySelectorAll('.webinar-opt').forEach(o => o.classList.remove('sel'));
-    opt.classList.add('sel');
-    opt.querySelector('input').checked = true;
+    opt.classList.add('sel'); opt.querySelector('input').checked = true;
   });
 });
 
 // ── File upload ──
 document.getElementById('resumeFile').addEventListener('change', function() {
   const f = this.files[0];
-  const label = document.getElementById('resumeLabel');
-  const text = document.getElementById('resumeText');
-  if (f) { text.textContent = f.name; label.classList.add('has-file'); }
-  else { text.textContent = 'Click to upload'; label.classList.remove('has-file'); }
+  document.getElementById('resumeText').textContent = f ? f.name : 'Click to upload';
+  document.getElementById('resumeLabel').classList.toggle('has-file', !!f);
 });
 
-// ── Language tags ──
+// ── Languages ──
 const langs = new Set();
 function addLang(val) {
   if (!val || langs.has(val)) return;
-  langs.add(val);
-  profile.languages = [...langs];
-  renderLangs();
+  langs.add(val); profile.languages = [...langs]; renderLangs();
 }
 function removeLang(val) {
-  langs.delete(val);
-  profile.languages = [...langs];
-  renderLangs();
+  langs.delete(val); profile.languages = [...langs]; renderLangs();
 }
 function renderLangs() {
-  const c = document.getElementById('langTags');
-  c.innerHTML = '';
-  langs.forEach(l => {
-    const t = document.createElement('span');
-    t.className = 'lang-tag';
-    t.innerHTML = l + ' <button onclick="removeLang(\'' + l + '\')" title="Remove">×</button>';
-    c.appendChild(t);
-  });
+  document.getElementById('langTags').innerHTML = [...langs].map(l =>
+    `<span class="lang-tag">${l} <button onclick="removeLang('${l}')" title="Remove">×</button></span>`
+  ).join('');
 }
 
-// ── Init ──
-render(0, 1);
+render(0);
 </script>
 </body>
 </html>
