@@ -15,7 +15,6 @@
   --bg:     #ffffff;
   --bg-soft:#FAFAF6;
   --line:   rgba(10,10,10,0.09);
-  --shadow-card: 0 1px 2px rgba(15,30,26,0.04), 0 8px 28px rgba(15,30,26,0.10);
   --accent: #0A8C66;
   --green:  #4FE8A9;
 }
@@ -27,12 +26,11 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); backgroun
 .hd {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: var(--bg); border-bottom: 1px solid var(--line);
-  padding: 0 32px; height: 62px;
-  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 40px;
 }
 .hd-row {
   display: flex; align-items: center; justify-content: space-between;
-  padding-bottom: 14px;
+  padding: 18px 0 12px;
 }
 .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); }
 .brand img { height: 20px; width: auto; }
@@ -54,171 +52,34 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); backgroun
 .prog-track { height: 2px; background: var(--line); }
 .prog-fill { height: 100%; background: var(--ink); transition: width 400ms cubic-bezier(0.4,0,0.2,1); }
 
-/* ── Layout ── */
-.layout-left {
-  position: fixed; top: 62px; left: 0; bottom: 0;
-  width: 42%;
-  background: var(--bg-soft);
-  border-right: 1px solid var(--line);
-  overflow: hidden;
-}
-.slides-wrap {
-  position: fixed; top: 62px; left: 42%; right: 0; bottom: 0;
-  overflow: hidden;
-}
-
-/* ── Left panel phases ── */
-.panel-phase {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 48px 44px;
-  transition: opacity 400ms ease, transform 400ms ease;
-}
-.panel-phase.ph-out { opacity: 0; transform: translateY(16px); pointer-events: none; }
-.panel-phase.ph-in  { opacity: 1; transform: translateY(0); }
-
-/* Photo frame */
-.p-photo {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  background: #e4e4e0;
-  box-shadow: 0 20px 50px rgba(10,20,16,0.16);
-}
-.p-photo img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
-
-/* Floating mini-cards — same shadow + border system as main pages */
-.fcard {
-  position: absolute;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  box-shadow: var(--shadow-card);
-  padding: 14px 16px;
-}
-
-/* Stat card */
-.fc-stat { display: flex; flex-direction: column; gap: 4px; }
-.fc-stat-num {
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 800; font-size: 26px;
-  letter-spacing: -0.03em; color: var(--ink); line-height: 1;
-}
-.fc-stat-label { font-size: 12px; color: var(--ink-3); font-weight: 500; }
-
-/* Profile mini-card */
-.fc-profile { display: flex; flex-direction: column; gap: 10px; min-width: 200px; }
-.fc-profile-row { display: flex; align-items: center; gap: 10px; }
-.fc-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  overflow: hidden; flex-shrink: 0;
-  border: 1.5px solid #fff; box-shadow: 0 0 0 1px var(--line);
-  background: #ddd;
-}
-.fc-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.fc-name { font-weight: 600; font-size: 13.5px; color: var(--ink); }
-.fc-role { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
-.fc-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border-radius: 999px;
-  background: rgba(79,232,169,0.14); color: var(--accent);
-  font-size: 11px; font-weight: 600;
-}
-.fc-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-.fc-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-.fc-tag {
-  padding: 3px 9px; border-radius: 6px;
-  background: var(--bg-soft); border: 1px solid var(--line);
-  font-size: 11px; font-weight: 700; color: var(--ink-2);
-}
-
-/* Pill badge */
-.fc-pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--ink); color: #fff;
-  padding: 10px 16px; border-radius: 999px;
-  font-size: 13px; font-weight: 600;
-  box-shadow: 0 10px 24px rgba(10,10,10,0.28);
-}
-.fc-pill-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green);
-}
-
-/* Domain tags cloud */
-.fc-domains { display: flex; flex-direction: column; gap: 6px; min-width: 190px; }
-.fc-domains-row { display: flex; gap: 5px; }
-.fc-domain {
-  padding: 4px 10px; border-radius: 7px;
-  background: var(--bg-soft); border: 1px solid var(--line);
-  font-size: 12px; font-weight: 500; color: var(--ink-2);
-}
-.fc-domain.active {
-  background: var(--ink); color: #fff; border-color: var(--ink);
-}
-
-/* Eyebrow label inside panel */
-.p-eyebrow {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
-}
-.p-headline {
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 800; font-size: 22px; letter-spacing: -0.025em;
-  line-height: 1.15; color: var(--ink); margin-bottom: 16px;
-}
-
-/* Dark confirmation panel */
-.p-dark {
-  background: var(--ink);
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 52px 48px; gap: 24px;
-}
-.p-dark .p-eyebrow { color: var(--green); }
-.p-dark .p-headline { color: #fff; font-size: 28px; }
-.p-dark-sub { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.6; }
-.p-check-ring {
-  width: 64px; height: 64px; border-radius: 18px;
-  border: 1.5px solid rgba(79,232,169,0.35);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--green);
-}
-.p-stat-row { display: flex; gap: 32px; }
-.p-stat-item { display: flex; flex-direction: column; gap: 4px; }
-.p-stat-n {
-  font-family: 'Inter Tight', sans-serif;
-  font-weight: 800; font-size: 32px; letter-spacing: -0.04em;
-  color: #fff; line-height: 1;
-}
-.p-stat-l { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 500; }
-
 /* ── Slides ── */
+.slides-wrap { position: fixed; inset: 0; top: 62px; overflow: hidden; }
 .slide {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  padding: 24px 52px 72px;
+  padding: 24px 40px 80px;
   transition: transform 460ms cubic-bezier(0.77,0,0.175,1), opacity 360ms ease;
   pointer-events: none;
 }
 .slide.state-below  { transform: translateY(56px);  opacity: 0; }
 .slide.state-active { transform: translateY(0);      opacity: 1; pointer-events: all; }
 .slide.state-above  { transform: translateY(-56px);  opacity: 0; }
-.slide-inner { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 24px; }
+.slide-inner { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 26px; }
 
-/* Question number */
+/* ── Question number ── */
 .q-num { font-size: 13px; font-weight: 600; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
 .q-arrow { width: 18px; height: 18px; background: var(--ink); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.q-text { font-family: 'Inter Tight', sans-serif; font-size: clamp(24px, 3.2vw, 36px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); }
-.q-sub { font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -12px; }
+
+/* ── Question text ── */
+.q-text { font-family: 'Inter Tight', sans-serif; font-size: clamp(26px, 4.2vw, 42px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); }
+.q-sub { font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -14px; }
 .q-opt { font-size: 13px; color: var(--ink-3); font-style: italic; font-weight: 400; margin-left: 6px; }
 
-/* Inputs */
+/* ── Text inputs ── */
 .tf-input {
   width: 100%; background: none; border: none; border-bottom: 2px solid var(--line);
   padding: 10px 0; font-family: 'Inter', sans-serif;
-  font-size: clamp(17px, 2vw, 24px); color: var(--ink); outline: none;
+  font-size: clamp(18px, 2.5vw, 26px); color: var(--ink); outline: none;
   transition: border-color 200ms; caret-color: var(--accent);
 }
 .tf-input::placeholder { color: var(--ink-3); opacity: 0.4; }
@@ -227,14 +88,14 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); backgroun
 .tf-textarea {
   width: 100%; background: none; border: none; border-bottom: 2px solid var(--line);
   padding: 10px 0; font-family: 'Inter', sans-serif;
-  font-size: clamp(15px, 1.8vw, 19px); color: var(--ink);
+  font-size: clamp(16px, 2vw, 20px); color: var(--ink);
   outline: none; resize: none; transition: border-color 200ms;
-  caret-color: var(--accent); min-height: 88px; line-height: 1.6;
+  caret-color: var(--accent); min-height: 90px; line-height: 1.6;
 }
 .tf-textarea::placeholder { color: var(--ink-3); opacity: 0.4; }
 .tf-textarea:focus { border-color: var(--green); }
 
-/* Stacked field group */
+/* ── Stacked account group ── */
 .field-stack { display: flex; flex-direction: column; }
 .field-item { display: flex; flex-direction: column; gap: 4px; padding: 8px 0 14px; border-bottom: 1px solid var(--line); }
 .field-item:last-child { border-bottom: none; }
@@ -246,35 +107,43 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); backgroun
 }
 .field-item input::placeholder { color: var(--ink-3); opacity: 0.4; }
 
-/* Select */
+/* ── Select ── */
 .tf-select-wrap { position: relative; }
 .tf-select {
   width: 100%; background: none; border: none; border-bottom: 2px solid var(--line);
   padding: 10px 32px 10px 0; font-family: 'Inter', sans-serif;
-  font-size: clamp(17px, 2vw, 24px); color: var(--ink); outline: none; cursor: pointer;
+  font-size: clamp(18px, 2.5vw, 26px); color: var(--ink); outline: none; cursor: pointer;
   appearance: none; -webkit-appearance: none; transition: border-color 200ms;
 }
 .tf-select:focus { border-color: var(--green); }
 .tf-select-arr { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--ink-3); }
 
-/* File upload */
+/* ── File upload ── */
 .file-drop {
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  padding: 26px 20px; border-radius: 14px; border: 1.5px dashed var(--line);
-  background: var(--bg-soft); cursor: pointer; text-align: center;
-  transition: border-color 180ms, background 180ms;
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; border-radius: 12px;
+  border: 1.5px dashed var(--line); background: var(--bg-soft);
+  cursor: pointer; transition: border-color 180ms, background 180ms;
 }
 .file-drop:hover, .file-drop.has-file { border-color: var(--green); border-style: solid; background: rgba(79,232,169,0.04); }
-.file-icon { width: 42px; height: 42px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
+.file-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--ink-3); flex-shrink: 0; }
+.file-copy { display: flex; flex-direction: column; gap: 2px; }
 .file-text { font-size: 14px; font-weight: 600; color: var(--ink-2); }
 .file-hint { font-size: 12px; color: var(--ink-3); }
 input[type="file"] { display: none; }
 
-/* Choices */
+/* ── Profile section label (used in combined LinkedIn+CV step) ── */
+.step-label {
+  font-size: 11px; font-weight: 700; color: var(--ink-3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding-bottom: 8px; border-bottom: 1px solid var(--line);
+}
+
+/* ── Choices ── */
 .choices { display: flex; flex-direction: column; gap: 7px; }
 .choices.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .choice {
-  display: flex; align-items: center; gap: 11px; padding: 11px 14px;
+  display: flex; align-items: center; gap: 11px; padding: 12px 14px;
   border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg-soft);
   cursor: pointer; font-size: 14px; font-weight: 500; color: var(--ink-2);
   transition: border-color 180ms, background 180ms, box-shadow 180ms; user-select: none;
@@ -286,7 +155,8 @@ input[type="file"] { display: none; }
   min-width: 21px; height: 21px; border-radius: 5px; border: 1.5px solid var(--line);
   background: var(--bg); font-size: 11px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
-  color: var(--ink-3); flex-shrink: 0; transition: background 180ms, border-color 180ms, color 180ms;
+  color: var(--ink-3); flex-shrink: 0;
+  transition: background 180ms, border-color 180ms, color 180ms;
 }
 .choice.sel .choice-key { background: var(--ink); border-color: var(--ink); color: #fff; }
 .other-wrap { display: none; }
@@ -299,15 +169,15 @@ input[type="file"] { display: none; }
 .other-wrap input:focus { border-color: var(--green); }
 .other-wrap input::placeholder { color: var(--ink-3); opacity: 0.5; }
 
-/* Language tags */
+/* ── Language tags ── */
 .lang-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
 .lang-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; background: rgba(79,232,169,0.1); border: 1px solid rgba(79,232,169,0.28); font-size: 13px; font-weight: 500; color: var(--ink-2); }
 .lang-tag button { background: none; border: none; cursor: pointer; color: var(--ink-3); font-size: 16px; line-height: 1; padding: 0; }
 
-/* Honesty note */
-.honesty { padding: 12px 14px; border-radius: 10px; background: var(--bg-soft); border: 1px solid var(--line); font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+/* ── Honesty note ── */
+.honesty { padding: 13px 15px; border-radius: 10px; background: var(--bg-soft); border: 1px solid var(--line); font-size: 13px; color: var(--ink-3); line-height: 1.6; }
 
-/* Webinar */
+/* ── Webinar options ── */
 .webinar-list { display: flex; flex-direction: column; gap: 7px; }
 .webinar-opt {
   display: flex; align-items: center; justify-content: space-between;
@@ -322,7 +192,7 @@ input[type="file"] { display: none; }
 .webinar-time { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
 .webinar-spots { font-size: 11px; font-weight: 600; color: var(--accent); padding: 3px 8px; border-radius: 999px; background: rgba(10,140,102,0.08); white-space: nowrap; flex-shrink: 0; }
 
-/* CTA */
+/* ── CTA row ── */
 .cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .btn-ok {
   display: inline-flex; align-items: center; gap: 8px;
@@ -338,11 +208,11 @@ input[type="file"] { display: none; }
 .error-msg { font-size: 13px; color: #C0392B; font-weight: 500; display: none; }
 .error-msg.show { display: block; }
 
-/* Confirmation */
+/* ── Confirmation ── */
 .confirm-check { width: 52px; height: 52px; border-radius: 14px; background: var(--bg-soft); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--accent); }
-.confirm-title { font-family: 'Inter Tight', sans-serif; font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--ink); }
+.confirm-title { font-family: 'Inter Tight', sans-serif; font-size: clamp(30px, 5vw, 50px); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: var(--ink); }
 .confirm-sub { font-size: 15px; color: var(--ink-3); line-height: 1.6; max-width: 44ch; }
-.confirm-card { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-radius: 12px; background: var(--bg-soft); border: 1px solid var(--line); max-width: 360px; }
+.confirm-card { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-radius: 12px; background: var(--bg-soft); border: 1px solid var(--line); max-width: 380px; }
 .confirm-card-icon { width: 36px; height: 36px; flex-shrink: 0; background: var(--bg); border: 1px solid var(--line); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
 .confirm-card-label { font-size: 11px; color: var(--ink-3); }
 .confirm-card-val { font-size: 14px; font-weight: 600; color: var(--ink); }
@@ -352,20 +222,17 @@ input[type="file"] { display: none; }
 .btn-community { display: inline-flex; align-items: center; gap: 7px; padding: 11px 18px; border-radius: 10px; background: var(--ink); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: box-shadow 180ms, transform 150ms; }
 .btn-community:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.2); transform: translateY(-1px); }
 
-/* Footer arrows */
-.foot { position: fixed; bottom: 0; left: 42%; right: 0; display: flex; align-items: center; justify-content: flex-end; padding: 16px 32px; pointer-events: none; }
+/* ── Footer arrows ── */
+.foot { position: fixed; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: flex-end; padding: 16px 40px; pointer-events: none; }
 .foot-arrows { display: flex; gap: 5px; pointer-events: all; }
 .foot-arrow { width: 33px; height: 33px; border-radius: 8px; border: 1.5px solid var(--line); background: var(--bg-soft); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink-3); transition: border-color 160ms, color 160ms; }
 .foot-arrow:hover { border-color: var(--ink-3); color: var(--ink); }
 
 /* ── Mobile ── */
-@media (max-width: 760px) {
-  .layout-left { display: none; }
-  .slides-wrap { left: 0; }
-  .foot { left: 0; }
-  .slide { padding: 24px 24px 72px; }
-}
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  .hd { padding: 0 20px; }
+  .foot { padding: 14px 20px; }
+  .slide { padding: 20px 24px 72px; }
   .choices.grid-2 { grid-template-columns: 1fr; }
   .key-hint { display: none; }
 }
@@ -373,7 +240,6 @@ input[type="file"] { display: none; }
 </head>
 <body>
 
-<!-- Header -->
 <header class="hd">
   <div class="hd-row">
     <a href="index.html" class="brand">
@@ -391,169 +257,6 @@ input[type="file"] { display: none; }
   <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
 </header>
 
-<!-- Left panel -->
-<div class="layout-left" id="layoutLeft">
-
-  <!-- Phase 1: Welcome + Account -->
-  <div class="panel-phase ph-in" id="ph-1">
-    <p class="p-eyebrow">AI talent community</p>
-    <p class="p-headline">Real experts.<br>Real opportunities.</p>
-    <div class="p-photo" style="height: 340px;">
-      <img src="photos/premium_photo-1664474633055-6d181d654320.avif" alt="AI expert" loading="eager">
-    </div>
-    <!-- Stat card top-right -->
-    <div class="fcard fc-stat" style="top:28px;right:28px;transform:rotate(1.5deg)">
-      <div class="fc-stat-num">115K+</div>
-      <div class="fc-stat-label">Experts worldwide</div>
-    </div>
-    <!-- Profile card bottom-left -->
-    <div class="fcard fc-profile" style="bottom:28px;left:24px;transform:rotate(-1.5deg)">
-      <div class="fc-profile-row">
-        <div class="fc-avatar"><img src="photos/photo-1609436132311-e4b0c9370469.avif" alt=""></div>
-        <div>
-          <div class="fc-name">Amara O.</div>
-          <div class="fc-role">AI evaluator · Healthcare</div>
-        </div>
-      </div>
-      <div class="fc-badge"><span class="fc-badge-dot"></span>Available now</div>
-    </div>
-  </div>
-
-  <!-- Phase 2: Profile (location / linkedin / cv) -->
-  <div class="panel-phase ph-out" id="ph-2">
-    <p class="p-eyebrow">Building your profile</p>
-    <p class="p-headline">We verify every expert before placement.</p>
-    <div class="p-photo" style="height: 320px;">
-      <img src="photos/premium_photo-1690407617542-2f210cf20d7e.avif" alt="Professional" loading="lazy">
-    </div>
-    <!-- Verified badge -->
-    <div class="fcard" style="top:26px;right:26px;transform:rotate(1deg);padding:12px 16px;">
-      <div style="display:flex;align-items:center;gap:9px;">
-        <div style="width:32px;height:32px;border-radius:8px;background:rgba(79,232,169,0.12);border:1px solid rgba(79,232,169,0.3);display:flex;align-items:center;justify-content:center;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A8C66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:var(--ink)">Verified profiles</div>
-          <div style="font-size:11px;color:var(--ink-3);">ID + background checked</div>
-        </div>
-      </div>
-    </div>
-    <!-- Pill bottom -->
-    <div style="position:absolute;bottom:32px;right:28px;transform:rotate(-1deg);">
-      <div class="fc-pill"><span class="fc-pill-dot"></span>Trusted by Google, Nestlé &amp; more</div>
-    </div>
-  </div>
-
-  <!-- Phase 3: Expertise + AI level -->
-  <div class="panel-phase ph-out" id="ph-3">
-    <p class="p-eyebrow">Domain matching</p>
-    <p class="p-headline">Your expertise is exactly what AI needs.</p>
-    <div class="p-photo" style="height: 300px;">
-      <img src="https://images.unsplash.com/photo-1573497019418-b400bb3ab074?w=700&h=600&fit=crop&crop=faces&q=80" alt="Expert" loading="lazy">
-    </div>
-    <!-- Domain tags -->
-    <div class="fcard fc-domains" style="bottom:32px;left:24px;transform:rotate(-1.5deg)">
-      <div style="font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">50+ domains</div>
-      <div class="fc-domains-row">
-        <span class="fc-domain active">Healthcare</span>
-        <span class="fc-domain">Legal</span>
-      </div>
-      <div class="fc-domains-row">
-        <span class="fc-domain">Finance</span>
-        <span class="fc-domain active">Software</span>
-        <span class="fc-domain">Science</span>
-      </div>
-      <div class="fc-domains-row">
-        <span class="fc-domain">Education</span>
-        <span class="fc-domain active">Data</span>
-      </div>
-    </div>
-    <!-- Stat -->
-    <div class="fcard fc-stat" style="top:26px;right:26px;transform:rotate(1.5deg)">
-      <div class="fc-stat-num">50+</div>
-      <div class="fc-stat-label">Expert domains</div>
-    </div>
-  </div>
-
-  <!-- Phase 4: Goals + Hours -->
-  <div class="panel-phase ph-out" id="ph-4">
-    <p class="p-eyebrow">Flexible opportunities</p>
-    <p class="p-headline">Work on your terms, from anywhere.</p>
-    <div class="p-photo" style="height: 320px;">
-      <img src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=700&h=600&fit=crop&crop=faces&q=80" alt="Flexible work" loading="lazy">
-    </div>
-    <!-- Availability card -->
-    <div class="fcard" style="top:26px;right:26px;transform:rotate(1.5deg);min-width:190px;">
-      <div style="font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">Work style</div>
-      <div style="display:flex;flex-direction:column;gap:7px;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>100% remote
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>Set your hours
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--ink-2);">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>No experience required
-        </div>
-      </div>
-    </div>
-    <div style="position:absolute;bottom:32px;left:24px;transform:rotate(-1deg);">
-      <div class="fc-pill"><span class="fc-pill-dot"></span>Paid per task</div>
-    </div>
-  </div>
-
-  <!-- Phase 5: Languages + Why + Webinar -->
-  <div class="panel-phase ph-out" id="ph-5">
-    <p class="p-eyebrow">Almost there</p>
-    <p class="p-headline">Join a community of AI experts worldwide.</p>
-    <div class="p-photo" style="height: 300px;">
-      <img src="photos/premium_photo-1664474633055-6d181d654320.avif" alt="Community" loading="lazy">
-    </div>
-    <!-- Webinar card -->
-    <div class="fcard" style="bottom:32px;left:24px;transform:rotate(-1.5deg);min-width:210px;">
-      <div style="font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">Live onboarding</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <span style="font-size:13px;font-weight:500;color:var(--ink-2);">Thu 12 June · 11am ET</span>
-          <span style="font-size:11px;font-weight:600;color:var(--accent);padding:2px 7px;border-radius:999px;background:rgba(10,140,102,0.09);">12 left</span>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-          <span style="font-size:13px;font-weight:500;color:var(--ink-2);">Tue 17 June · 2pm ET</span>
-          <span style="font-size:11px;font-weight:600;color:var(--accent);padding:2px 7px;border-radius:999px;background:rgba(10,140,102,0.09);">18 left</span>
-        </div>
-      </div>
-    </div>
-    <div class="fcard fc-stat" style="top:26px;right:26px;transform:rotate(1.5deg)">
-      <div class="fc-stat-num">40+</div>
-      <div class="fc-stat-label">Countries represented</div>
-    </div>
-  </div>
-
-  <!-- Phase 6: Confirmation (dark) -->
-  <div class="panel-phase ph-out p-dark" id="ph-6">
-    <div class="p-check-ring">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div>
-      <p class="p-eyebrow">Welcome aboard</p>
-      <p class="p-headline">You're part of something big.</p>
-    </div>
-    <p class="p-dark-sub">Every piece of training data you create makes AI smarter, safer, and more useful for everyone.</p>
-    <div class="p-stat-row">
-      <div class="p-stat-item">
-        <div class="p-stat-n">115K+</div>
-        <div class="p-stat-l">Experts worldwide</div>
-      </div>
-      <div class="p-stat-item">
-        <div class="p-stat-n">50+</div>
-        <div class="p-stat-l">AI projects</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- Slides -->
 <div class="slides-wrap">
 
   <!-- 0: Welcome -->
@@ -568,7 +271,7 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <!-- 1: Account -->
+  <!-- 1: Account (name + email + password) -->
   <div class="slide state-below" data-index="1">
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1 →</div>
@@ -607,43 +310,33 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <!-- 3: LinkedIn -->
+  <!-- 3: LinkedIn + CV (same step) -->
   <div class="slide state-below" data-index="3">
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 →</div>
-      <div class="q-text">Your LinkedIn profile URL.</div>
-      <input class="tf-input" id="linkedin" type="url" placeholder="https://linkedin.com/in/yourname" onkeydown="handleEnter(event,next)">
-      <div class="cta-row">
-        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
-        <span class="error-msg" id="err-3">Please enter your LinkedIn URL.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4: Resume -->
-  <div class="slide state-below" data-index="4">
-    <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4 →</div>
-      <div class="q-text">Upload your resume or CV.</div>
-      <p class="q-sub">PDF or Word · Max 10 MB</p>
+      <div class="q-text">Your professional background.</div>
+      <p class="q-sub">Both are required. This helps us understand your experience.</p>
+      <input class="tf-input" id="linkedin" type="url" placeholder="LinkedIn profile URL" onkeydown="handleEnter(event, ()=>document.getElementById('resumeLabel').click())">
       <label class="file-drop" id="resumeLabel" for="resumeFile">
-        <div class="file-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-        <span class="file-text" id="resumeText">Click to upload</span>
-        <span class="file-hint">or drag and drop</span>
+        <div class="file-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <div class="file-copy">
+          <span class="file-text" id="resumeText">Upload resume or CV</span>
+          <span class="file-hint">PDF or Word · Max 10 MB</span>
+        </div>
       </label>
       <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-4">Please upload your CV.</span>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-3"></span>
       </div>
     </div>
   </div>
 
-  <!-- 5: Expertise -->
-  <div class="slide state-below" data-index="5">
+  <!-- 4: Expertise -->
+  <div class="slide state-below" data-index="4">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4 →</div>
       <div class="q-text">Your main area of expertise?</div>
       <div class="choices grid-2" id="expertiseGrid">
         <label class="choice" data-val="Healthcare &amp; medicine"><input type="radio" name="expertise"><span class="choice-key">A</span>Healthcare &amp; medicine</label>
@@ -662,15 +355,15 @@ input[type="file"] { display: none; }
       <div class="other-wrap" id="expertiseOtherWrap"><input type="text" id="expertiseOther" placeholder="Describe your field…" onkeydown="handleEnter(event,next)"></div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-5">Pick one to continue.</span>
+        <span class="error-msg" id="err-4">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 6: Years -->
-  <div class="slide state-below" data-index="6">
+  <!-- 5: Years -->
+  <div class="slide state-below" data-index="5">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5 →</div>
       <div class="q-text">Years of experience in that field?</div>
       <div class="choices" id="yearsGrid">
         <label class="choice" data-val="Less than 2 years"><input type="radio" name="years"><span class="choice-key">A</span>Less than 2 years</label>
@@ -680,15 +373,15 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-6">Pick one to continue.</span>
+        <span class="error-msg" id="err-5">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 7: AI level -->
-  <div class="slide state-below" data-index="7">
+  <!-- 6: AI level -->
+  <div class="slide state-below" data-index="6">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>7 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6 →</div>
       <div class="q-text">Your experience with AI?</div>
       <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work — accurate answers get you there faster.</div>
       <div class="choices" id="aiLevelGrid">
@@ -699,15 +392,15 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-7">Pick one to continue.</span>
+        <span class="error-msg" id="err-6">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 8: Goals -->
-  <div class="slide state-below" data-index="8">
+  <!-- 7: Goals -->
+  <div class="slide state-below" data-index="7">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>8 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>7 →</div>
       <div class="q-text">What are you looking for?</div>
       <p class="q-sub">Pick any that apply.</p>
       <div class="choices" id="goalsGrid">
@@ -719,15 +412,15 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-8">Pick at least one.</span>
+        <span class="error-msg" id="err-7">Pick at least one.</span>
       </div>
     </div>
   </div>
 
-  <!-- 9: Hours -->
-  <div class="slide state-below" data-index="9">
+  <!-- 8: Hours -->
+  <div class="slide state-below" data-index="8">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>9 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>8 →</div>
       <div class="q-text">Hours per week you could commit?</div>
       <div class="choices grid-2" id="hoursGrid">
         <label class="choice" data-val="Under 5 hours"><input type="radio" name="hours"><span class="choice-key">A</span>Under 5 hours</label>
@@ -737,15 +430,15 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-        <span class="error-msg" id="err-9">Pick one to continue.</span>
+        <span class="error-msg" id="err-8">Pick one to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 10: Languages — optional -->
-  <div class="slide state-below" data-index="10">
+  <!-- 9: Languages — optional -->
+  <div class="slide state-below" data-index="9">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>9 →</div>
       <div class="q-text">Languages you speak fluently? <span class="q-opt">Optional</span></div>
       <p class="q-sub">Some projects need specific language coverage.</p>
       <div class="tf-select-wrap">
@@ -763,10 +456,10 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <!-- 11: Why — optional -->
-  <div class="slide state-below" data-index="11">
+  <!-- 10: Why — optional -->
+  <div class="slide state-below" data-index="10">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 →</div>
       <div class="q-text">Why do you want to do AI training work? <span class="q-opt">Optional</span></div>
       <p class="q-sub">A few sentences is plenty.</p>
       <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4"></textarea>
@@ -777,10 +470,10 @@ input[type="file"] { display: none; }
     </div>
   </div>
 
-  <!-- 12: Webinar -->
-  <div class="slide state-below" data-index="12">
+  <!-- 11: Webinar -->
+  <div class="slide state-below" data-index="11">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>12 →</div>
+      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
       <div class="q-text">Pick your onboarding session.</div>
       <p class="q-sub">A live session to learn how it works and what's next.</p>
       <div class="webinar-list">
@@ -803,13 +496,13 @@ input[type="file"] { display: none; }
       </div>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">Reserve my spot →</button>
-        <span class="error-msg" id="err-12">Pick a date to continue.</span>
+        <span class="error-msg" id="err-11">Pick a date to continue.</span>
       </div>
     </div>
   </div>
 
-  <!-- 13: Confirmation -->
-  <div class="slide state-below" data-index="13">
+  <!-- 12: Confirmation -->
+  <div class="slide state-below" data-index="12">
     <div class="slide-inner">
       <div class="confirm-check"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       <div class="confirm-title">You're in.</div>
@@ -827,7 +520,6 @@ input[type="file"] { display: none; }
 
 </div>
 
-<!-- Footer arrows -->
 <footer class="foot" id="foot">
   <div class="foot-arrows">
     <button class="foot-arrow" onclick="goBack()" title="Previous"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
@@ -836,20 +528,9 @@ input[type="file"] { display: none; }
 </footer>
 
 <script>
-const TOTAL = 12;
+const TOTAL = 11;
 let cur = 0, animating = false;
 const slides = Array.from(document.querySelectorAll('.slide'));
-
-// Panel phases mapped per slide index
-const PHASE_MAP = {
-  0: 'ph-1', 1: 'ph-1',
-  2: 'ph-2', 3: 'ph-2', 4: 'ph-2',
-  5: 'ph-3', 6: 'ph-3', 7: 'ph-3',
-  8: 'ph-4', 9: 'ph-4',
-  10: 'ph-5', 11: 'ph-5', 12: 'ph-5',
-  13: 'ph-6'
-};
-let curPhase = null;
 
 const profile = {
   fullname:'', email:'', password:'', country:'',
@@ -862,14 +543,11 @@ const profile = {
 function render(idx) {
   if (animating) return;
   animating = true;
-
   slides.forEach((s,i) => {
-    s.className = 'slide ' + (i === idx ? 'state-active' : i < idx ? 'state-above' : 'state-below');
+    s.className = 'slide ' + (i===idx ? 'state-active' : i<idx ? 'state-above' : 'state-below');
   });
   cur = idx;
   updateMeta();
-  updatePanel();
-
   setTimeout(() => {
     const inp = slides[cur].querySelector('input:not([type=radio]):not([type=checkbox]):not([type=file]), textarea');
     if (inp) inp.focus();
@@ -877,20 +555,10 @@ function render(idx) {
   }, 460);
 }
 
-function updatePanel() {
-  const phId = PHASE_MAP[cur];
-  if (phId === curPhase) return;
-  if (curPhase) document.getElementById(curPhase).classList.replace('ph-in','ph-out');
-  document.getElementById(phId).classList.replace('ph-out','ph-in');
-  curPhase = phId;
-}
-
 function updateMeta() {
-  const isConfirm = cur === 13, isWelcome = cur === 0;
-  document.getElementById('progFill').style.width =
-    isConfirm ? '100%' : isWelcome ? '0%' : (cur / TOTAL * 100) + '%';
-  document.getElementById('hdCount').textContent =
-    (isConfirm || isWelcome) ? '' : cur + ' / ' + TOTAL;
+  const isConfirm = cur === 12, isWelcome = cur === 0;
+  document.getElementById('progFill').style.width = isConfirm ? '100%' : isWelcome ? '0%' : (cur / TOTAL * 100) + '%';
+  document.getElementById('hdCount').textContent = (isConfirm || isWelcome) ? '' : cur + ' / ' + TOTAL;
   document.getElementById('btnBack').style.display = (cur > 0 && !isConfirm) ? '' : 'none';
   document.getElementById('foot').style.display = isConfirm ? 'none' : '';
 }
@@ -898,8 +566,8 @@ function updateMeta() {
 function next() {
   if (!validate(cur)) return;
   collect(cur);
-  if (cur === 12) { finalise(); render(13); return; }
-  if (cur < 13) render(cur + 1);
+  if (cur === 11) { finalise(); render(12); return; }
+  if (cur < 12) render(cur + 1);
 }
 function goBack() { if (cur > 0) render(cur - 1); }
 
@@ -910,7 +578,6 @@ document.addEventListener('keydown', e => {
 });
 function handleEnter(e, fn) { if (e.key === 'Enter') { e.preventDefault(); fn(); } }
 
-// ── Validation ──
 function validate(idx) {
   document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
   if (idx === 0) return true;
@@ -925,35 +592,40 @@ function validate(idx) {
     return true;
   }
   if (idx === 2) return req('err-2', document.getElementById('country').value !== '');
-  if (idx === 3) return req('err-3', document.getElementById('linkedin').value.trim().length > 0);
-  if (idx === 4) return req('err-4', !!document.getElementById('resumeFile').files[0], 'Please upload your CV.');
-  if (idx === 5) return req('err-5', !!document.querySelector('#expertiseGrid .choice.sel'), 'Pick one to continue.');
-  if (idx === 6) return req('err-6', !!document.querySelector('#yearsGrid .choice.sel'), 'Pick one to continue.');
-  if (idx === 7) return req('err-7', !!document.querySelector('#aiLevelGrid .choice.sel'), 'Pick one to continue.');
-  if (idx === 8) return req('err-8', document.querySelectorAll('#goalsGrid .choice.sel').length > 0, 'Pick at least one.');
-  if (idx === 9) return req('err-9', !!document.querySelector('#hoursGrid .choice.sel'), 'Pick one to continue.');
-  if (idx === 10 || idx === 11) return true;
-  if (idx === 12) return req('err-12', !!document.querySelector('.webinar-opt.sel'), 'Pick a date to continue.');
+  if (idx === 3) {
+    const li = document.getElementById('linkedin').value.trim();
+    const cv = document.getElementById('resumeFile').files[0];
+    const err = document.getElementById('err-3');
+    if (!li) { err.textContent = 'Please enter your LinkedIn URL.'; err.classList.add('show'); return false; }
+    if (!cv) { err.textContent = 'Please upload your resume or CV.'; err.classList.add('show'); return false; }
+    return true;
+  }
+  if (idx === 4) return req('err-4', !!document.querySelector('#expertiseGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 5) return req('err-5', !!document.querySelector('#yearsGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 6) return req('err-6', !!document.querySelector('#aiLevelGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 7) return req('err-7', document.querySelectorAll('#goalsGrid .choice.sel').length > 0, 'Pick at least one.');
+  if (idx === 8) return req('err-8', !!document.querySelector('#hoursGrid .choice.sel'), 'Pick one to continue.');
+  if (idx === 9 || idx === 10) return true;
+  if (idx === 11) return req('err-11', !!document.querySelector('.webinar-opt.sel'), 'Pick a date to continue.');
   return true;
 }
+
 function req(errId, cond, msg) {
   if (!cond) { const el = document.getElementById(errId); if (el) { if (msg) el.textContent = msg; el.classList.add('show'); } return false; }
   return true;
 }
 
-// ── Collect ──
 function collect(idx) {
   if (idx === 1) { profile.fullname = document.getElementById('fullname').value.trim(); profile.email = document.getElementById('email').value.trim(); profile.password = document.getElementById('password').value; }
   if (idx === 2) profile.country = document.getElementById('country').value;
-  if (idx === 3) profile.linkedin = document.getElementById('linkedin').value.trim();
-  if (idx === 4) profile.resume = document.getElementById('resumeFile').files[0] || null;
-  if (idx === 5) { const c = document.querySelector('#expertiseGrid .choice.sel'); profile.expertise = c ? c.dataset.val : ''; profile.expertiseOther = document.getElementById('expertiseOther').value.trim(); }
-  if (idx === 6) { const c = document.querySelector('#yearsGrid .choice.sel'); profile.yearsExperience = c ? c.dataset.val : ''; }
-  if (idx === 7) { const c = document.querySelector('#aiLevelGrid .choice.sel'); profile.aiLevel = c ? c.dataset.val : ''; }
-  if (idx === 8) { profile.goals = [...document.querySelectorAll('#goalsGrid .choice.sel')].map(c => c.dataset.val); }
-  if (idx === 9) { const c = document.querySelector('#hoursGrid .choice.sel'); profile.weeklyHours = c ? c.dataset.val : ''; }
-  if (idx === 11) profile.whyText = document.getElementById('whyText').value.trim();
-  if (idx === 12) { const c = document.querySelector('.webinar-opt.sel'); profile.webinarDate = c ? c.dataset.val : ''; }
+  if (idx === 3) { profile.linkedin = document.getElementById('linkedin').value.trim(); profile.resume = document.getElementById('resumeFile').files[0] || null; }
+  if (idx === 4) { const c = document.querySelector('#expertiseGrid .choice.sel'); profile.expertise = c ? c.dataset.val : ''; profile.expertiseOther = document.getElementById('expertiseOther').value.trim(); }
+  if (idx === 5) { const c = document.querySelector('#yearsGrid .choice.sel'); profile.yearsExperience = c ? c.dataset.val : ''; }
+  if (idx === 6) { const c = document.querySelector('#aiLevelGrid .choice.sel'); profile.aiLevel = c ? c.dataset.val : ''; }
+  if (idx === 7) profile.goals = [...document.querySelectorAll('#goalsGrid .choice.sel')].map(c => c.dataset.val);
+  if (idx === 8) { const c = document.querySelector('#hoursGrid .choice.sel'); profile.weeklyHours = c ? c.dataset.val : ''; }
+  if (idx === 10) profile.whyText = document.getElementById('whyText').value.trim();
+  if (idx === 11) { const c = document.querySelector('.webinar-opt.sel'); profile.webinarDate = c ? c.dataset.val : ''; }
 }
 
 function finalise() {
@@ -962,14 +634,13 @@ function finalise() {
   console.log('Profile:', JSON.parse(JSON.stringify(profile)));
 }
 
-// ── Choices ──
 document.querySelectorAll('.choice').forEach(ch => {
   ch.addEventListener('click', () => {
     const inp = ch.querySelector('input');
     if (inp.type === 'radio') {
       ch.closest('.choices').querySelectorAll('.choice').forEach(c => c.classList.remove('sel'));
       ch.classList.add('sel'); inp.checked = true;
-      if (cur !== 8) setTimeout(next, 260);
+      if (cur !== 7) setTimeout(next, 260);
     } else {
       inp.checked = !inp.checked;
       ch.classList.toggle('sel', inp.checked);
@@ -987,14 +658,12 @@ document.querySelectorAll('.webinar-opt').forEach(opt => {
   });
 });
 
-// ── File ──
 document.getElementById('resumeFile').addEventListener('change', function() {
   const f = this.files[0];
-  document.getElementById('resumeText').textContent = f ? f.name : 'Click to upload';
+  document.getElementById('resumeText').textContent = f ? f.name : 'Upload resume or CV';
   document.getElementById('resumeLabel').classList.toggle('has-file', !!f);
 });
 
-// ── Languages ──
 const langs = new Set();
 function addLang(val) { if (!val || langs.has(val)) return; langs.add(val); profile.languages = [...langs]; renderLangs(); }
 function removeLang(val) { langs.delete(val); profile.languages = [...langs]; renderLangs(); }
