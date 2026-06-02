@@ -8,1106 +8,1015 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
 <style>
-
-/* ===== Design tokens — match index.html exactly ===== */
 :root {
   --ink:    #0A0A0A;
   --ink-2:  #2A2A2A;
   --ink-3:  #5C6F69;
   --bg:     #ffffff;
   --bg-soft:#FAFAF6;
-  --line:   rgba(10,10,10,0.08);
-  --shadow-card: 0 1px 2px rgba(15,30,26,0.04), 0 8px 28px rgba(15,30,26,0.08);
+  --line:   rgba(10,10,10,0.09);
   --iri-cyan:  #5BCFFF;
   --iri-green: #4FE8A9;
   --iri-lime:  #D5FF66;
   --accent:    #0A8C66;
+  --grad: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html { height: 100%; }
 body {
   font-family: 'Inter', system-ui, sans-serif;
   color: var(--ink);
-  background: var(--bg-soft);
-  font-size: 16px;
-  line-height: 1.55;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  background: var(--bg);
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ===== Ambient blobs ===== */
-.auth-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-.auth-bg-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.18; }
-.auth-bg-blob.b1 { width: 600px; height: 500px; background: radial-gradient(circle, #5BCFFF, transparent 70%); top: -160px; left: -100px; }
-.auth-bg-blob.b2 { width: 500px; height: 400px; background: radial-gradient(circle, #4FE8A9, transparent 70%); bottom: -100px; right: -80px; }
-.auth-bg-blob.b3 { width: 360px; height: 360px; background: radial-gradient(circle, #D5FF66, transparent 70%); top: 40%; left: 60%; opacity: 0.1; }
-
-/* ===== Nav ===== */
-.nav {
-  position: relative; z-index: 10;
-  padding: 14px 32px;
+/* ── Header ── */
+.hd {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 32px;
+  display: flex; flex-direction: column;
+}
+.hd-row {
   display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0 12px;
 }
-.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
-.nav-brand img { height: 22px; width: auto; }
+.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); }
+.brand img { height: 20px; width: auto; }
 .brand-ai {
   font-family: 'Inter Tight', sans-serif;
   font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 999px;
-  background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
+  padding: 3px 9px; border-radius: 999px;
+  background: var(--grad);
   color: #0A2A1F;
 }
-.nav-back {
-  font-size: 14px; color: var(--ink-3); text-decoration: none;
-  display: flex; align-items: center; gap: 6px;
-  transition: color 180ms ease;
+.hd-right {
+  display: flex; align-items: center; gap: 20px;
 }
-.nav-back:hover { color: var(--ink); }
+.hd-count {
+  font-size: 13px; color: var(--ink-3); font-weight: 500;
+}
+.hd-back {
+  font-size: 13px; color: var(--ink-3); background: none; border: none;
+  cursor: pointer; padding: 0; display: flex; align-items: center; gap: 5px;
+  transition: color 160ms;
+}
+.hd-back:hover { color: var(--ink); }
 
-/* ===== Page wrap ===== */
-.page-wrap {
-  position: relative; z-index: 1; flex: 1;
-  display: flex; align-items: flex-start; justify-content: center;
-  padding: 24px 20px 56px;
+/* Progress bar */
+.prog-track {
+  height: 2px; background: var(--line); border-radius: 99px; overflow: hidden;
 }
-
-/* ===== Card ===== */
-.card {
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  box-shadow: 0 2px 4px rgba(15,30,26,0.04), 0 16px 48px rgba(15,30,26,0.10);
-  width: 100%; max-width: 560px;
-  padding: 48px 44px 44px;
-  display: flex; flex-direction: column; gap: 32px;
-}
-
-/* ===== Progress bar ===== */
-.progress-wrap {
-  display: flex; flex-direction: column; gap: 10px;
-}
-.progress-meta {
-  display: flex; align-items: center; justify-content: space-between;
-}
-.progress-step {
-  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--accent);
-}
-.progress-count {
-  font-size: 12px; color: var(--ink-3); font-weight: 500;
-}
-.progress-track {
-  height: 3px; background: var(--line); border-radius: 99px; overflow: hidden;
-}
-.progress-fill {
+.prog-fill {
   height: 100%;
-  background: linear-gradient(90deg, #5BCFFF, #4FE8A9, #D5FF66);
+  background: var(--grad);
   border-radius: 99px;
-  transition: width 380ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 400ms cubic-bezier(0.4,0,0.2,1);
 }
 
-/* ===== Screen header ===== */
-.screen-header { display: flex; flex-direction: column; gap: 8px; }
-.screen-eyebrow {
-  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--accent);
+/* ── Slides viewport ── */
+.slides-wrap {
+  position: fixed; inset: 0;
+  overflow: hidden;
 }
-.screen-title {
-  font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(24px, 4vw, 32px);
-  font-weight: 800; letter-spacing: -0.03em; line-height: 1.05;
-  color: var(--ink);
-}
-.screen-sub {
-  font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: 4px;
-}
-
-/* ===== Form elements ===== */
-.form-body { display: flex; flex-direction: column; gap: 16px; }
-
-.field { display: flex; flex-direction: column; gap: 6px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.field label {
-  font-size: 13px; font-weight: 600;
-  color: var(--ink-2); letter-spacing: 0.01em;
-}
-.field label .req { color: var(--accent); margin-left: 2px; }
-.field input,
-.field select,
-.field textarea {
-  width: 100%; padding: 11px 14px;
-  border-radius: 12px; border: 1.5px solid var(--line);
-  background: var(--bg-soft);
-  font-family: 'Inter', sans-serif; font-size: 15px; color: var(--ink);
-  outline: none;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
-  appearance: none; -webkit-appearance: none;
-}
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: #4FE8A9;
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.15);
-}
-.field input::placeholder,
-.field textarea::placeholder { color: var(--ink-3); opacity: 0.6; }
-.field textarea { resize: vertical; min-height: 110px; line-height: 1.55; }
-
-/* Select arrow */
-.select-wrap { position: relative; }
-.select-wrap select { padding-right: 36px; cursor: pointer; }
-.select-wrap::after {
-  content: '';
-  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-  width: 0; height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid var(--ink-3);
+.slide {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 24px 80px;
+  transition: transform 480ms cubic-bezier(0.77,0,0.175,1),
+              opacity 380ms ease;
   pointer-events: none;
 }
+.slide.state-below  { transform: translateY(60px);  opacity: 0; }
+.slide.state-active { transform: translateY(0);      opacity: 1; pointer-events: all; }
+.slide.state-above  { transform: translateY(-60px);  opacity: 0; }
 
-/* File upload */
-.file-upload-label {
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  padding: 28px 20px;
-  border-radius: 14px; border: 1.5px dashed var(--line);
-  background: var(--bg-soft);
-  cursor: pointer; text-align: center;
-  transition: border-color 180ms ease, background 180ms ease;
-}
-.file-upload-label:hover { border-color: #4FE8A9; background: rgba(79,232,169,0.04); }
-.file-upload-label.has-file { border-color: #4FE8A9; border-style: solid; }
-.file-upload-icon {
-  width: 40px; height: 40px;
-  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--ink-3);
-}
-.file-upload-text { font-size: 14px; color: var(--ink-2); font-weight: 500; }
-.file-upload-hint { font-size: 12px; color: var(--ink-3); }
-input[type="file"] { display: none; }
-
-/* ===== Choice grids ===== */
-.choice-grid {
-  display: grid; gap: 8px;
-}
-.choice-grid.cols-2 { grid-template-columns: 1fr 1fr; }
-.choice-grid.cols-1 { grid-template-columns: 1fr; }
-.choice-label {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 12px 14px;
-  border-radius: 12px; border: 1.5px solid var(--line);
-  background: var(--bg-soft); cursor: pointer;
-  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
-  font-size: 14px; font-weight: 500; color: var(--ink-2); line-height: 1.4;
-  user-select: none;
-}
-.choice-label:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.04); }
-.choice-label input { display: none; }
-.choice-label.selected {
-  border-color: #4FE8A9;
-  background: rgba(79,232,169,0.08);
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.12);
-  color: var(--ink);
-}
-.choice-label .choice-check {
-  width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;
-  border-radius: 50%; border: 1.5px solid var(--line);
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: border-color 180ms ease, background 180ms ease;
-}
-.choice-label.selected .choice-check {
-  background: #4FE8A9; border-color: #4FE8A9;
-}
-.choice-label .choice-check-sq {
-  width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;
-  border-radius: 5px; border: 1.5px solid var(--line);
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: border-color 180ms ease, background 180ms ease;
-}
-.choice-label.selected .choice-check-sq {
-  background: #4FE8A9; border-color: #4FE8A9;
-}
-.check-icon { opacity: 0; transition: opacity 120ms ease; }
-.choice-label.selected .check-icon { opacity: 1; }
-
-/* Other free text input inline */
-.other-input {
-  margin-top: 6px;
-  display: none;
-}
-.other-input input {
-  width: 100%; padding: 9px 12px;
-  border-radius: 9px; border: 1.5px solid var(--line);
-  background: var(--bg-soft);
-  font-family: 'Inter', sans-serif; font-size: 14px; color: var(--ink);
-  outline: none;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
-}
-.other-input input:focus {
-  border-color: #4FE8A9;
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.15);
-}
-.other-input.visible { display: block; }
-
-/* ===== Honesty callout ===== */
-.honesty-box {
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: rgba(79,232,169,0.07);
-  border: 1px solid rgba(79,232,169,0.25);
-  font-size: 14px; color: var(--ink-2); line-height: 1.55;
+/* ── Slide inner ── */
+.slide-inner {
+  width: 100%; max-width: 620px;
+  display: flex; flex-direction: column; gap: 28px;
 }
 
-/* ===== Question label ===== */
-.q-label {
-  font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.4;
+/* Question number badge */
+.q-num {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 600; color: var(--ink-3);
 }
-.q-optional {
-  font-size: 12px; font-weight: 500; color: var(--ink-3); margin-left: 6px;
+.q-num-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  background: var(--grad);
+  border-radius: 4px;
 }
+.q-num-arrow svg { display: block; }
 
-/* ===== Webinar date list ===== */
-.webinar-list { display: flex; flex-direction: column; gap: 8px; }
-.webinar-option {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px;
-  border-radius: 12px; border: 1.5px solid var(--line);
-  background: var(--bg-soft); cursor: pointer;
-  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
-  user-select: none;
-}
-.webinar-option:hover { border-color: rgba(79,232,169,0.5); }
-.webinar-option.selected {
-  border-color: #4FE8A9;
-  background: rgba(79,232,169,0.08);
-  box-shadow: 0 0 0 3px rgba(79,232,169,0.12);
-}
-.webinar-option input { display: none; }
-.webinar-date-group { display: flex; flex-direction: column; gap: 2px; }
-.webinar-date { font-size: 15px; font-weight: 600; color: var(--ink); }
-.webinar-time { font-size: 13px; color: var(--ink-3); }
-.webinar-spots {
-  font-size: 12px; font-weight: 600; color: var(--accent);
-  padding: 3px 8px; border-radius: 999px;
-  background: rgba(10,140,102,0.09);
-}
-
-/* ===== Confirmation screen ===== */
-.confirm-icon {
-  width: 64px; height: 64px; border-radius: 18px;
-  background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 50%, #D5FF66 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px;
-}
-.confirm-title {
+/* Question text */
+.q-text {
   font-family: 'Inter Tight', sans-serif;
-  font-size: clamp(26px, 4vw, 34px);
+  font-size: clamp(26px, 4.5vw, 42px);
   font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
   color: var(--ink);
 }
-.confirm-sub {
-  font-size: 16px; color: var(--ink-3); line-height: 1.6;
+.q-text em {
+  font-style: italic;
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.confirm-booking {
-  padding: 16px 20px;
-  border-radius: 14px;
-  background: var(--bg-soft);
-  border: 1px solid var(--line);
+.q-sub {
+  font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -14px;
+}
+
+/* ── Text inputs ── */
+.tf-input {
+  width: 100%;
+  background: none;
+  border: none; border-bottom: 2px solid var(--line);
+  padding: 10px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(18px, 2.5vw, 26px);
+  color: var(--ink); outline: none;
+  transition: border-color 200ms;
+  caret-color: var(--iri-green);
+}
+.tf-input::placeholder { color: var(--ink-3); opacity: 0.45; }
+.tf-input:focus { border-color: var(--iri-green); }
+
+.tf-textarea {
+  width: 100%;
+  background: none;
+  border: none; border-bottom: 2px solid var(--line);
+  padding: 10px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--ink); outline: none; resize: none;
+  transition: border-color 200ms;
+  caret-color: var(--iri-green);
+  min-height: 100px;
+  line-height: 1.6;
+}
+.tf-textarea::placeholder { color: var(--ink-3); opacity: 0.45; }
+.tf-textarea:focus { border-color: var(--iri-green); }
+
+/* Select */
+.tf-select-wrap { position: relative; }
+.tf-select {
+  width: 100%;
+  background: none;
+  border: none; border-bottom: 2px solid var(--line);
+  padding: 10px 36px 10px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(18px, 2.5vw, 26px);
+  color: var(--ink); outline: none; cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  transition: border-color 200ms;
+}
+.tf-select:focus { border-color: var(--iri-green); }
+.tf-select option { font-size: 16px; }
+.tf-select-arrow {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  pointer-events: none; color: var(--ink-3);
+}
+
+/* ── Choice pills ── */
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choices.grid-2 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.choice {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  border-radius: 10px; border: 1.5px solid var(--line);
+  background: var(--bg-soft); cursor: pointer;
+  transition: border-color 180ms, background 180ms, box-shadow 180ms;
+  font-size: 15px; font-weight: 500; color: var(--ink-2);
+  user-select: none;
+}
+.choice:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.05); }
+.choice input { display: none; }
+.choice.sel {
+  border-color: #4FE8A9;
+  background: rgba(79,232,169,0.1);
+  box-shadow: 0 0 0 3px rgba(79,232,169,0.15);
+  color: var(--ink);
+}
+.choice-key {
+  min-width: 22px; height: 22px;
+  border-radius: 5px; border: 1.5px solid var(--line);
+  background: var(--bg); font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3); flex-shrink: 0;
+  transition: background 180ms, border-color 180ms, color 180ms;
+}
+.choice.sel .choice-key {
+  background: var(--iri-green); border-color: var(--iri-green); color: #0A2A1F;
+}
+
+/* ── File upload ── */
+.file-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  padding: 32px 24px;
+  border-radius: 14px; border: 1.5px dashed var(--line);
+  background: var(--bg-soft); cursor: pointer; text-align: center;
+  transition: border-color 180ms, background 180ms;
+}
+.file-drop:hover,
+.file-drop.has-file { border-color: #4FE8A9; border-style: solid; background: rgba(79,232,169,0.04); }
+.file-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: var(--bg); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center; color: var(--ink-3);
+}
+.file-text { font-size: 15px; font-weight: 600; color: var(--ink-2); }
+.file-hint { font-size: 13px; color: var(--ink-3); }
+input[type="file"] { display: none; }
+
+/* Language tags */
+.lang-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.lang-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 999px;
+  background: rgba(79,232,169,0.12); border: 1px solid rgba(79,232,169,0.3);
+  font-size: 13px; font-weight: 500; color: var(--ink-2);
+}
+.lang-tag button {
+  background: none; border: none; cursor: pointer;
+  color: var(--ink-3); font-size: 16px; line-height: 1;
+  padding: 0; margin: 0;
+}
+
+/* Webinar options */
+.webinar-list { display: flex; flex-direction: column; gap: 8px; }
+.webinar-opt {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 12px; border: 1.5px solid var(--line);
+  background: var(--bg-soft); cursor: pointer;
+  transition: border-color 180ms, background 180ms, box-shadow 180ms;
+  user-select: none;
+}
+.webinar-opt:hover { border-color: rgba(79,232,169,0.5); }
+.webinar-opt.sel {
+  border-color: #4FE8A9;
+  background: rgba(79,232,169,0.09);
+  box-shadow: 0 0 0 3px rgba(79,232,169,0.15);
+}
+.webinar-opt input { display: none; }
+.webinar-date { font-size: 15px; font-weight: 600; color: var(--ink); }
+.webinar-time { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+.webinar-spots {
+  font-size: 12px; font-weight: 600; color: var(--accent);
+  padding: 3px 9px; border-radius: 999px;
+  background: rgba(10,140,102,0.09); white-space: nowrap;
+}
+
+/* Honesty note */
+.honesty {
+  padding: 14px 16px; border-radius: 10px;
+  background: rgba(79,232,169,0.07);
+  border: 1px solid rgba(79,232,169,0.25);
+  font-size: 14px; color: var(--ink-3); line-height: 1.6;
+}
+
+/* ── CTA row ── */
+.cta-row {
   display: flex; align-items: center; gap: 14px;
 }
-.confirm-booking-icon {
+.btn-ok {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 24px;
+  background: var(--ink); color: #fff;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+  border: none; border-radius: 10px; cursor: pointer;
+  transition: box-shadow 200ms, transform 150ms;
+}
+.btn-ok:hover {
+  box-shadow: 0 10px 28px rgba(79,232,169,0.28), 0 4px 10px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+}
+.btn-ok svg { flex-shrink: 0; }
+.key-hint { font-size: 12px; color: var(--ink-3); display: flex; align-items: center; gap: 5px; }
+.key-pill {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 7px; border-radius: 5px;
+  border: 1px solid var(--line); background: var(--bg-soft);
+  font-size: 11px; font-weight: 600; color: var(--ink-3);
+}
+.error-msg {
+  font-size: 13px; color: #D94040; font-weight: 500;
+  display: none;
+}
+.error-msg.show { display: block; }
+
+/* Other free text */
+.other-wrap { display: none; margin-top: 6px; }
+.other-wrap.vis { display: block; }
+.other-wrap input {
+  width: 100%; background: none;
+  border: none; border-bottom: 1.5px solid var(--line);
+  padding: 8px 0;
+  font-family: 'Inter', sans-serif; font-size: 17px; color: var(--ink);
+  outline: none; transition: border-color 200ms;
+  caret-color: var(--iri-green);
+}
+.other-wrap input:focus { border-color: var(--iri-green); }
+.other-wrap input::placeholder { color: var(--ink-3); opacity: 0.5; }
+
+/* ── Confirmation ── */
+.confirm-wrap {
+  display: flex; flex-direction: column; gap: 24px;
+}
+.confirm-icon {
+  width: 72px; height: 72px; border-radius: 20px;
+  background: var(--grad);
+  display: flex; align-items: center; justify-content: center; font-size: 32px;
+}
+.confirm-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800; letter-spacing: -0.035em; line-height: 1.05;
+  color: var(--ink);
+}
+.confirm-sub {
+  font-size: 16px; color: var(--ink-3); line-height: 1.6; max-width: 48ch;
+}
+.confirm-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; border-radius: 14px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  max-width: 400px;
+}
+.confirm-card-icon {
   width: 40px; height: 40px; flex-shrink: 0;
   background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
   display: flex; align-items: center; justify-content: center; font-size: 18px;
 }
-.confirm-booking-label { font-size: 14px; color: var(--ink-3); }
-.confirm-booking-value { font-size: 15px; font-weight: 600; color: var(--ink); }
+.confirm-card-label { font-size: 12px; color: var(--ink-3); }
+.confirm-card-val { font-size: 15px; font-weight: 600; color: var(--ink); }
 .confirm-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .btn-cal {
-  flex: 1; min-width: 140px; padding: 13px 16px;
-  border-radius: 12px; border: 1.5px solid var(--line);
-  background: var(--bg-soft);
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: var(--ink);
-  cursor: pointer; text-align: center; text-decoration: none;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  transition: border-color 180ms ease, background 180ms ease;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 12px 20px; border-radius: 10px;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+  font-size: 14px; font-weight: 600; color: var(--ink-2);
+  cursor: pointer; text-decoration: none;
+  transition: border-color 180ms, background 180ms;
 }
-.btn-cal:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.04); }
+.btn-cal:hover { border-color: rgba(79,232,169,0.5); background: rgba(79,232,169,0.05); }
 .btn-community {
-  flex: 1; min-width: 140px; padding: 13px 16px;
-  border-radius: 12px;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 12px 20px; border-radius: 10px;
   background: var(--ink); color: #fff;
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
-  cursor: pointer; text-align: center; text-decoration: none;
-  display: flex; align-items: center; justify-content: center; gap: 7px;
-  transition: box-shadow 180ms ease, transform 150ms ease;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: box-shadow 180ms, transform 150ms;
 }
 .btn-community:hover {
-  box-shadow: 0 12px 28px rgba(79,232,169,0.25), 0 4px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 10px 24px rgba(79,232,169,0.25), 0 4px 10px rgba(0,0,0,0.15);
   transform: translateY(-1px);
 }
 
-/* ===== Primary CTA ===== */
-.btn-next {
-  width: 100%; padding: 15px;
-  background: var(--ink); color: #fff;
-  font-family: 'Inter Tight', sans-serif;
-  font-size: 16px; font-weight: 700;
-  border: none; border-radius: 14px; cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  letter-spacing: -0.01em;
+/* ── Footer nav ── */
+.foot {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 16px 32px;
+  pointer-events: none;
 }
-.btn-next:hover {
-  box-shadow: 0 12px 28px rgba(79,232,169,0.25), 0 4px 12px rgba(0,0,0,0.18);
-  transform: translateY(-1px);
+.foot-arrows {
+  display: flex; gap: 6px; pointer-events: all;
 }
-.btn-next:disabled {
-  opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none;
+.foot-arrow {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 1.5px solid var(--line); background: var(--bg-soft);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--ink-3);
+  transition: border-color 160ms, color 160ms, background 160ms;
 }
+.foot-arrow:hover { border-color: var(--ink-3); color: var(--ink); }
+.foot-arrow:disabled { opacity: 0.3; cursor: default; }
 
-/* ===== Error state ===== */
-.field.has-error input,
-.field.has-error select,
-.field.has-error textarea {
-  border-color: #E53E3E;
-  box-shadow: 0 0 0 3px rgba(229,62,62,0.1);
-}
-.field-error {
-  font-size: 12px; color: #E53E3E; font-weight: 500; margin-top: 2px;
-  display: none;
-}
-.field.has-error .field-error { display: block; }
-
-/* ===== Divider ===== */
-.divider {
-  height: 1px; background: var(--line); border: none; margin: 4px 0;
-}
-
-/* ===== Footer ===== */
-.card-footer { font-size: 12px; color: var(--ink-3); text-align: center; }
-
-/* ===== Mobile ===== */
+/* ── Mobile ── */
 @media (max-width: 600px) {
-  .nav { padding: 12px 20px; }
-  .card { padding: 32px 24px 32px; border-radius: 20px; gap: 24px; }
-  .choice-grid.cols-2 { grid-template-columns: 1fr; }
-  .field-row { grid-template-columns: 1fr; }
-  .confirm-actions { flex-direction: column; }
+  .hd { padding: 0 20px; }
+  .foot { padding: 14px 20px; }
+  .choices.grid-2 { grid-template-columns: 1fr; }
+  .slide { padding: 74px 20px 72px; }
+  .key-hint { display: none; }
 }
-
-/* ===== Step visibility ===== */
-.step { display: none; flex-direction: column; gap: 24px; }
-.step.active { display: flex; }
-
 </style>
 </head>
 <body>
 
-<!-- Ambient background -->
-<div class="auth-bg" aria-hidden="true">
-  <div class="auth-bg-blob b1"></div>
-  <div class="auth-bg-blob b2"></div>
-  <div class="auth-bg-blob b3"></div>
+<!-- Header -->
+<header class="hd">
+  <div class="hd-row">
+    <a href="index.html" class="brand">
+      <svg width="130" height="19" viewBox="0 0 160 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PowerToFly"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7617 10.928C15.7617 2.86221 21.426 0 26.2767 0C28.9615 0 31.3838 0.986191 33.0976 2.77713C34.9591 4.72298 35.9433 7.53213 35.9433 10.9005C35.9433 18.9575 30.5117 21.8282 25.4283 21.8282C22.7435 21.8282 20.3209 20.842 18.6074 19.0511C16.7459 17.1053 15.7617 14.2964 15.7617 10.928ZM26.4544 19.2225C29.7189 19.2225 31.7468 16.4109 31.7468 11.8849C31.7468 6.32669 29.1355 2.59233 25.2498 2.59233C21.9855 2.59233 19.9576 5.40392 19.9576 9.92991C19.9576 15.4881 22.5686 19.2225 26.4544 19.2225Z" fill="black"/><path d="M60.3487 0.682238L60.388 0.42334H64.0336L57.5637 21.4038H53.1831L49.515 6.05079L45.2528 21.4038H40.6598L35.6982 0.42334H39.7348L43.6016 17.256L47.9597 0.42334H52.024L55.958 17.3081L58.4575 8.50437L58.4691 8.51565C59.9813 3.03757 60.3445 0.708726 60.3487 0.682238Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M94.664 6.88663L94.7092 6.90919V6.41579C94.7092 0.978936 90.0786 0.24585 85.549 0.24585C84.3163 0.24585 83.0046 0.252558 82.0012 0.263231C80.6684 0.276649 80.002 0.3908 80.002 0.605684V21.3907H83.8285V12.6763L85.2266 12.8303L92.1919 21.3907H96.9639L89.0199 12.5641C90.8851 11.9548 94.3838 10.6094 94.664 6.88663ZM90.8143 6.52557C90.8142 8.0607 90.2706 10.6359 86.6306 10.6359C86.2535 10.6359 85.4803 10.6234 85.4092 10.6222L83.8428 10.5417V2.72962C84.1799 2.68602 84.8148 2.61954 85.5218 2.61954C88.2708 2.61954 90.8143 3.09281 90.8143 6.52557Z" fill="black"/><path d="M155.887 0.623079L155.96 0.42334H160L152.907 12.1195V21.3898H149.08V12.3994L141.196 0.42334H145.571L151.337 9.52014L152.047 8.22443C154.993 3.00663 155.87 0.667379 155.887 0.623079Z" fill="black"/><path d="M106.876 3.66406H97.958V5.88711H101.366V13.4064H103.674V5.88711H106.876V3.66406Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M106.103 12.4732C106.103 9.61036 108.264 7.45166 111.129 7.45166C114.042 7.45166 116.157 9.5634 116.157 12.4732C116.157 15.3671 114.042 17.4676 111.129 17.4676C108.217 17.4676 106.103 15.3671 106.103 12.4732ZM111.129 15.2171C112.765 15.2171 113.78 14.1604 113.78 12.4595C113.78 10.8103 112.715 9.70215 111.129 9.70215C109.552 9.70215 108.492 10.8103 108.492 12.4595C108.492 14.1345 109.527 15.2171 111.129 15.2171Z" fill="black"/><path d="M69.3816 11.738H77.3604V9.2277H69.3816V2.91962H77.6205V0.42334H65.541V21.3901H78.1544V18.8935H69.3816V11.738Z" fill="black"/><path d="M123.464 21.3901H119.638V0.42334H131.717V2.91962H123.464V9.50093H131.416V12.1344H123.464V21.3901Z" fill="black"/><path d="M137.447 0.42334H133.62V21.3901H145.74V18.8935H137.447V0.42334Z" fill="black"/><path d="M0.299774 0.300435C0.330911 0.299825 3.43396 0.24585 5.57451 0.24585C8.59025 0.24585 11.6246 0.489195 13.3897 2.25726C14.3592 3.22821 14.8486 4.5907 14.844 6.30723C14.844 11.6026 10.3309 12.9465 8.39061 13.2783C7.54532 13.428 6.37461 13.5289 5.47865 13.5289C5.06654 13.5289 4.2823 13.4317 3.82684 13.3701V21.3904H0V9.09717L0.463397 9.37742C2.31088 10.4953 3.74473 11.101 6.026 11.101C9.29237 11.101 10.9488 9.63052 10.9488 6.73019C10.9488 3.11751 8.34604 2.61954 5.53329 2.61954C4.82202 2.61954 4.17119 2.68693 3.82684 2.73054V9.01819L3.43671 8.90567C3.3494 8.88036 1.28549 8.27199 0.0741802 6.86803L0 6.78203V0.305924L0.299774 0.300435Z" fill="black"/></svg>
+      <span class="brand-ai">AI</span>
+    </a>
+    <div class="hd-right">
+      <span class="hd-count" id="hdCount"></span>
+      <button class="hd-back" id="btnBack" onclick="goBack()" style="display:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+    </div>
+  </div>
+  <div class="prog-track">
+    <div class="prog-fill" id="progFill" style="width:0%"></div>
+  </div>
+</header>
+
+<!-- Slides -->
+<div class="slides-wrap" id="slidesWrap">
+
+  <!-- 0: Welcome -->
+  <div class="slide state-below" data-index="0">
+    <div class="slide-inner">
+      <div class="q-text">Join the <em>AI talent</em> community.</div>
+      <p class="q-sub">We work with experts in every field to train and improve AI — no matter where you live. This takes about 4 minutes.</p>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">
+          Get started
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1: Full name -->
+  <div class="slide state-below" data-index="1">
+    <div class="slide-inner">
+      <div class="q-num">
+        <span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        1 →
+      </div>
+      <div class="q-text">What's your full name?</div>
+      <input class="tf-input" id="fullname" type="text" placeholder="Your name" autocomplete="name" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-1">Please enter your name.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2: Email -->
+  <div class="slide state-below" data-index="2">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 →</div>
+      <div class="q-text">And your email address?</div>
+      <input class="tf-input" id="email" type="email" placeholder="you@example.com" autocomplete="email" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-2">Please enter a valid email.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3: Password -->
+  <div class="slide state-below" data-index="3">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 →</div>
+      <div class="q-text">Create a password.</div>
+      <p class="q-sub">At least 8 characters.</p>
+      <input class="tf-input" id="password" type="password" placeholder="••••••••" autocomplete="new-password" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-3">Minimum 8 characters.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4: Country -->
+  <div class="slide state-below" data-index="4">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4 →</div>
+      <div class="q-text">Where are you based?</div>
+      <p class="q-sub">Your location won't hold you back — we have opportunities worldwide.</p>
+      <div class="tf-select-wrap">
+        <select class="tf-select" id="country" onchange="clearErr(this)">
+          <option value="">Select your country…</option>
+          <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahrain</option><option>Bangladesh</option><option>Belarus</option><option>Belgium</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Brazil</option><option>Bulgaria</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Chile</option><option>China</option><option>Colombia</option><option>Costa Rica</option><option>Croatia</option><option>Cyprus</option><option>Czech Republic</option><option>Denmark</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Estonia</option><option>Ethiopia</option><option>Finland</option><option>France</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Guatemala</option><option>Honduras</option><option>Hungary</option><option>India</option><option>Indonesia</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kosovo</option><option>Kuwait</option><option>Latvia</option><option>Lebanon</option><option>Lithuania</option><option>Luxembourg</option><option>Malaysia</option><option>Malta</option><option>Mexico</option><option>Moldova</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Myanmar</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nigeria</option><option>North Macedonia</option><option>Norway</option><option>Pakistan</option><option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>South Africa</option><option>South Korea</option><option>Spain</option><option>Sri Lanka</option><option>Sweden</option><option>Switzerland</option><option>Taiwan</option><option>Tanzania</option><option>Thailand</option><option>Tunisia</option><option>Turkey</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+        </select>
+        <span class="tf-select-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-4">Please select your country.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5: LinkedIn -->
+  <div class="slide state-below" data-index="5">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5 →</div>
+      <div class="q-text">Your LinkedIn profile URL.</div>
+      <input class="tf-input" id="linkedin" type="url" placeholder="https://linkedin.com/in/yourname" oninput="clearErr(this)" onkeydown="handleEnter(event,next)">
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-5">Please enter your LinkedIn URL.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6: Resume -->
+  <div class="slide state-below" data-index="6">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6 →</div>
+      <div class="q-text">Upload your resume or CV.</div>
+      <p class="q-sub">PDF or Word · Max 10 MB</p>
+      <label class="file-drop" id="resumeLabel" for="resumeFile">
+        <div class="file-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+        <span class="file-text" id="resumeText">Click to upload</span>
+        <span class="file-hint">or drag and drop</span>
+      </label>
+      <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="error-msg" id="err-6">Please upload your CV.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7: Expertise -->
+  <div class="slide state-below" data-index="7">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>7 →</div>
+      <div class="q-text">Your main area of expertise?</div>
+      <div class="choices grid-2" id="expertiseGrid">
+        <label class="choice" data-val="Healthcare &amp; medicine"><input type="radio" name="expertise"><span class="choice-key">A</span>Healthcare &amp; medicine</label>
+        <label class="choice" data-val="Legal"><input type="radio" name="expertise"><span class="choice-key">B</span>Legal</label>
+        <label class="choice" data-val="Finance &amp; accounting"><input type="radio" name="expertise"><span class="choice-key">C</span>Finance &amp; accounting</label>
+        <label class="choice" data-val="Engineering"><input type="radio" name="expertise"><span class="choice-key">D</span>Engineering</label>
+        <label class="choice" data-val="Software &amp; IT"><input type="radio" name="expertise"><span class="choice-key">E</span>Software &amp; IT</label>
+        <label class="choice" data-val="Science &amp; research"><input type="radio" name="expertise"><span class="choice-key">F</span>Science &amp; research</label>
+        <label class="choice" data-val="Education &amp; teaching"><input type="radio" name="expertise"><span class="choice-key">G</span>Education &amp; teaching</label>
+        <label class="choice" data-val="Languages &amp; linguistics"><input type="radio" name="expertise"><span class="choice-key">H</span>Languages &amp; linguistics</label>
+        <label class="choice" data-val="Business &amp; management"><input type="radio" name="expertise"><span class="choice-key">I</span>Business &amp; management</label>
+        <label class="choice" data-val="Creative &amp; writing"><input type="radio" name="expertise"><span class="choice-key">J</span>Creative &amp; writing</label>
+        <label class="choice" data-val="Data &amp; analytics"><input type="radio" name="expertise"><span class="choice-key">K</span>Data &amp; analytics</label>
+        <label class="choice" data-val="Other"><input type="radio" name="expertise"><span class="choice-key">L</span>Other</label>
+      </div>
+      <div class="other-wrap" id="expertiseOtherWrap">
+        <input type="text" id="expertiseOther" placeholder="Describe your field…" onkeydown="handleEnter(event,next)">
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="error-msg" id="err-7">Pick one to continue.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8: Years -->
+  <div class="slide state-below" data-index="8">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>8 →</div>
+      <div class="q-text">Years of experience in that field?</div>
+      <div class="choices" id="yearsGrid">
+        <label class="choice" data-val="Less than 2 years"><input type="radio" name="years"><span class="choice-key">A</span>Less than 2 years</label>
+        <label class="choice" data-val="2–5 years"><input type="radio" name="years"><span class="choice-key">B</span>2–5 years</label>
+        <label class="choice" data-val="5–10 years"><input type="radio" name="years"><span class="choice-key">C</span>5–10 years</label>
+        <label class="choice" data-val="More than 10 years"><input type="radio" name="years"><span class="choice-key">D</span>More than 10 years</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="error-msg" id="err-8">Pick one to continue.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9: AI level -->
+  <div class="slide state-below" data-index="9">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>9 →</div>
+      <div class="q-text">How would you describe your experience with AI?</div>
+      <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work — accurate answers get you to the right opportunities faster.</div>
+      <div class="choices" id="aiLevelGrid">
+        <label class="choice" data-val="New to AI"><input type="radio" name="aiLevel"><span class="choice-key">A</span><span><strong>New to AI</strong> — curious but haven't used AI tools yet</span></label>
+        <label class="choice" data-val="Beginner"><input type="radio" name="aiLevel"><span class="choice-key">B</span><span><strong>Beginner</strong> — used ChatGPT a little</span></label>
+        <label class="choice" data-val="Regular user"><input type="radio" name="aiLevel"><span class="choice-key">C</span><span><strong>Regular user</strong> — use AI tools weekly for work or study</span></label>
+        <label class="choice" data-val="Advanced"><input type="radio" name="aiLevel"><span class="choice-key">D</span><span><strong>Advanced</strong> — build, fine-tune, or evaluate AI</span></label>
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="error-msg" id="err-9">Pick one to continue.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10: AI work types -->
+  <div class="slide state-below" data-index="10">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 →</div>
+      <div class="q-text">Which kinds of AI work interest you?</div>
+      <p class="q-sub">Optional — pick any that apply.</p>
+      <div class="choices" id="aiWorkGrid">
+        <label class="choice" data-val="Reviewing and rating AI answers"><input type="checkbox" name="aiWork"><span class="choice-key">A</span>Reviewing and rating AI answers</label>
+        <label class="choice" data-val="Writing prompts and examples"><input type="checkbox" name="aiWork"><span class="choice-key">B</span>Writing prompts and examples</label>
+        <label class="choice" data-val="Correcting or improving AI output"><input type="checkbox" name="aiWork"><span class="choice-key">C</span>Correcting or improving AI output</label>
+        <label class="choice" data-val="Using my expert knowledge to check AI in my field"><input type="checkbox" name="aiWork"><span class="choice-key">D</span>Using my expert knowledge to check AI in my field</label>
+        <label class="choice" data-val="Not sure yet"><input type="checkbox" name="aiWork"><span class="choice-key">E</span>Not sure yet</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11: Goals -->
+  <div class="slide state-below" data-index="11">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
+      <div class="q-text">What are you looking for?</div>
+      <p class="q-sub">Pick any that apply.</p>
+      <div class="choices" id="goalsGrid">
+        <label class="choice" data-val="Flexible income / side work"><input type="checkbox" name="goals"><span class="choice-key">A</span>Flexible income / side work</label>
+        <label class="choice" data-val="A career pivot into AI"><input type="checkbox" name="goals"><span class="choice-key">B</span>A career pivot into AI</label>
+        <label class="choice" data-val="Full-time AI work"><input type="checkbox" name="goals"><span class="choice-key">C</span>Full-time AI work</label>
+        <label class="choice" data-val="To learn AI skills"><input type="checkbox" name="goals"><span class="choice-key">D</span>To learn AI skills</label>
+        <label class="choice" data-val="To hear about opportunities first"><input type="checkbox" name="goals"><span class="choice-key">E</span>To hear about opportunities first</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="error-msg" id="err-11">Pick at least one.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12: Hours -->
+  <div class="slide state-below" data-index="12">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>12 →</div>
+      <div class="q-text">How many hours per week could you commit?</div>
+      <div class="choices grid-2" id="hoursGrid">
+        <label class="choice" data-val="Under 5 hours"><input type="radio" name="hours"><span class="choice-key">A</span>Under 5 hours</label>
+        <label class="choice" data-val="5–10 hours"><input type="radio" name="hours"><span class="choice-key">B</span>5–10 hours</label>
+        <label class="choice" data-val="10–20 hours"><input type="radio" name="hours"><span class="choice-key">C</span>10–20 hours</label>
+        <label class="choice" data-val="20+ hours"><input type="radio" name="hours"><span class="choice-key">D</span>20+ hours</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="error-msg" id="err-12">Pick one to continue.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13: Languages -->
+  <div class="slide state-below" data-index="13">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>13 →</div>
+      <div class="q-text">Languages you speak fluently?</div>
+      <p class="q-sub">Optional — used for some projects.</p>
+      <div class="tf-select-wrap">
+        <select class="tf-select" id="langSelect" onchange="addLang(this.value); this.value=''">
+          <option value="">Add a language…</option>
+          <option>Arabic</option><option>Bengali</option><option>Chinese (Mandarin)</option><option>Chinese (Cantonese)</option><option>Dutch</option><option>English</option><option>French</option><option>German</option><option>Greek</option><option>Hebrew</option><option>Hindi</option><option>Indonesian</option><option>Italian</option><option>Japanese</option><option>Korean</option><option>Malay</option><option>Norwegian</option><option>Persian (Farsi)</option><option>Polish</option><option>Portuguese</option><option>Romanian</option><option>Russian</option><option>Spanish</option><option>Swahili</option><option>Swedish</option><option>Tagalog</option><option>Thai</option><option>Turkish</option><option>Ukrainian</option><option>Urdu</option><option>Vietnamese</option>
+        </select>
+        <span class="tf-select-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="lang-tags" id="langTags"></div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14: Why text -->
+  <div class="slide state-below" data-index="14">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>14 →</div>
+      <div class="q-text">Why do you want to do AI training work?</div>
+      <p class="q-sub">A few sentences is plenty.</p>
+      <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4" oninput="clearErr(this)"></textarea>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <span class="error-msg" id="err-14">Please write a few sentences.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 15: Webinar -->
+  <div class="slide state-below" data-index="15">
+    <div class="slide-inner">
+      <div class="q-num"><span class="q-num-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>15 →</div>
+      <div class="q-text">Last step — pick your onboarding session.</div>
+      <p class="q-sub">Join a live webinar to learn how it works, meet the team, and find out what's next.</p>
+      <div class="webinar-list" id="webinarList">
+        <label class="webinar-opt" data-val="Thursday, 12 June 2026 · 11:00 am ET">
+          <input type="radio" name="webinar">
+          <div><div class="webinar-date">Thursday, 12 June 2026</div><div class="webinar-time">11:00 am ET · 4:00 pm BST · 5:00 pm CET</div></div>
+          <span class="webinar-spots">12 spots left</span>
+        </label>
+        <label class="webinar-opt" data-val="Tuesday, 17 June 2026 · 2:00 pm ET">
+          <input type="radio" name="webinar">
+          <div><div class="webinar-date">Tuesday, 17 June 2026</div><div class="webinar-time">2:00 pm ET · 7:00 pm BST · 8:00 pm CET</div></div>
+          <span class="webinar-spots">18 spots left</span>
+        </label>
+        <label class="webinar-opt" data-val="Thursday, 19 June 2026 · 10:00 am ET">
+          <input type="radio" name="webinar">
+          <div><div class="webinar-date">Thursday, 19 June 2026</div><div class="webinar-time">10:00 am ET · 3:00 pm BST · 4:00 pm CET</div></div>
+          <span class="webinar-spots">24 spots left</span>
+        </label>
+        <label class="webinar-opt" data-val="Wednesday, 25 June 2026 · 6:00 pm ET">
+          <input type="radio" name="webinar">
+          <div><div class="webinar-date">Wednesday, 25 June 2026</div><div class="webinar-time">6:00 pm ET · 11:00 pm BST</div></div>
+          <span class="webinar-spots">30 spots left</span>
+        </label>
+      </div>
+      <div class="cta-row">
+        <button class="btn-ok" onclick="next()">Reserve my spot →</button>
+        <span class="error-msg" id="err-15">Pick a date to continue.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 16: Confirmation -->
+  <div class="slide state-below" data-index="16">
+    <div class="slide-inner">
+      <div class="confirm-wrap">
+        <div class="confirm-icon">🎉</div>
+        <div class="confirm-title">You're in!</div>
+        <p class="confirm-sub">We've saved your spot for <strong id="confirmedDate"></strong>. Check your email for the details — we'll be in touch with helpful content while you wait.</p>
+        <div class="confirm-card">
+          <div class="confirm-card-icon">📅</div>
+          <div>
+            <div class="confirm-card-label">Your onboarding webinar</div>
+            <div class="confirm-card-val" id="confirmedDateDetail"></div>
+          </div>
+        </div>
+        <div class="confirm-actions">
+          <a href="#" class="btn-cal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Add to calendar
+          </a>
+          <a href="#" class="btn-community">Join community →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<!-- Nav -->
-<nav class="nav">
-  <a href="index.html" class="nav-brand">
-    <svg width="140" height="20" viewBox="0 0 160 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PowerToFly"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7617 10.928C15.7617 2.86221 21.426 0 26.2767 0C28.9615 0 31.3838 0.986191 33.0976 2.77713C34.9591 4.72298 35.9433 7.53213 35.9433 10.9005C35.9433 18.9575 30.5117 21.8282 25.4283 21.8282C22.7435 21.8282 20.3209 20.842 18.6074 19.0511C16.7459 17.1053 15.7617 14.2964 15.7617 10.928ZM26.4544 19.2225C29.7189 19.2225 31.7468 16.4109 31.7468 11.8849C31.7468 6.32669 29.1355 2.59233 25.2498 2.59233C21.9855 2.59233 19.9576 5.40392 19.9576 9.92991C19.9576 15.4881 22.5686 19.2225 26.4544 19.2225Z" fill="black"/><path d="M60.3487 0.682238L60.388 0.42334H64.0336L57.5637 21.4038H53.1831L49.515 6.05079L45.2528 21.4038H40.6598L35.6982 0.42334H39.7348L43.6016 17.256L47.9597 0.42334H52.024L55.958 17.3081L58.4575 8.50437L58.4691 8.51565C59.9813 3.03757 60.3445 0.708726 60.3487 0.682238Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M94.664 6.88663L94.7092 6.90919V6.41579C94.7092 0.978936 90.0786 0.24585 85.549 0.24585C84.3163 0.24585 83.0046 0.252558 82.0012 0.263231C80.6684 0.276649 80.002 0.3908 80.002 0.605684V21.3907H83.8285V12.6763L85.2266 12.8303L92.1919 21.3907H96.9639L89.0199 12.5641C90.8851 11.9548 94.3838 10.6094 94.664 6.88663ZM90.8143 6.52557C90.8142 8.0607 90.2706 10.6359 86.6306 10.6359C86.2535 10.6359 85.4803 10.6234 85.4092 10.6222L83.8428 10.5417V2.72962C84.1799 2.68602 84.8148 2.61954 85.5218 2.61954C88.2708 2.61954 90.8143 3.09281 90.8143 6.52557Z" fill="black"/><path d="M155.887 0.623079L155.96 0.42334H160L152.907 12.1195V21.3898H149.08V12.3994L141.196 0.42334H145.571L151.337 9.52014L152.047 8.22443C154.993 3.00663 155.87 0.667379 155.887 0.623079Z" fill="black"/><path d="M106.876 3.66406H97.958V5.88711H101.366V13.4064H103.674V5.88711H106.876V3.66406Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M106.103 12.4732C106.103 9.61036 108.264 7.45166 111.129 7.45166C114.042 7.45166 116.157 9.5634 116.157 12.4732C116.157 15.3671 114.042 17.4676 111.129 17.4676C108.217 17.4676 106.103 15.3671 106.103 12.4732ZM111.129 15.2171C112.765 15.2171 113.78 14.1604 113.78 12.4595C113.78 10.8103 112.715 9.70215 111.129 9.70215C109.552 9.70215 108.492 10.8103 108.492 12.4595C108.492 14.1345 109.527 15.2171 111.129 15.2171Z" fill="black"/><path d="M69.3816 11.738H77.3604V9.2277H69.3816V2.91962H77.6205V0.42334H65.541V21.3901H78.1544V18.8935H69.3816V11.738Z" fill="black"/><path d="M123.464 21.3901H119.638V0.42334H131.717V2.91962H123.464V9.50093H131.416V12.1344H123.464V21.3901Z" fill="black"/><path d="M137.447 0.42334H133.62V21.3901H145.74V18.8935H137.447V0.42334Z" fill="black"/><path d="M0.299774 0.300435C0.330911 0.299825 3.43396 0.24585 5.57451 0.24585C8.59025 0.24585 11.6246 0.489195 13.3897 2.25726C14.3592 3.22821 14.8486 4.5907 14.844 6.30723C14.844 11.6026 10.3309 12.9465 8.39061 13.2783C7.54532 13.428 6.37461 13.5289 5.47865 13.5289C5.06654 13.5289 4.2823 13.4317 3.82684 13.3701V21.3904H0V9.09717L0.463397 9.37742C2.31088 10.4953 3.74473 11.101 6.026 11.101C9.29237 11.101 10.9488 9.63052 10.9488 6.73019C10.9488 3.11751 8.34604 2.61954 5.53329 2.61954C4.82202 2.61954 4.17119 2.68693 3.82684 2.73054V9.01819L3.43671 8.90567C3.3494 8.88036 1.28549 8.27199 0.0741802 6.86803L0 6.78203V0.305924L0.299774 0.300435Z" fill="black"/></svg>
-    <span class="brand-ai">AI</span>
-  </a>
-  <a href="index.html" class="nav-back">← Back</a>
-</nav>
-
-<!-- Main -->
-<main class="page-wrap">
-  <div class="card">
-
-    <!-- Progress -->
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-meta">
-        <span class="progress-step" id="progressLabel">Create account</span>
-        <span class="progress-count" id="progressCount">Step 1 of 7</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill" style="width: 14.3%"></div>
-      </div>
-    </div>
-
-    <!-- ── Step 1: Create account ── -->
-    <div class="step active" id="step-1">
-      <div class="screen-header">
-        <p class="screen-title">Create your account</p>
-        <p class="screen-sub">Join our AI talent community. We work with experts in every field to train and improve AI — and we have opportunities no matter where you live.</p>
-      </div>
-      <div class="form-body">
-        <div class="field" id="f-name">
-          <label for="fullname">Full name <span class="req">*</span></label>
-          <input type="text" id="fullname" placeholder="Your full name" autocomplete="name">
-          <span class="field-error">Please enter your full name.</span>
-        </div>
-        <div class="field" id="f-email">
-          <label for="email">Email <span class="req">*</span></label>
-          <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
-          <span class="field-error">Please enter a valid email address.</span>
-        </div>
-        <div class="field" id="f-password">
-          <label for="password">Password <span class="req">*</span></label>
-          <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password">
-          <span class="field-error">Password must be at least 8 characters.</span>
-        </div>
-        <div class="field" id="f-country">
-          <label for="country">Country <span class="req">*</span></label>
-          <div class="select-wrap">
-            <select id="country">
-              <option value="">Select your country…</option>
-              <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahrain</option><option>Bangladesh</option><option>Belarus</option><option>Belgium</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Brazil</option><option>Bulgaria</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Chile</option><option>China</option><option>Colombia</option><option>Costa Rica</option><option>Croatia</option><option>Cyprus</option><option>Czech Republic</option><option>Denmark</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Estonia</option><option>Ethiopia</option><option>Finland</option><option>France</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Guatemala</option><option>Honduras</option><option>Hungary</option><option>India</option><option>Indonesia</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kosovo</option><option>Kuwait</option><option>Latvia</option><option>Lebanon</option><option>Lithuania</option><option>Luxembourg</option><option>Malaysia</option><option>Malta</option><option>Mexico</option><option>Moldova</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Myanmar</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nigeria</option><option>North Macedonia</option><option>Norway</option><option>Pakistan</option><option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>South Africa</option><option>South Korea</option><option>Spain</option><option>Sri Lanka</option><option>Sweden</option><option>Switzerland</option><option>Taiwan</option><option>Tanzania</option><option>Thailand</option><option>Tunisia</option><option>Turkey</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
-            </select>
-          </div>
-          <span class="field-error">Please select your country.</span>
-          <p style="font-size:13px;color:var(--ink-3);margin-top:2px;">Your location won't hold you back — we have AI opportunities worldwide.</p>
-        </div>
-      </div>
-      <button class="btn-next" onclick="goNext(1)">Continue →</button>
-    </div>
-
-    <!-- ── Step 2: Professional background ── -->
-    <div class="step" id="step-2">
-      <div class="screen-header">
-        <p class="screen-title">Add your professional background</p>
-        <p class="screen-sub">This helps us understand your experience. Both are required.</p>
-      </div>
-      <div class="form-body">
-        <div class="field" id="f-linkedin">
-          <label for="linkedin">LinkedIn profile URL <span class="req">*</span></label>
-          <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourname">
-          <span class="field-error">Please enter your LinkedIn URL.</span>
-        </div>
-        <div class="field" id="f-resume">
-          <label>Resume / CV <span class="req">*</span></label>
-          <label class="file-upload-label" id="resumeLabel" for="resumeFile">
-            <div class="file-upload-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            </div>
-            <span class="file-upload-text" id="resumeText">Click to upload your CV</span>
-            <span class="file-upload-hint">PDF or Word document · Max 10 MB</span>
-          </label>
-          <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
-          <span class="field-error" id="resumeError">Please upload your resume or CV.</span>
-        </div>
-      </div>
-      <button class="btn-next" onclick="goNext(2)">Continue →</button>
-    </div>
-
-    <!-- ── Step 3: Expertise ── -->
-    <div class="step" id="step-3">
-      <div class="screen-header">
-        <p class="screen-title">Your area of expertise</p>
-      </div>
-      <div class="form-body">
-        <p class="q-label">What is your main area of expertise? <span class="req" style="color:var(--accent)">*</span></p>
-        <div class="choice-grid cols-2" id="expertiseGrid">
-          <label class="choice-label" data-group="expertise" data-value="Healthcare &amp; medicine">
-            <input type="radio" name="expertise" value="Healthcare &amp; medicine">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Healthcare &amp; medicine
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Legal">
-            <input type="radio" name="expertise" value="Legal">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Legal
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Finance &amp; accounting">
-            <input type="radio" name="expertise" value="Finance &amp; accounting">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Finance &amp; accounting
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Engineering">
-            <input type="radio" name="expertise" value="Engineering">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Engineering
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Software &amp; IT">
-            <input type="radio" name="expertise" value="Software &amp; IT">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Software &amp; IT
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Science &amp; research">
-            <input type="radio" name="expertise" value="Science &amp; research">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Science &amp; research
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Education &amp; teaching">
-            <input type="radio" name="expertise" value="Education &amp; teaching">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Education &amp; teaching
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Languages &amp; linguistics">
-            <input type="radio" name="expertise" value="Languages &amp; linguistics">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Languages &amp; linguistics
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Business &amp; management">
-            <input type="radio" name="expertise" value="Business &amp; management">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Business &amp; management
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Creative &amp; writing">
-            <input type="radio" name="expertise" value="Creative &amp; writing">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Creative &amp; writing
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Data &amp; analytics">
-            <input type="radio" name="expertise" value="Data &amp; analytics">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Data &amp; analytics
-          </label>
-          <label class="choice-label" data-group="expertise" data-value="Other">
-            <input type="radio" name="expertise" value="Other">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Other
-          </label>
-        </div>
-        <div class="other-input" id="expertiseOther">
-          <input type="text" id="expertiseOtherText" placeholder="Describe your field…">
-        </div>
-
-        <hr class="divider">
-
-        <p class="q-label">How many years of experience do you have in this field? <span class="req" style="color:var(--accent)">*</span></p>
-        <div class="choice-grid cols-2" id="yearsGrid">
-          <label class="choice-label" data-group="years" data-value="Less than 2 years">
-            <input type="radio" name="years" value="Less than 2 years">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Less than 2 years
-          </label>
-          <label class="choice-label" data-group="years" data-value="2–5 years">
-            <input type="radio" name="years" value="2–5 years">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            2–5 years
-          </label>
-          <label class="choice-label" data-group="years" data-value="5–10 years">
-            <input type="radio" name="years" value="5–10 years">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            5–10 years
-          </label>
-          <label class="choice-label" data-group="years" data-value="More than 10 years">
-            <input type="radio" name="years" value="More than 10 years">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            More than 10 years
-          </label>
-        </div>
-      </div>
-      <button class="btn-next" onclick="goNext(3)">Continue →</button>
-    </div>
-
-    <!-- ── Step 4: AI experience ── -->
-    <div class="step" id="step-4">
-      <div class="screen-header">
-        <p class="screen-title">Your experience with AI</p>
-      </div>
-      <div class="form-body">
-        <div class="honesty-box">
-          Please answer honestly. We verify everyone thoroughly before matching them to paid work — so accurate answers get you to the right opportunities faster. There's nothing to gain from guessing high.
-        </div>
-        <p class="q-label">How would you describe your experience with AI? <span class="req" style="color:var(--accent)">*</span></p>
-        <div class="choice-grid cols-1" id="aiLevelGrid">
-          <label class="choice-label" data-group="aiLevel" data-value="New to AI">
-            <input type="radio" name="aiLevel" value="New to AI">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><strong>New to AI</strong> — I'm curious but haven't really used AI tools</span>
-          </label>
-          <label class="choice-label" data-group="aiLevel" data-value="Beginner">
-            <input type="radio" name="aiLevel" value="Beginner">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><strong>Beginner</strong> — I've used tools like ChatGPT a little</span>
-          </label>
-          <label class="choice-label" data-group="aiLevel" data-value="Regular user">
-            <input type="radio" name="aiLevel" value="Regular user">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><strong>Regular user</strong> — I use AI tools weekly for work or study</span>
-          </label>
-          <label class="choice-label" data-group="aiLevel" data-value="Advanced">
-            <input type="radio" name="aiLevel" value="Advanced">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><strong>Advanced</strong> — I build, fine-tune, or evaluate AI (technical / data background)</span>
-          </label>
-        </div>
-
-        <hr class="divider">
-
-        <p class="q-label">Which kinds of AI work interest you? <span class="q-optional">(optional, pick any)</span></p>
-        <div class="choice-grid cols-1" id="aiWorkGrid">
-          <label class="choice-label" data-group="aiWork" data-value="Reviewing and rating AI answers">
-            <input type="checkbox" name="aiWork" value="Reviewing and rating AI answers">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Reviewing and rating AI answers
-          </label>
-          <label class="choice-label" data-group="aiWork" data-value="Writing prompts and examples">
-            <input type="checkbox" name="aiWork" value="Writing prompts and examples">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Writing prompts and examples
-          </label>
-          <label class="choice-label" data-group="aiWork" data-value="Correcting or improving AI output">
-            <input type="checkbox" name="aiWork" value="Correcting or improving AI output">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Correcting or improving AI output
-          </label>
-          <label class="choice-label" data-group="aiWork" data-value="Using my expert knowledge to check AI in my field">
-            <input type="checkbox" name="aiWork" value="Using my expert knowledge to check AI in my field">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Using my expert knowledge to check AI in my field
-          </label>
-          <label class="choice-label" data-group="aiWork" data-value="Not sure yet">
-            <input type="checkbox" name="aiWork" value="Not sure yet">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Not sure yet
-          </label>
-        </div>
-      </div>
-      <button class="btn-next" onclick="goNext(4)">Continue →</button>
-    </div>
-
-    <!-- ── Step 5: Goals ── -->
-    <div class="step" id="step-5">
-      <div class="screen-header">
-        <p class="screen-title">Your goals</p>
-      </div>
-      <div class="form-body">
-        <p class="q-label">What are you looking for? <span class="req" style="color:var(--accent)">*</span> <span class="q-optional">(pick any)</span></p>
-        <div class="choice-grid cols-1" id="goalsGrid">
-          <label class="choice-label" data-group="goals" data-value="Flexible income / side work">
-            <input type="checkbox" name="goals" value="Flexible income / side work">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Flexible income / side work
-          </label>
-          <label class="choice-label" data-group="goals" data-value="A career pivot into AI">
-            <input type="checkbox" name="goals" value="A career pivot into AI">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            A career pivot into AI
-          </label>
-          <label class="choice-label" data-group="goals" data-value="Full-time AI work">
-            <input type="checkbox" name="goals" value="Full-time AI work">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Full-time AI work
-          </label>
-          <label class="choice-label" data-group="goals" data-value="To learn AI skills">
-            <input type="checkbox" name="goals" value="To learn AI skills">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            To learn AI skills
-          </label>
-          <label class="choice-label" data-group="goals" data-value="To hear about opportunities first">
-            <input type="checkbox" name="goals" value="To hear about opportunities first">
-            <span class="choice-check-sq"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            To hear about opportunities first
-          </label>
-        </div>
-
-        <hr class="divider">
-
-        <p class="q-label">How much time could you commit per week? <span class="req" style="color:var(--accent)">*</span></p>
-        <div class="choice-grid cols-2" id="hoursGrid">
-          <label class="choice-label" data-group="hours" data-value="Under 5 hours">
-            <input type="radio" name="hours" value="Under 5 hours">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            Under 5 hours
-          </label>
-          <label class="choice-label" data-group="hours" data-value="5–10 hours">
-            <input type="radio" name="hours" value="5–10 hours">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            5–10 hours
-          </label>
-          <label class="choice-label" data-group="hours" data-value="10–20 hours">
-            <input type="radio" name="hours" value="10–20 hours">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            10–20 hours
-          </label>
-          <label class="choice-label" data-group="hours" data-value="20+ hours">
-            <input type="radio" name="hours" value="20+ hours">
-            <span class="choice-check"><svg class="check-icon" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#0A2A1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            20+ hours
-          </label>
-        </div>
-
-        <hr class="divider">
-
-        <p class="q-label">What languages do you speak fluently? <span class="q-optional">(optional — used for some projects)</span></p>
-        <div class="field">
-          <div class="select-wrap">
-            <select id="languagesSelect" onchange="addLanguage(this.value); this.value=''">
-              <option value="">Add a language…</option>
-              <option>Arabic</option><option>Bengali</option><option>Chinese (Mandarin)</option><option>Chinese (Cantonese)</option><option>Dutch</option><option>English</option><option>French</option><option>German</option><option>Greek</option><option>Hebrew</option><option>Hindi</option><option>Indonesian</option><option>Italian</option><option>Japanese</option><option>Korean</option><option>Malay</option><option>Norwegian</option><option>Persian (Farsi)</option><option>Polish</option><option>Portuguese</option><option>Romanian</option><option>Russian</option><option>Spanish</option><option>Swahili</option><option>Swedish</option><option>Tagalog</option><option>Thai</option><option>Turkish</option><option>Ukrainian</option><option>Urdu</option><option>Vietnamese</option>
-            </select>
-          </div>
-          <div id="languageTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>
-        </div>
-      </div>
-      <button class="btn-next" onclick="goNext(5)">Continue →</button>
-    </div>
-
-    <!-- ── Step 6: Open answer ── -->
-    <div class="step" id="step-6">
-      <div class="screen-header">
-        <p class="screen-title">Tell us in your own words</p>
-      </div>
-      <div class="form-body">
-        <div class="field" id="f-whyText">
-          <label for="whyText">Why do you want to do AI training work? <span class="req">*</span></label>
-          <p style="font-size:13px;color:var(--ink-3);margin-bottom:8px;">A few sentences is plenty.</p>
-          <textarea id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="5"></textarea>
-          <span class="field-error">Please share a few sentences here.</span>
-        </div>
-      </div>
-      <button class="btn-next" onclick="goNext(6)">Continue →</button>
-    </div>
-
-    <!-- ── Step 7: Book webinar ── -->
-    <div class="step" id="step-7">
-      <div class="screen-header">
-        <p class="screen-title">Book your onboarding webinar</p>
-        <p class="screen-sub">Last step. Join a live onboarding session to learn how it works, meet the team, and find out what happens next.</p>
-      </div>
-      <div class="form-body">
-        <p class="q-label">Pick a date <span class="req" style="color:var(--accent)">*</span></p>
-        <div class="webinar-list" id="webinarList">
-          <label class="webinar-option" data-value="Thursday, 12 June 2026 · 11:00 am ET">
-            <input type="radio" name="webinar" value="Thursday, 12 June 2026 · 11:00 am ET">
-            <div class="webinar-date-group">
-              <span class="webinar-date">Thursday, 12 June 2026</span>
-              <span class="webinar-time">11:00 am ET · 4:00 pm BST · 5:00 pm CET</span>
-            </div>
-            <span class="webinar-spots">12 spots left</span>
-          </label>
-          <label class="webinar-option" data-value="Tuesday, 17 June 2026 · 2:00 pm ET">
-            <input type="radio" name="webinar" value="Tuesday, 17 June 2026 · 2:00 pm ET">
-            <div class="webinar-date-group">
-              <span class="webinar-date">Tuesday, 17 June 2026</span>
-              <span class="webinar-time">2:00 pm ET · 7:00 pm BST · 8:00 pm CET</span>
-            </div>
-            <span class="webinar-spots">18 spots left</span>
-          </label>
-          <label class="webinar-option" data-value="Thursday, 19 June 2026 · 10:00 am ET">
-            <input type="radio" name="webinar" value="Thursday, 19 June 2026 · 10:00 am ET">
-            <div class="webinar-date-group">
-              <span class="webinar-date">Thursday, 19 June 2026</span>
-              <span class="webinar-time">10:00 am ET · 3:00 pm BST · 4:00 pm CET</span>
-            </div>
-            <span class="webinar-spots">24 spots left</span>
-          </label>
-          <label class="webinar-option" data-value="Wednesday, 25 June 2026 · 6:00 pm ET">
-            <input type="radio" name="webinar" value="Wednesday, 25 June 2026 · 6:00 pm ET">
-            <div class="webinar-date-group">
-              <span class="webinar-date">Wednesday, 25 June 2026</span>
-              <span class="webinar-time">6:00 pm ET · 11:00 pm BST (next day in APAC)</span>
-            </div>
-            <span class="webinar-spots">30 spots left</span>
-          </label>
-        </div>
-      </div>
-      <button class="btn-next" onclick="goNext(7)">Reserve my spot →</button>
-    </div>
-
-    <!-- ── Step 8: Confirmation ── -->
-    <div class="step" id="step-8" style="gap:20px;">
-      <div class="confirm-icon">🎉</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <p class="confirm-title">You're in!</p>
-        <p class="confirm-sub">We've saved your spot for <strong id="confirmedDate"></strong>. Check your email for the details. In the meantime, we'll be in touch with helpful content while you wait for your session.</p>
-      </div>
-      <div class="confirm-booking">
-        <div class="confirm-booking-icon">📅</div>
-        <div>
-          <p class="confirm-booking-label">Your onboarding webinar</p>
-          <p class="confirm-booking-value" id="confirmedDateDetail"></p>
-        </div>
-      </div>
-      <div class="confirm-actions">
-        <a href="#" class="btn-cal" id="addToCalBtn">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          Add to calendar
-        </a>
-        <a href="#" class="btn-community">
-          Join community space →
-        </a>
-      </div>
-      <p class="card-footer">© 2026 PowerToFly. All rights reserved.</p>
-    </div>
-
+<!-- Footer nav arrows -->
+<footer class="foot" id="foot">
+  <div class="foot-arrows">
+    <button class="foot-arrow" id="arrowUp" onclick="goBack()" title="Previous (↑)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+    <button class="foot-arrow" onclick="next()" title="Next (↓)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
   </div>
-</main>
+</footer>
 
 <script>
-// ── Profile store ──
+const TOTAL = 15; // slides 1–15 are "questions" (0 = welcome, 16 = confirm)
+let cur = 0;
+let animating = false;
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+
 const profile = {
-  fullname: '', email: '', password: '', country: '',
-  linkedin: '', resume: null,
-  expertise: '', expertiseOther: '', yearsExperience: '',
-  aiLevel: '', aiWorkTypes: [],
-  goals: [], weeklyHours: '', languages: [],
-  whyText: '',
-  webinarDate: ''
+  fullname:'', email:'', password:'', country:'',
+  linkedin:'', resume:null,
+  expertise:'', expertiseOther:'', yearsExperience:'',
+  aiLevel:'', aiWorkTypes:[],
+  goals:[], weeklyHours:'', languages:[],
+  whyText:'', webinarDate:''
 };
 
-const STEP_LABELS = [
-  '', 'Create account', 'Professional background', 'Area of expertise',
-  'AI experience', 'Your goals', 'Your motivation', 'Book webinar'
-];
-const TOTAL_STEPS = 7;
+// ── Render ──
+function render(newIdx, dir) {
+  if (animating) return;
+  animating = true;
 
-// ── Navigation ──
-let currentStep = 1;
+  const prev = slides[cur];
+  const next_ = slides[newIdx];
 
-function showStep(n) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('step-' + n).classList.add('active');
+  // Assign states
+  slides.forEach((s,i) => {
+    s.className = 'slide';
+    if (i === newIdx) s.classList.add('state-active');
+    else if (i < newIdx) s.classList.add('state-above');
+    else s.classList.add('state-below');
+  });
 
-  const wrap = document.getElementById('progressWrap');
-  if (n === 8) {
-    wrap.style.display = 'none';
-  } else {
-    wrap.style.display = '';
-    document.getElementById('progressLabel').textContent = STEP_LABELS[n];
-    document.getElementById('progressCount').textContent = 'Step ' + n + ' of ' + TOTAL_STEPS;
-    document.getElementById('progressFill').style.width = (n / TOTAL_STEPS * 100) + '%';
-  }
+  cur = newIdx;
+  updateMeta();
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  currentStep = n;
+  // Focus first input
+  setTimeout(() => {
+    const inp = slides[cur].querySelector('input:not([type=radio]):not([type=checkbox]):not([type=file]), textarea, select');
+    if (inp) inp.focus();
+    animating = false;
+  }, 480);
 }
 
-function goNext(step) {
-  if (!validateStep(step)) return;
-  collectStep(step);
-  if (step === 7) {
-    finalise();
-    showStep(8);
-  } else {
-    showStep(step + 1);
+function updateMeta() {
+  const isConfirm = cur === 16;
+  const isWelcome = cur === 0;
+
+  document.getElementById('progFill').style.width =
+    isConfirm ? '100%' : isWelcome ? '0%' : (cur / TOTAL * 100) + '%';
+
+  document.getElementById('hdCount').textContent =
+    isConfirm || isWelcome ? '' : cur + ' / ' + TOTAL;
+
+  const back = document.getElementById('btnBack');
+  back.style.display = (cur > 0 && !isConfirm) ? '' : 'none';
+
+  document.getElementById('foot').style.display = isConfirm ? 'none' : '';
+}
+
+// ── Navigation ──
+function next() {
+  if (!validate(cur)) return;
+  collect(cur);
+  if (cur === 15) { finalise(); render(16, 1); return; }
+  if (cur < 16) render(cur + 1, 1);
+}
+
+function goBack() {
+  if (cur > 0) render(cur - 1, -1);
+}
+
+// ── Keyboard ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+    const focused = document.activeElement;
+    if (focused && (focused.tagName === 'SELECT')) return; // let select open
+    e.preventDefault();
+    next();
   }
+});
+
+function handleEnter(e, fn) {
+  if (e.key === 'Enter') { e.preventDefault(); fn(); }
 }
 
 // ── Validation ──
-function validateStep(step) {
-  let ok = true;
+function validate(idx) {
+  clearAllErrors();
+  if (idx === 0) return true;
+  if (idx === 1) return req('err-1', document.getElementById('fullname').value.trim());
+  if (idx === 2) return req('err-2', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('email').value.trim()), 'Please enter a valid email.');
+  if (idx === 3) return req('err-3', document.getElementById('password').value.length >= 8, 'Minimum 8 characters.');
+  if (idx === 4) return req('err-4', document.getElementById('country').value !== '');
+  if (idx === 5) return req('err-5', document.getElementById('linkedin').value.trim().length > 0);
+  if (idx === 6) return req('err-6', !!document.getElementById('resumeFile').files[0], 'Please upload your CV.');
+  if (idx === 7) return req('err-7', !!document.querySelector('input[name="expertise"]:checked'), 'Pick one to continue.');
+  if (idx === 8) return req('err-8', !!document.querySelector('input[name="years"]:checked'), 'Pick one to continue.');
+  if (idx === 9) return req('err-9', !!document.querySelector('input[name="aiLevel"]:checked'), 'Pick one to continue.');
+  if (idx === 10) return true; // optional
+  if (idx === 11) return req('err-11', document.querySelectorAll('input[name="goals"]:checked').length > 0, 'Pick at least one.');
+  if (idx === 12) return req('err-12', !!document.querySelector('input[name="hours"]:checked'), 'Pick one to continue.');
+  if (idx === 13) return true; // optional
+  if (idx === 14) return req('err-14', document.getElementById('whyText').value.trim().length >= 20, 'Please write a few sentences.');
+  if (idx === 15) return req('err-15', !!document.querySelector('input[name="webinar"]:checked'), 'Pick a date to continue.');
+  return true;
+}
 
-  function check(fieldId, valid, msg) {
-    const wrap = document.getElementById(fieldId);
-    if (!wrap) return;
-    const err = wrap.querySelector('.field-error');
-    if (!valid) {
-      wrap.classList.add('has-error');
-      if (err && msg) err.textContent = msg;
-      ok = false;
-    } else {
-      wrap.classList.remove('has-error');
-    }
+function req(errId, cond, msg) {
+  if (!cond) {
+    const el = document.getElementById(errId);
+    if (el) { if (msg) el.textContent = msg; el.classList.add('show'); }
+    return false;
   }
+  return true;
+}
 
-  if (step === 1) {
-    const name = document.getElementById('fullname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const pw = document.getElementById('password').value;
-    const country = document.getElementById('country').value;
-    check('f-name', name.length > 0);
-    check('f-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
-    check('f-password', pw.length >= 8);
-    check('f-country', country !== '');
-  }
+function clearAllErrors() {
+  document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+}
 
-  if (step === 2) {
-    const li = document.getElementById('linkedin').value.trim();
-    const resume = document.getElementById('resumeFile').files[0];
-    check('f-linkedin', li.length > 0);
-    // resume error handled separately
-    const resumeErr = document.getElementById('resumeError');
-    if (!resume) {
-      resumeErr.style.display = 'block';
-      ok = false;
-    } else {
-      resumeErr.style.display = 'none';
-    }
-  }
-
-  if (step === 3) {
-    const expertise = document.querySelector('input[name="expertise"]:checked');
-    const years = document.querySelector('input[name="years"]:checked');
-    if (!expertise) {
-      alert('Please select your area of expertise.');
-      ok = false;
-    } else if (!years) {
-      alert('Please select your years of experience.');
-      ok = false;
-    }
-  }
-
-  if (step === 4) {
-    const aiLevel = document.querySelector('input[name="aiLevel"]:checked');
-    if (!aiLevel) {
-      alert('Please describe your experience with AI.');
-      ok = false;
-    }
-  }
-
-  if (step === 5) {
-    const goals = document.querySelectorAll('input[name="goals"]:checked');
-    const hours = document.querySelector('input[name="hours"]:checked');
-    if (goals.length === 0) {
-      alert('Please select at least one goal.');
-      ok = false;
-    } else if (!hours) {
-      alert('Please select how many hours per week you can commit.');
-      ok = false;
-    }
-  }
-
-  if (step === 6) {
-    const why = document.getElementById('whyText').value.trim();
-    check('f-whyText', why.length >= 20, 'Please write at least a couple of sentences.');
-  }
-
-  if (step === 7) {
-    const webinar = document.querySelector('input[name="webinar"]:checked');
-    if (!webinar) {
-      alert('Please pick a webinar date.');
-      ok = false;
-    }
-  }
-
-  return ok;
+function clearErr(el) {
+  const slide = el.closest('.slide-inner');
+  if (slide) slide.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
 }
 
 // ── Data collection ──
-function collectStep(step) {
-  if (step === 1) {
-    profile.fullname = document.getElementById('fullname').value.trim();
-    profile.email = document.getElementById('email').value.trim();
-    profile.password = document.getElementById('password').value;
-    profile.country = document.getElementById('country').value;
+function collect(idx) {
+  if (idx === 1) profile.fullname = document.getElementById('fullname').value.trim();
+  if (idx === 2) profile.email = document.getElementById('email').value.trim();
+  if (idx === 3) profile.password = document.getElementById('password').value;
+  if (idx === 4) profile.country = document.getElementById('country').value;
+  if (idx === 5) profile.linkedin = document.getElementById('linkedin').value.trim();
+  if (idx === 6) profile.resume = document.getElementById('resumeFile').files[0] || null;
+  if (idx === 7) {
+    const c = document.querySelector('input[name="expertise"]:checked');
+    profile.expertise = c ? c.closest('.choice').dataset.val : '';
+    profile.expertiseOther = document.getElementById('expertiseOther').value.trim();
   }
-  if (step === 2) {
-    profile.linkedin = document.getElementById('linkedin').value.trim();
-    profile.resume = document.getElementById('resumeFile').files[0] || null;
+  if (idx === 8) {
+    const c = document.querySelector('input[name="years"]:checked');
+    profile.yearsExperience = c ? c.closest('.choice').dataset.val : '';
   }
-  if (step === 3) {
-    const exp = document.querySelector('input[name="expertise"]:checked');
-    profile.expertise = exp ? exp.value : '';
-    profile.expertiseOther = document.getElementById('expertiseOtherText').value.trim();
-    const yr = document.querySelector('input[name="years"]:checked');
-    profile.yearsExperience = yr ? yr.value : '';
+  if (idx === 9) {
+    const c = document.querySelector('input[name="aiLevel"]:checked');
+    profile.aiLevel = c ? c.closest('.choice').dataset.val : '';
   }
-  if (step === 4) {
-    const lvl = document.querySelector('input[name="aiLevel"]:checked');
-    profile.aiLevel = lvl ? lvl.value : '';
-    profile.aiWorkTypes = [...document.querySelectorAll('input[name="aiWork"]:checked')].map(i => i.value);
+  if (idx === 10) {
+    profile.aiWorkTypes = [...document.querySelectorAll('input[name="aiWork"]:checked')].map(i => i.closest('.choice').dataset.val);
   }
-  if (step === 5) {
-    profile.goals = [...document.querySelectorAll('input[name="goals"]:checked')].map(i => i.value);
-    const hr = document.querySelector('input[name="hours"]:checked');
-    profile.weeklyHours = hr ? hr.value : '';
-    // languages collected live
+  if (idx === 11) {
+    profile.goals = [...document.querySelectorAll('input[name="goals"]:checked')].map(i => i.closest('.choice').dataset.val);
   }
-  if (step === 6) {
-    profile.whyText = document.getElementById('whyText').value.trim();
+  if (idx === 12) {
+    const c = document.querySelector('input[name="hours"]:checked');
+    profile.weeklyHours = c ? c.closest('.choice').dataset.val : '';
   }
-  if (step === 7) {
-    const wb = document.querySelector('input[name="webinar"]:checked');
-    profile.webinarDate = wb ? wb.value : '';
+  if (idx === 14) profile.whyText = document.getElementById('whyText').value.trim();
+  if (idx === 15) {
+    const c = document.querySelector('input[name="webinar"]:checked');
+    profile.webinarDate = c ? c.closest('.webinar-opt').dataset.val : '';
   }
 }
 
 function finalise() {
-  // Show confirmation details
   document.getElementById('confirmedDate').textContent = profile.webinarDate;
   document.getElementById('confirmedDateDetail').textContent = profile.webinarDate;
-
-  // Log profile (replace with API call)
-  console.log('Profile saved:', JSON.parse(JSON.stringify(profile)));
+  console.log('Profile:', JSON.parse(JSON.stringify(profile)));
 }
 
-// ── Choice grid toggle ──
-document.addEventListener('change', function(e) {
-  const el = e.target;
-  if (el.type === 'radio') {
-    const name = el.name;
-    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
-      r.closest('.choice-label').classList.remove('selected');
-    });
-    el.closest('.choice-label').classList.add('selected');
-
-    // Show Other text box for expertise
-    if (name === 'expertise') {
-      const otherBox = document.getElementById('expertiseOther');
-      otherBox.classList.toggle('visible', el.value === 'Other');
+// ── Choice pill interaction ──
+document.querySelectorAll('.choice').forEach(ch => {
+  ch.addEventListener('click', () => {
+    const inp = ch.querySelector('input');
+    if (inp.type === 'radio') {
+      ch.closest('.choices').querySelectorAll('.choice').forEach(c => c.classList.remove('sel'));
+      ch.classList.add('sel');
+      inp.checked = true;
+      // Auto-advance on radio after short delay
+      setTimeout(() => {
+        if (cur !== 10) next(); // not for optional multi
+      }, 280);
+    } else {
+      inp.checked = !inp.checked;
+      ch.classList.toggle('sel', inp.checked);
     }
-  }
-  if (el.type === 'checkbox') {
-    el.closest('.choice-label').classList.toggle('selected', el.checked);
-  }
-  // Webinar option
-  if (el.name === 'webinar') {
-    document.querySelectorAll('.webinar-option').forEach(o => o.classList.remove('selected'));
-    el.closest('.webinar-option').classList.add('selected');
-  }
-});
-
-// Webinar options also toggle on label click (radio inside)
-document.querySelectorAll('.webinar-option').forEach(opt => {
-  opt.addEventListener('click', function() {
-    const inp = this.querySelector('input');
-    inp.checked = true;
-    document.querySelectorAll('.webinar-option').forEach(o => o.classList.remove('selected'));
-    this.classList.add('selected');
+    // Show Other field for expertise
+    if (inp.name === 'expertise') {
+      document.getElementById('expertiseOtherWrap').classList.toggle('vis', ch.dataset.val === 'Other');
+    }
   });
 });
 
-// ── File upload label ──
+// Webinar options
+document.querySelectorAll('.webinar-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.webinar-opt').forEach(o => o.classList.remove('sel'));
+    opt.classList.add('sel');
+    opt.querySelector('input').checked = true;
+  });
+});
+
+// ── File upload ──
 document.getElementById('resumeFile').addEventListener('change', function() {
-  const file = this.files[0];
+  const f = this.files[0];
   const label = document.getElementById('resumeLabel');
   const text = document.getElementById('resumeText');
-  if (file) {
-    text.textContent = file.name;
-    label.classList.add('has-file');
-    document.getElementById('resumeError').style.display = 'none';
-  } else {
-    text.textContent = 'Click to upload your CV';
-    label.classList.remove('has-file');
-  }
+  if (f) { text.textContent = f.name; label.classList.add('has-file'); }
+  else { text.textContent = 'Click to upload'; label.classList.remove('has-file'); }
 });
 
 // ── Language tags ──
-const selectedLanguages = new Set();
-
-function addLanguage(val) {
-  if (!val || selectedLanguages.has(val)) return;
-  selectedLanguages.add(val);
-  profile.languages = [...selectedLanguages];
-  renderLanguageTags();
+const langs = new Set();
+function addLang(val) {
+  if (!val || langs.has(val)) return;
+  langs.add(val);
+  profile.languages = [...langs];
+  renderLangs();
 }
-
-function removeLanguage(val) {
-  selectedLanguages.delete(val);
-  profile.languages = [...selectedLanguages];
-  renderLanguageTags();
+function removeLang(val) {
+  langs.delete(val);
+  profile.languages = [...langs];
+  renderLangs();
 }
-
-function renderLanguageTags() {
-  const container = document.getElementById('languageTags');
-  container.innerHTML = '';
-  selectedLanguages.forEach(lang => {
-    const tag = document.createElement('span');
-    tag.style.cssText = 'display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;background:rgba(79,232,169,0.12);border:1px solid rgba(79,232,169,0.3);font-size:13px;font-weight:500;color:var(--ink-2);';
-    tag.innerHTML = lang + ' <button onclick="removeLanguage(\'' + lang + '\')" style="background:none;border:none;cursor:pointer;color:var(--ink-3);font-size:15px;line-height:1;padding:0;margin:0;" title="Remove">×</button>';
-    container.appendChild(tag);
+function renderLangs() {
+  const c = document.getElementById('langTags');
+  c.innerHTML = '';
+  langs.forEach(l => {
+    const t = document.createElement('span');
+    t.className = 'lang-tag';
+    t.innerHTML = l + ' <button onclick="removeLang(\'' + l + '\')" title="Remove">×</button>';
+    c.appendChild(t);
   });
 }
-</script>
 
+// ── Init ──
+render(0, 1);
+</script>
 </body>
 </html>
