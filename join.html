@@ -67,7 +67,7 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); backgroun
 .slide-inner { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 26px; }
 
 /* ── Question number ── */
-.q-num { font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.q-num { display: none; }
 .q-arrow { display: none; }
 
 /* ── Question text ── */
@@ -278,7 +278,7 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="1">
     <div class="slide-inner">
       <div class="q-num">Question 1</div>
-      <div class="q-text">Create your account.</div>
+      <div class="q-text">Let's get you set up.</div>
       <div class="field-stack">
         <div class="field-item"><label>Full name</label><input type="text" id="fullname" placeholder="Your name" autocomplete="name"></div>
         <div class="field-item"><label>Email</label><input type="email" id="email" placeholder="you@example.com" autocomplete="email"></div>
