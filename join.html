@@ -263,11 +263,12 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="0">
     <div class="slide-inner">
       <div class="q-text">Join the AI talent community.</div>
-      <p class="q-sub">We work with experts in every field to train and improve AI — no matter where you live. About 4 minutes.</p>
+      <p class="q-sub">We connect domain experts with AI companies that need real human judgment to train their models. This takes about 4 minutes to complete.</p>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">Get started <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
         <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
       </div>
+      <p style="font-size:14px;color:var(--ink-3);margin-top:4px;">Already signed up? <a href="#" style="color:var(--ink);font-weight:600;text-underline-offset:3px;">Log in</a></p>
     </div>
   </div>
 
@@ -294,7 +295,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 →</div>
       <div class="q-text">Where are you based?</div>
-      <p class="q-sub">Your location won't hold you back — opportunities worldwide.</p>
+      <p class="q-sub">Your location won't hold you back. We have paid AI opportunities in over 40 countries.</p>
       <div class="tf-select-wrap">
         <select class="tf-select" id="country">
           <option value="">Select your country…</option>
@@ -315,7 +316,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 →</div>
       <div class="q-text">Your professional background.</div>
-      <p class="q-sub">Both are required. This helps us understand your experience.</p>
+      <p class="q-sub">We review every profile before matching anyone to paid work. Your LinkedIn and CV help us understand your experience and place you correctly.</p>
       <input class="tf-input" id="linkedin" type="url" placeholder="LinkedIn profile URL" onkeydown="handleEnter(event, ()=>document.getElementById('resumeLabel').click())">
       <label class="file-drop" id="resumeLabel" for="resumeFile">
         <div class="file-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
@@ -383,7 +384,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6 →</div>
       <div class="q-text">Your experience with AI?</div>
-      <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work — accurate answers get you there faster.</div>
+      <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work. Accurate answers mean faster, better matches for you.</div>
       <div class="choices" id="aiLevelGrid">
         <label class="choice" data-val="New to AI"><input type="radio" name="aiLevel"><span class="choice-key">A</span><span><strong>New to AI</strong> — curious but haven't used AI tools yet</span></label>
         <label class="choice" data-val="Beginner"><input type="radio" name="aiLevel"><span class="choice-key">B</span><span><strong>Beginner</strong> — used ChatGPT a little</span></label>
@@ -440,7 +441,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>9 →</div>
       <div class="q-text">Languages you speak fluently? <span class="q-opt">Optional</span></div>
-      <p class="q-sub">Some projects need specific language coverage.</p>
+      <p class="q-sub">Some projects are language specific. Add any languages you are comfortable working in professionally.</p>
       <div class="tf-select-wrap">
         <select class="tf-select" id="langSelect" onchange="addLang(this.value); this.value=''">
           <option value="">Add a language…</option>
@@ -461,7 +462,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 →</div>
       <div class="q-text">Why do you want to do AI training work? <span class="q-opt">Optional</span></div>
-      <p class="q-sub">A few sentences is plenty.</p>
+      <p class="q-sub">A few sentences is plenty. This is optional but people who fill it in tend to get matched to projects faster.</p>
       <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4"></textarea>
       <div class="cta-row">
         <button class="btn-ok" onclick="next()">OK <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
@@ -475,7 +476,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
       <div class="q-text">Pick your onboarding session.</div>
-      <p class="q-sub">A live session to learn how it works and what's next.</p>
+      <p class="q-sub">Join a 45-minute live session to meet the team, see how projects work, and find out what happens after you sign up.</p>
       <div class="webinar-list">
         <label class="webinar-opt" data-val="Thursday, 12 June 2026 · 11:00 am ET"><input type="radio" name="webinar">
           <div><div class="webinar-date">Thursday, 12 June 2026</div><div class="webinar-time">11:00 am ET · 4:00 pm BST · 5:00 pm CET</div></div>
