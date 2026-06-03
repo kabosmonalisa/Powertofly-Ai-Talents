@@ -67,8 +67,8 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); backgroun
 .slide-inner { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 26px; }
 
 /* ── Question number ── */
-.q-num { font-size: 13px; font-weight: 600; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
-.q-arrow { width: 18px; height: 18px; background: var(--ink); border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.q-num { font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.q-arrow { display: none; }
 
 /* ── Question text ── */
 .q-text { font-family: 'Inter Tight', sans-serif; font-size: clamp(26px, 4.2vw, 42px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); }
@@ -174,8 +174,8 @@ input[type="file"] { display: none; }
 .lang-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; background: rgba(79,232,169,0.1); border: 1px solid rgba(79,232,169,0.28); font-size: 13px; font-weight: 500; color: var(--ink-2); }
 .lang-tag button { background: none; border: none; cursor: pointer; color: var(--ink-3); font-size: 16px; line-height: 1; padding: 0; }
 
-/* ── Honesty note ── */
-.honesty { padding: 13px 15px; border-radius: 10px; background: var(--bg-soft); border: 1px solid var(--line); font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+/* ── Honesty note (now just plain sub text, no box) ── */
+.honesty { font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -14px; }
 
 /* ── Webinar options ── */
 .webinar-list { display: flex; flex-direction: column; gap: 7px; }
@@ -275,7 +275,7 @@ input[type="file"] { display: none; }
   <!-- 1: Account (name + email + password) -->
   <div class="slide state-below" data-index="1">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1 →</div>
+      <div class="q-num">Question 1</div>
       <div class="q-text">Create your account.</div>
       <div class="field-stack">
         <div class="field-item"><label>Full name</label><input type="text" id="fullname" placeholder="Your name" autocomplete="name"></div>
@@ -293,7 +293,7 @@ input[type="file"] { display: none; }
   <!-- 2: Country -->
   <div class="slide state-below" data-index="2">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 →</div>
+      <div class="q-num">Question 2</div>
       <div class="q-text">Where are you based?</div>
       <p class="q-sub">Your location won't hold you back. We have paid AI opportunities in over 40 countries.</p>
       <div class="tf-select-wrap">
@@ -314,7 +314,7 @@ input[type="file"] { display: none; }
   <!-- 3: LinkedIn + CV (same step) -->
   <div class="slide state-below" data-index="3">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 →</div>
+      <div class="q-num">Question 3</div>
       <div class="q-text">Your professional background.</div>
       <p class="q-sub">We review every profile before matching anyone to paid work. Your LinkedIn and CV help us understand your experience and place you correctly.</p>
       <input class="tf-input" id="linkedin" type="url" placeholder="LinkedIn profile URL" onkeydown="handleEnter(event, ()=>document.getElementById('resumeLabel').click())">
@@ -337,7 +337,7 @@ input[type="file"] { display: none; }
   <!-- 4: Expertise -->
   <div class="slide state-below" data-index="4">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>4 →</div>
+      <div class="q-num">Question 4</div>
       <div class="q-text">Your main area of expertise?</div>
       <div class="choices grid-2" id="expertiseGrid">
         <label class="choice" data-val="Healthcare &amp; medicine"><input type="radio" name="expertise"><span class="choice-key">A</span>Healthcare &amp; medicine</label>
@@ -364,7 +364,7 @@ input[type="file"] { display: none; }
   <!-- 5: Years -->
   <div class="slide state-below" data-index="5">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>5 →</div>
+      <div class="q-num">Question 5</div>
       <div class="q-text">Years of experience in that field?</div>
       <div class="choices" id="yearsGrid">
         <label class="choice" data-val="Less than 2 years"><input type="radio" name="years"><span class="choice-key">A</span>Less than 2 years</label>
@@ -382,7 +382,7 @@ input[type="file"] { display: none; }
   <!-- 6: AI level -->
   <div class="slide state-below" data-index="6">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>6 →</div>
+      <div class="q-num">Question 6</div>
       <div class="q-text">Your experience with AI?</div>
       <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work. Accurate answers mean faster, better matches for you.</div>
       <div class="choices" id="aiLevelGrid">
@@ -401,7 +401,7 @@ input[type="file"] { display: none; }
   <!-- 7: Goals -->
   <div class="slide state-below" data-index="7">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>7 →</div>
+      <div class="q-num">Question 7</div>
       <div class="q-text">What are you looking for?</div>
       <p class="q-sub">Pick any that apply.</p>
       <div class="choices" id="goalsGrid">
@@ -421,7 +421,7 @@ input[type="file"] { display: none; }
   <!-- 8: Hours -->
   <div class="slide state-below" data-index="8">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>8 →</div>
+      <div class="q-num">Question 8</div>
       <div class="q-text">Hours per week you could commit?</div>
       <div class="choices grid-2" id="hoursGrid">
         <label class="choice" data-val="Under 5 hours"><input type="radio" name="hours"><span class="choice-key">A</span>Under 5 hours</label>
@@ -439,7 +439,7 @@ input[type="file"] { display: none; }
   <!-- 9: Languages — optional -->
   <div class="slide state-below" data-index="9">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>9 →</div>
+      <div class="q-num">Question 9</div>
       <div class="q-text">Languages you speak fluently? <span class="q-opt">Optional</span></div>
       <p class="q-sub">Some projects are language specific. Add any languages you are comfortable working in professionally.</p>
       <div class="tf-select-wrap">
@@ -460,7 +460,7 @@ input[type="file"] { display: none; }
   <!-- 10: Why — optional -->
   <div class="slide state-below" data-index="10">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>10 →</div>
+      <div class="q-num">Question 10</div>
       <div class="q-text">Why do you want to do AI training work? <span class="q-opt">Optional</span></div>
       <p class="q-sub">A few sentences is plenty. This is optional but people who fill it in tend to get matched to projects faster.</p>
       <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4"></textarea>
@@ -474,7 +474,7 @@ input[type="file"] { display: none; }
   <!-- 11: Webinar -->
   <div class="slide state-below" data-index="11">
     <div class="slide-inner">
-      <div class="q-num"><span class="q-arrow"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>11 →</div>
+      <div class="q-num">Question 11</div>
       <div class="q-text">Pick your onboarding session.</div>
       <p class="q-sub">Join a 45-minute live session to meet the team, see how projects work, and find out what happens after you sign up.</p>
       <div class="webinar-list">
