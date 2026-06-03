@@ -641,7 +641,6 @@ document.querySelectorAll('.choice').forEach(ch => {
     if (inp.type === 'radio') {
       ch.closest('.choices').querySelectorAll('.choice').forEach(c => c.classList.remove('sel'));
       ch.classList.add('sel'); inp.checked = true;
-      if (cur !== 7) setTimeout(next, 260);
     } else {
       inp.checked = !inp.checked;
       ch.classList.toggle('sel', inp.checked);
