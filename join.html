@@ -95,16 +95,18 @@ body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); backgroun
 .tf-textarea::placeholder { color: var(--ink-3); opacity: 0.4; }
 .tf-textarea:focus { border-color: var(--green); }
 
-/* ── Stacked account group ── */
-.field-stack { display: flex; flex-direction: column; }
-.field-item { display: flex; flex-direction: column; gap: 4px; padding: 8px 0 14px; border-bottom: 1px solid var(--line); }
-.field-item:last-child { border-bottom: none; }
-.field-item label { font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; }
+/* ── Stacked account group — plain underlines, same as all other inputs ── */
+.field-stack { display: flex; flex-direction: column; gap: 0; }
+.field-item { display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.field-item label { font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; padding-top: 16px; }
 .field-item input {
-  background: none; border: none; outline: none;
-  font-family: 'Inter', sans-serif; font-size: 18px; color: var(--ink);
-  caret-color: var(--accent); padding: 4px 0;
+  width: 100%; background: none; border: none; border-bottom: 2px solid var(--line);
+  outline: none; font-family: 'Inter', sans-serif;
+  font-size: clamp(18px, 2.5vw, 26px); color: var(--ink);
+  caret-color: var(--accent); padding: 10px 0;
+  transition: border-color 200ms;
 }
+.field-item input:focus { border-color: var(--green); }
 .field-item input::placeholder { color: var(--ink-3); opacity: 0.4; }
 
 /* ── Select ── */
