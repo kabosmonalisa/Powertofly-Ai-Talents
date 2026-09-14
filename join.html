@@ -244,7 +244,13 @@ input[type="file"] { display: none; }
 .error-msg { font-size: 13px; color: #C0392B; font-weight: 500; display: none; }
 .error-msg.show { display: block; }
 .login-line { font-size: 14px; color: var(--ink-3); margin-top: 4px; }
+/* Inline links in body copy — ink, 600, no rule until hover. Copied VERBATIM from
+   ds/ptf.css .auth-note a. Without this an unclassed <a> falls back to the browser
+   default (blue + underline), which is not a brand colour anywhere in the system. */
+.q-sub a, .confirm-sub a { color: var(--ink); font-weight: 600; text-decoration: none; text-underline-offset: 3px; }
+.q-sub a:hover, .confirm-sub a:hover { text-decoration: underline; }
 .login-line a { color: var(--ink); font-weight: 600; text-decoration: none; text-underline-offset: 3px; }
+.login-line a:hover { text-decoration: underline; }
 .login-line a:hover { text-decoration: underline; }
 
 /* ── Confirmation — DS thank-you components ── */
@@ -271,8 +277,9 @@ input[type="file"] { display: none; }
    never reads as brand UI. ── */
 #devNav { position: fixed; left: 16px; bottom: 16px; z-index: 200; display: flex; align-items: center; gap: 8px; padding: 7px 8px 7px 12px; border-radius: var(--r-pill); background: rgba(10,10,10,0.9); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
 #devNav .dev-lbl { font-family: 'Inter Tight', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: var(--iri-green); }
-#devNav select { appearance: none; -webkit-appearance: none; background: transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23ffffff'><path d='M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z'/></svg>") no-repeat right 8px center; border: 1px solid rgba(255,255,255,0.25); border-radius: var(--r-sm); color: #fff; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; padding: 5px 26px 5px 10px; cursor: pointer; }
-#devNav select option { color: #0A0A0A; }
+#devNav .dev-btn { all: unset; cursor: pointer; min-width: 22px; text-align: center; padding: 5px 7px; border-radius: 7px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: #fff; }
+#devNav .dev-btn:hover { background: rgba(255,255,255,0.14); }
+#devNav .dev-btn.is-on { background: var(--iri-green); color: #0A0A0A; }
 
 /* ── Mobile ── */
 @media (max-width: 600px) {
@@ -321,11 +328,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="eyebrow"><span class="dot"></span>Join PowerToFly AI</div>
       <div class="q-text">Join the AI talent community.</div>
-      <p class="q-sub">We connect domain experts with AI companies that need real human judgment to train their models. This takes about 4 minutes to complete.</p>
-      <!-- Identity comes from the account, not from this flow. Per Dina: name, email
-           and password belong to the normal sign up or an event registration, and are
-           never asked again here. -->
-      <p class="q-sub" style="margin-top:-8px">Continuing as <strong style="color:var(--ink)">Amara Osei</strong> · <a href="#">Not you?</a></p>
+      <p class="q-sub">We connect experts with AI companies that need real human judgment to train their models. Registration takes about 4 minutes.</p>
       <div class="cta-row">
         <button class="btn btn-primary" onclick="next()">Get started <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
         <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
@@ -339,7 +342,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num">Question 1</div>
       <div class="q-text">Where are you based?</div>
-      <p class="q-sub">Your location won't hold you back. We have paid AI opportunities in over 40 countries.</p>
+      <p class="q-sub">We have AI opportunities worldwide. Let us know where you're based so we can match you to the right ones.</p>
       <div class="tf-select-wrap">
         <select class="tf-select" id="country">
           <option value="">Select your country…</option>
@@ -360,7 +363,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num">Question 2</div>
       <div class="q-text">Your professional background.</div>
-      <p class="q-sub">We review every profile before matching anyone to paid work. Your LinkedIn and CV help us understand your experience and place you correctly.</p>
+      <p class="q-sub">We review every profile before matching anyone to paid work. Your resume and LinkedIn will fill in the details.</p>
       <input class="tf-input" id="linkedin" type="url" placeholder="LinkedIn profile URL" onkeydown="handleEnter(event, ()=>document.getElementById('resumeLabel').click())">
       <label class="file-drop" id="resumeLabel" for="resumeFile">
         <div class="file-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg></div>
@@ -382,7 +385,8 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="3">
     <div class="slide-inner">
       <div class="q-num">Question 3</div>
-      <div class="q-text">Your main area of expertise?</div>
+      <div class="q-text">What's your main area of expertise?</div>
+      <p class="q-sub">Choose the option that fits you best. Your resume and LinkedIn will fill in the details.</p>
       <div class="choices grid-2" id="expertiseGrid">
         <label class="choice" data-val="Healthcare &amp; medicine"><input type="radio" name="expertise"><span class="choice-key">A</span>Healthcare &amp; medicine</label>
         <label class="choice" data-val="Legal"><input type="radio" name="expertise"><span class="choice-key">B</span>Legal</label>
@@ -409,7 +413,8 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="4">
     <div class="slide-inner">
       <div class="q-num">Question 4</div>
-      <div class="q-text">Years of experience in that field?</div>
+      <div class="q-text">Years of experience</div>
+      <p class="q-sub">How many years of experience do you have in this field?</p>
       <div class="choices" id="yearsGrid">
         <label class="choice" data-val="Less than 2 years"><input type="radio" name="years"><span class="choice-key">A</span>Less than 2 years</label>
         <label class="choice" data-val="2–5 years"><input type="radio" name="years"><span class="choice-key">B</span>2–5 years</label>
@@ -427,13 +432,14 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="5">
     <div class="slide-inner">
       <div class="q-num">Question 5</div>
-      <div class="q-text">Your experience with AI?</div>
+      <div class="q-text">What's your experience with AI?</div>
+      <p class="q-sub">There's no wrong answer here. Let us know where you're starting from, so we can find the right match for you.</p>
       <div class="honesty">Please answer honestly. We verify everyone before matching them to paid work. Accurate answers mean faster, better matches for you.</div>
       <div class="choices" id="aiLevelGrid">
-        <label class="choice" data-val="New to AI"><input type="radio" name="aiLevel"><span class="choice-key">A</span><span><strong>New to AI</strong> — curious but haven't used AI tools yet</span></label>
-        <label class="choice" data-val="Beginner"><input type="radio" name="aiLevel"><span class="choice-key">B</span><span><strong>Beginner</strong> — used ChatGPT a little</span></label>
-        <label class="choice" data-val="Regular user"><input type="radio" name="aiLevel"><span class="choice-key">C</span><span><strong>Regular user</strong> — use AI tools weekly for work or study</span></label>
-        <label class="choice" data-val="Advanced"><input type="radio" name="aiLevel"><span class="choice-key">D</span><span><strong>Advanced</strong> — build, fine-tune, or evaluate AI</span></label>
+        <label class="choice" data-val="New to AI"><input type="radio" name="aiLevel"><span class="choice-key">A</span><span><strong>New to AI</strong>: I'm curious but haven't used AI tools yet</span></label>
+        <label class="choice" data-val="Beginner"><input type="radio" name="aiLevel"><span class="choice-key">B</span><span><strong>Beginner</strong>: I've used ChatGPT (or a similar tool) a little</span></label>
+        <label class="choice" data-val="Regular user"><input type="radio" name="aiLevel"><span class="choice-key">C</span><span><strong>Regular user</strong>: I use AI tools weekly for work or study</span></label>
+        <label class="choice" data-val="Advanced"><input type="radio" name="aiLevel"><span class="choice-key">D</span><span><strong>Advanced</strong>: I build, fine-tune, or evaluate AI</span></label>
       </div>
       <div class="cta-row">
         <button class="btn btn-primary" onclick="next()">OK <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
@@ -449,7 +455,7 @@ input[type="file"] { display: none; }
       <div class="q-text">What are you looking for?</div>
       <p class="q-sub">Pick any that apply.</p>
       <div class="choices" id="goalsGrid">
-        <label class="choice" data-val="Flexible income / side work"><input type="checkbox" name="goals"><span class="choice-key">A</span>Flexible income / side work</label>
+        <label class="choice" data-val="Flexible income / fractional work"><input type="checkbox" name="goals"><span class="choice-key">A</span>Flexible income / fractional work</label>
         <label class="choice" data-val="A career pivot into AI"><input type="checkbox" name="goals"><span class="choice-key">B</span>A career pivot into AI</label>
         <label class="choice" data-val="Full-time AI work"><input type="checkbox" name="goals"><span class="choice-key">C</span>Full-time AI work</label>
         <label class="choice" data-val="To learn AI skills"><input type="checkbox" name="goals"><span class="choice-key">D</span>To learn AI skills</label>
@@ -466,7 +472,8 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="7">
     <div class="slide-inner">
       <div class="q-num">Question 7</div>
-      <div class="q-text">Hours per week you could commit?</div>
+      <div class="q-text">Hours per week</div>
+      <p class="q-sub">How many hours per week could you commit?</p>
       <div class="choices grid-2" id="hoursGrid">
         <label class="choice" data-val="Under 5 hours"><input type="radio" name="hours"><span class="choice-key">A</span>Under 5 hours</label>
         <label class="choice" data-val="5–10 hours"><input type="radio" name="hours"><span class="choice-key">B</span>5–10 hours</label>
@@ -484,8 +491,8 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="8">
     <div class="slide-inner">
       <div class="q-num">Question 8</div>
-      <div class="q-text">Languages you speak fluently? <span class="q-opt">Optional</span></div>
-      <p class="q-sub">Some projects are language specific. Add any languages you are comfortable working in professionally.</p>
+      <div class="q-text">Working languages</div>
+      <p class="q-sub">Some projects are language specific, so tell us which languages you're comfortable working in professionally.</p>
       <div class="tf-select-wrap">
         <select class="tf-select" id="langSelect" onchange="addLang(this.value); this.value=''">
           <option value="">Add a language…</option>
@@ -496,7 +503,8 @@ input[type="file"] { display: none; }
       <div class="lang-tags" id="langTags"></div>
       <div class="cta-row">
         <button class="btn btn-primary" onclick="next()">OK <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
-        <button class="skip-link" onclick="next()">Skip for now</button>
+        <span class="key-hint"><span class="key-pill">Enter &crarr;</span></span>
+        <span class="error-msg" id="err-8">Add at least one language.</span>
       </div>
     </div>
   </div>
@@ -506,7 +514,7 @@ input[type="file"] { display: none; }
     <div class="slide-inner">
       <div class="q-num">Question 9</div>
       <div class="q-text">Why do you want to do AI training work? <span class="q-opt">Optional</span></div>
-      <p class="q-sub">A few sentences is plenty. This is optional but people who fill it in tend to get matched to projects faster.</p>
+      <p class="q-sub">This helps us match you with projects aligned to your motivations. A few sentences is plenty.</p>
       <textarea class="tf-textarea" id="whyText" placeholder="Tell us what draws you to this kind of work…" rows="4"></textarea>
       <div class="cta-row">
         <button class="btn btn-primary" onclick="next()">OK <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></button>
@@ -519,8 +527,8 @@ input[type="file"] { display: none; }
   <div class="slide state-below" data-index="10">
     <div class="slide-inner">
       <div class="q-num">Question 10</div>
-      <div class="q-text">Pick your onboarding session.</div>
-      <p class="q-sub">Join a 45-minute live session to meet the team, see how projects work, and find out what happens after you sign up.</p>
+      <div class="q-text">Select your onboarding session.</div>
+      <p class="q-sub">Before we can match you to paid work, join this 45-minute live session to meet the team, learn how projects work, and find out what's next.</p>
       <div class="webinar-list">
         <label class="webinar-opt" data-val="Thursday, 12 June 2026 · 11:00 am ET"><input type="radio" name="webinar">
           <div><div class="webinar-date">Thursday, 12 June 2026</div><div class="webinar-time">11:00 am ET · 4:00 pm BST · 5:00 pm CET</div></div>
@@ -552,13 +560,14 @@ input[type="file"] { display: none; }
       <div class="thanks-icon">
         <svg width="56" height="56" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 12.5l4.5 4.5L19.5 6" stroke="url(#ptf-grad)" stroke-width="6.5" stroke-linecap="square" stroke-linejoin="miter"/></svg>
       </div>
-      <div class="thanks-eyebrow">You're all set</div>
-      <div class="confirm-title">You're in.</div>
-      <p class="confirm-sub">We've saved your spot for <strong id="confirmedDate"></strong>. Check your email for the details.</p>
+      <div class="thanks-eyebrow">Registration complete</div>
+      <div class="confirm-title">You're all set.</div>
+      <p class="confirm-sub">We've saved your spot on <strong id="confirmedDate"></strong>. Check your email for the details.</p>
       <div class="confirm-card">
         <div class="confirm-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg></div>
         <div><div class="confirm-card-label">Your onboarding webinar</div><div class="confirm-card-val" id="confirmedDateDetail"></div></div>
       </div>
+      <p class="confirm-sub" style="margin-top:26px">While you wait, get connected:</p>
       <div class="confirm-actions">
         <a href="#" class="btn btn-sm"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>Add to calendar</a>
         <a href="#" class="btn btn-primary btn-sm">Join community <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></a>
@@ -571,21 +580,6 @@ input[type="file"] { display: none; }
 <!-- DEV ONLY — jump to any step without filling anything in. Delete this block + its CSS + devGo() before launch. -->
 <div id="devNav">
   <span class="dev-lbl">DEV</span>
-  <select id="devSelect" onchange="devGo(this.value)" aria-label="Jump to step">
-    <option value="0">0 · Welcome</option>
-    <option value="1">1 · Account</option>
-    <option value="2">2 · Country</option>
-    <option value="3">3 · Background</option>
-    <option value="4">4 · Expertise</option>
-    <option value="5">5 · Years</option>
-    <option value="6">6 · AI level</option>
-    <option value="7">7 · Goals</option>
-    <option value="8">8 · Hours</option>
-    <option value="9">9 · Languages</option>
-    <option value="10">10 · Why</option>
-    <option value="11">11 · Webinar</option>
-    <option value="12">12 · Confirmation</option>
-  </select>
 </div>
 
 <footer class="foot" id="foot">
@@ -631,7 +625,7 @@ function updateMeta() {
   document.getElementById('hdCount').textContent = (isConfirm || isWelcome) ? '' : cur + ' / ' + TOTAL;
   document.getElementById('btnBack').style.display = (cur > 0 && !isConfirm) ? '' : 'none';
   document.getElementById('foot').style.display = isConfirm ? 'none' : '';
-  const ds = document.getElementById('devSelect'); if (ds) ds.value = cur;   // DEV: keep switcher in sync
+  if (window.markDev) markDev();   // DEV: keep the step switcher highlight in sync
 }
 
 function next() {
@@ -666,7 +660,10 @@ function validate(idx) {
   if (idx === 5) return req('err-5', !!document.querySelector('#aiLevelGrid .choice.sel'), 'Pick one to continue.');
   if (idx === 6) return req('err-6', document.querySelectorAll('#goalsGrid .choice.sel').length > 0, 'Pick at least one.');
   if (idx === 7) return req('err-7', !!document.querySelector('#hoursGrid .choice.sel'), 'Pick one to continue.');
-  if (idx === 8 || idx === 9) return true;
+  // Languages is required as of the 2026-09-09 copy handoff (was optional, with a
+  // Skip for now button). "Why AI training work" (9) stays optional.
+  if (idx === 8) return req('err-8', langs.size > 0, 'Add at least one language.');
+  if (idx === 9) return true;
   if (idx === 10) return req('err-10', !!document.querySelector('.webinar-opt.sel'), 'Pick a date to continue.');
   return true;
 }
@@ -736,7 +733,32 @@ function renderLangs() {
 
 
 // DEV ONLY — jump to any step, bypassing validation. Delete with #devNav before launch.
-function devGo(i) { animating = false; render(parseInt(i, 10)); }
+function devGo(i) { animating = false; render(parseInt(i, 10)); markDev(); }
+// Built from the real .slide list, never a hand-written list — the previous
+// hand-written <select> silently went one step out of date when the account
+// screen was removed, so "8 · Hours" opened Working languages.
+function markDev() {
+  var open = document.querySelector('.slide.state-active');
+  var curIdx = open ? open.dataset.index : String(cur);
+  document.querySelectorAll('#devNav .dev-btn').forEach(function (b) {
+    b.classList.toggle('is-on', b.dataset.go === curIdx);
+  });
+}
+(function buildDev() {
+  var bar = document.getElementById('devNav');
+  document.querySelectorAll('.slide').forEach(function (s) {
+    var h = s.querySelector('.q-text, .confirm-title');
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dev-btn';
+    b.dataset.go = s.dataset.index;
+    b.textContent = s.dataset.index;
+    b.title = s.dataset.index + ' · ' + (h ? h.textContent.trim() : 'Screen');
+    b.onclick = function () { devGo(s.dataset.index); };
+    bar.appendChild(b);
+  });
+  markDev();
+})();
 
 render(0);
 </script>
