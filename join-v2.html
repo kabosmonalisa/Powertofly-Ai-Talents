@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join the AI Talent Community (v2) — PowerToFly AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   PowerToFly AI — Talents join flow (self-contained; the Talents repo has no
+   ds/ptf.css). All values below are copied VERBATIM from the design system so
+   this is the real brand, not a hand-guess. The full-screen one-question
+   interaction is a genuinely unique flow layout not in the component inventory —
+   its layout lives here per the "Allowed page-specific CSS" exception: tokens
+   only, no raw hex, nothing that restyles a shared component.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Semantic colour tokens — exact from ds/ptf.css ── */
+  --ink:   #0A0A0A;
+  --ink-2: #2A2A2A;
+  --ink-3: #5C6F69;
+  --bg:        #ffffff;
+  --surface:   #ffffff;
+  --surface-2: #FAFAF6;
+  --bg-soft:   #FAFAF6;
+  --line:   rgba(10,10,10,0.08);
+  --line-2: rgba(10,10,10,0.14);
+  --accent: #0A8C66;           /* eyebrows / links on light */
+  --green:     #0A8C66;
+  --green-mid: #4FE8A9;
+  --btn-bg: #0A0A0A;
+  --btn-fg: #ffffff;
+  --btn-bg-hover: #1a1a1a;
+  /* Iridescent palette */
+  --iri-cyan:  #5BCFFF;
+  --iri-green: #4FE8A9;
+  --iri-lime:  #D5FF66;
+  /* Radius scale */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 20px; --r-2xl: 28px; --r-pill: 999px;
+  /* Green glow the whole button system shares on hover */
+  --btn-glow: 0 12px 28px rgba(79,232,169,0.25), 0 4px 12px rgba(0,0,0,0.18);
+  /* Lifted card shadow — exact from ds/ptf.css --shadow-lifted */
+  --shadow-lifted: 0 2px 4px rgba(15,30,26,0.04), 0 16px 48px rgba(15,30,26,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; -webkit-font-smoothing: antialiased; }
+/* flow-shell wash — exact gradient from ds/ptf.css .flow-shell */
+body {
+  font-family: 'Inter', system-ui, sans-serif; color: var(--ink);
+  background: linear-gradient(150deg, #E6F6FF 0%, #E4FAEF 46%, #F4FFDD 100%);
+  background-attachment: fixed;
+}
+
+/* Iridescent blob layer — exact from ds/ptf.css .auth-bg */
+.auth-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.auth-bg-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.18; }
+.auth-bg-blob.b1 { width: 600px; height: 500px; background: radial-gradient(circle, var(--iri-cyan), transparent 70%); top: -160px; left: -100px; }
+.auth-bg-blob.b2 { width: 500px; height: 400px; background: radial-gradient(circle, var(--iri-green), transparent 70%); bottom: -100px; right: -80px; }
+.auth-bg-blob.b3 { width: 360px; height: 360px; background: radial-gradient(circle, var(--iri-lime), transparent 70%); top: 40%; left: 60%; opacity: 0.1; }
+
+/* ── Flow header — deliberately NOT the marketing site nav. A full-screen
+   one-question flow gets a minimal bar: brand, step counter, Back, progress.
+   The site nav (links + Log in/Employers + hamburger/drawer) was tried here
+   and removed — it competes with the single question and gives people five
+   ways to leave a flow they just started. Do not re-add it. */
+.hd {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  padding: 0 40px;
+}
+.hd-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0 12px; }
+.hd-right { display: flex; align-items: center; gap: 20px; }
+.brand { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink); }
+.brand svg { height: 19px; width: auto; display: block; }
+/* brand-ai pill — exact from ds/ptf.css .brand-ai */
+.brand-ai {
+  display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px;
+  background: linear-gradient(135deg, #5BCFFF 0%, #4FE8A9 55%, #D5FF66 100%);
+  color: var(--ink);
+  font-family: 'Inter Tight', sans-serif; font-weight: 800; font-size: 12px;
+  letter-spacing: 0.02em; line-height: 1.4;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 6px 14px rgba(79,232,169,0.32);
+}
+/* DS button — from ds/ptf.css .btn / .btn-primary / .btn-sm */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 18px 26px; border-radius: var(--r-pill); font-family: 'Inter Tight','Inter',sans-serif; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; cursor: pointer; border: 1.5px solid var(--ink); background: #fff; color: var(--ink); transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease; line-height: 1; }
+.btn:hover { transform: translateY(-1px); background: var(--ink); color: #fff; }
+.btn-primary { background: var(--btn-bg); color: var(--btn-fg); border-color: var(--btn-bg); }
+.btn-primary:hover { background: var(--btn-bg-hover); color: var(--btn-fg); border-color: var(--btn-bg-hover); box-shadow: var(--btn-glow); }
+.btn-sm { padding: 13px 18px; font-size: 14px; }
+.hd-count { font-size: 12px; color: var(--ink-3); font-weight: 600; letter-spacing: 0.02em; }
+.hd-back { font-size: 13px; color: var(--ink-3); background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 0; transition: color 160ms; }
+.hd-back:hover { color: var(--ink); }
+.prog-track { height: 2px; background: var(--line); }
+.prog-fill { height: 100%; background: var(--ink); transition: width 400ms cubic-bezier(0.4,0,0.2,1); }
+
+/* ── Slides ── */
+.slides-wrap { position: fixed; inset: 0; top: 80px; overflow: hidden; z-index: 2; }
+.slide {
+  position: absolute; inset: 0; display: flex; overflow-y: auto;
+  padding: 30px 24px 96px;
+  transition: transform 460ms cubic-bezier(0.77,0,0.175,1), opacity 360ms ease; pointer-events: none;
+}
+.slide.state-below  { transform: translateY(56px);  opacity: 0; }
+.slide.state-active { transform: translateY(0);      opacity: 1; pointer-events: all; }
+.slide.state-above  { transform: translateY(-56px);  opacity: 0; }
+/* One card holds the full question, floating on the gradient — the DS flow-shell
+   pattern (.auth-card on .flow-shell). margin:auto centres it and still scrolls
+   safely when a tall step (country, expertise) exceeds the viewport. */
+.slide-inner {
+  margin: auto; width: 100%; max-width: 600px;
+  display: flex; flex-direction: column; gap: 22px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-2xl); box-shadow: var(--shadow-lifted);
+  padding: 44px;
+}
+
+.q-num { display: none; }
+/* Eyebrow — plain green uppercase, NEVER a pill (ds/ptf.css .eyebrow) */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+}
+
+/* Question text — Inter Tight 700, DS heading letter-spacing */
+.q-text { font-family: 'Inter Tight', sans-serif; font-size: clamp(26px, 4.2vw, 42px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.12; color: var(--ink); }
+.q-sub { font-size: 15px; color: var(--ink-3); line-height: 1.55; margin-top: -12px; }
+.q-opt { font-size: 13px; color: var(--ink-3); font-style: italic; font-weight: 400; margin-left: 6px; }
+
+/* ── Text inputs (typeform underline — page-unique, token-driven) ── */
+.tf-input, .tf-textarea, .field-item input, .tf-select {
+  width: 100%; background: none; border: none; border-bottom: 2px solid var(--line-2);
+  padding: 10px 0; font-family: 'Inter', sans-serif; color: var(--ink);
+  outline: none; transition: border-color 200ms; caret-color: var(--accent);
+}
+.tf-input { font-size: clamp(18px, 2.5vw, 26px); }
+.tf-textarea { font-size: clamp(16px, 2vw, 20px); resize: none; min-height: 90px; line-height: 1.6; }
+.tf-input:focus, .tf-textarea:focus, .field-item input:focus, .tf-select:focus { border-color: var(--green-mid); }
+.tf-input::placeholder, .tf-textarea::placeholder, .field-item input::placeholder { color: var(--ink-3); opacity: 0.45; }
+
+/* ── Stacked account group ── */
+.field-stack { display: flex; flex-direction: column; gap: 0; }
+.field-item { display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.field-item label { font-size: 11px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; padding-top: 16px; }
+.field-item input { font-size: clamp(18px, 2.5vw, 26px); }
+
+/* ── Select ── */
+.tf-select-wrap { position: relative; }
+.tf-select { padding: 10px 32px 10px 0; font-size: clamp(18px, 2.5vw, 26px); cursor: pointer; appearance: none; -webkit-appearance: none; }
+.tf-select-arr { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--ink-3); display: flex; }
+
+/* ── File upload — DS surface-2 tile, green solid on active ── */
+.file-drop {
+  display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: var(--r-md);
+  border: 1.5px dashed var(--line-2); background: var(--surface-2);
+  cursor: pointer; transition: border-color 180ms, background 180ms;
+}
+.file-drop:hover, .file-drop.has-file { border-color: var(--green-mid); border-style: solid; background: rgba(79,232,169,0.05); }
+.file-icon { width: 36px; height: 36px; border-radius: var(--r-sm); background: var(--bg); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--ink-3); flex-shrink: 0; }
+.file-copy { display: flex; flex-direction: column; gap: 2px; }
+.file-text { font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.file-hint { font-size: 12px; color: var(--ink-3); }
+input[type="file"] { display: none; }
+
+/* ── Choices — DS choice-card: surface-2 fill, green ring when selected ── */
+.choices { display: flex; flex-direction: column; gap: 7px; }
+.choices.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.choice {
+  display: flex; align-items: center; gap: 11px; padding: 12px 14px;
+  border-radius: var(--r-md); border: 1.5px solid var(--line); background: var(--surface-2);
+  cursor: pointer; font-size: 14px; font-weight: 500; color: var(--ink-2);
+  transition: border-color 180ms, background 180ms, box-shadow 180ms; user-select: none;
+}
+.choice:hover { border-color: var(--green-mid); background: rgba(79,232,169,0.05); }
+.choice input { display: none; }
+.choice.sel { border-color: var(--green-mid); background: rgba(79,232,169,0.09); box-shadow: 0 0 0 3px rgba(79,232,169,0.12); color: var(--ink); }
+.choice-key {
+  min-width: 21px; height: 21px; border-radius: var(--r-sm); border: 1.5px solid var(--line);
+  background: var(--bg); font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; color: var(--ink-3); flex-shrink: 0;
+  transition: background 180ms, border-color 180ms, color 180ms;
+}
+/* selected key = ink fill (DS .id-chip.selected language) */
+.choice.sel .choice-key { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-fg); }
+.other-wrap { display: none; }
+.other-wrap.vis { display: block; }
+.other-wrap input {
+  width: 100%; background: none; border: none; border-bottom: 1.5px solid var(--line-2);
+  padding: 8px 0; font-family: 'Inter', sans-serif; font-size: 16px; color: var(--ink);
+  outline: none; transition: border-color 200ms; caret-color: var(--accent);
+}
+.other-wrap input:focus { border-color: var(--green-mid); }
+.other-wrap input::placeholder { color: var(--ink-3); opacity: 0.5; }
+
+/* ── Language tags — soft green chip ── */
+.lang-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.lang-tag { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: var(--r-pill); background: rgba(79,232,169,0.1); border: 1px solid rgba(79,232,169,0.28); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.lang-tag button { background: none; border: none; cursor: pointer; color: var(--ink-3); font-size: 16px; line-height: 1; padding: 0; }
+
+
+/* ── CTA row. The buttons in it are the DS closed set (.btn / .btn-primary / .btn-sm) above —
+      there is no page button class here. .btn-ok / .btn-cal / .btn-community used to live here at
+      14px 24px and 13px 20px, which is why the continue button was a different shape to every
+      other primary button in the system. Never re-add them. ── */
+.cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+/* ── Divider + social buttons for the sign-up screen. Copied VERBATIM from
+      ds/ptf.css (.auth-divider / .social-btns / .btn-social) so screen 1 is the
+      same regular sign up as signup/index.html, not a second version of it. ── */
+.auth-divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: var(--ink-3); font-size: 13px; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.social-btns { display: flex; flex-direction: column; gap: 10px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+.btn-social { width: 100%; padding: 10px 16px; border-radius: var(--r-md); border: 1.5px solid var(--line); background: var(--bg); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--ink); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: border-color 180ms ease, background 180ms ease; }
+.btn-social:hover { border-color: rgba(10,10,10,0.2); background: var(--bg-soft); }
+.btn-social svg { flex-shrink: 0; }
+
+.key-hint { font-size: 12px; color: var(--ink-3); display: flex; align-items: center; gap: 5px; }
+.key-pill { padding: 2px 7px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface-2); font-size: 11px; font-weight: 600; color: var(--ink-3); }
+.skip-link { font-size: 13px; color: var(--ink-3); background: none; border: none; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; transition: color 160ms; }
+.skip-link:hover { color: var(--ink); }
+.error-msg { font-size: 13px; color: #C0392B; font-weight: 500; display: none; }
+.error-msg.show { display: block; }
+.login-line { font-size: 14px; color: var(--ink-3); margin-top: 4px; }
+/* Inline links in body copy — ink, 600, no rule until hover. Copied VERBATIM from
+   ds/ptf.css .auth-note a. Without this an unclassed <a> falls back to the browser
+   default (blue + underline), which is not a brand colour anywhere in the system. */
+.q-sub a, .confirm-sub a { color: var(--ink); font-weight: 600; text-decoration: none; text-underline-offset: 3px; }
+.q-sub a:hover, .confirm-sub a:hover { text-decoration: underline; }
+.login-line a { color: var(--ink); font-weight: 600; text-decoration: none; text-underline-offset: 3px; }
+.login-line a:hover { text-decoration: underline; }
+.login-line a:hover { text-decoration: underline; }
+
+/* ── Confirmation — DS thank-you components ── */
+.thanks-icon { margin-bottom: 4px; }
+.thanks-eyebrow { font-size: 10.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--green); }
+.confirm-title { font-family: 'Inter Tight', sans-serif; font-size: clamp(30px, 5vw, 50px); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; color: var(--ink); }
+.confirm-sub { font-size: 15px; color: var(--ink-3); line-height: 1.6; max-width: 44ch; }
+.confirm-actions { display: flex; gap: 9px; flex-wrap: wrap; }
+/* The two buttons here are .btn.btn-sm (secondary) and .btn.btn-primary.btn-sm (primary) — the
+   closed set, no page button classes. */
+
+/* ── Footer arrows ── */
+.foot { position: fixed; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: flex-end; padding: 16px 40px; pointer-events: none; z-index: 3; }
+.foot-arrows { display: flex; gap: 5px; pointer-events: all; }
+.foot-arrow { width: 33px; height: 33px; border-radius: var(--r-sm); border: 1.5px solid var(--line-2); background: rgba(255,255,255,0.75); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink-3); transition: border-color 160ms, color 160ms; }
+.foot-arrow:hover { border-color: var(--ink-3); color: var(--ink); }
+
+/* ── DEV ONLY — step switcher (jump to any step, no validation). Delete #devNav
+   markup + CSS + devGo() before launch. Kept visually distinct (dark pill) so it
+   never reads as brand UI. ── */
+#devNav { position: fixed; left: 16px; bottom: 16px; z-index: 200; display: flex; align-items: center; gap: 8px; padding: 7px 8px 7px 12px; border-radius: var(--r-pill); background: rgba(10,10,10,0.9); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
+#devNav .dev-lbl { font-family: 'Inter Tight', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: var(--iri-green); }
+#devNav .dev-btn { all: unset; cursor: pointer; min-width: 22px; text-align: center; padding: 5px 7px; border-radius: 7px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: #fff; }
+#devNav .dev-btn:hover { background: rgba(255,255,255,0.14); }
+#devNav .dev-btn.is-on { background: var(--iri-green); color: #0A0A0A; }
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .hd { padding: 0 20px; }
+  .foot { padding: 14px 20px; }
+  .slide { padding: 18px 16px 88px; }
+  .slide-inner { padding: 28px 22px; border-radius: var(--r-xl); gap: 20px; }
+  .choices.grid-2 { grid-template-columns: 1fr; }
+  .key-hint { display: none; }
+}
+
+/* ═══ v2 additions (2026-09-15 candidate-flow review) ═══════════════════════ */
+[hidden] { display: none !important; }
+
+/* Checkbox + row — copied VERBATIM from ds/ptf.css (.check-row / .check-box). */
+.check-row { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+.check-box { appearance: none; -webkit-appearance: none; flex-shrink: 0; margin-top: 1px; width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid var(--line); background: var(--bg); cursor: pointer; position: relative; transition: background 150ms, border-color 150ms; }
+.check-box:checked { background: var(--green-mid); border-color: var(--green-mid); }
+.check-box:checked::after { content: ''; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid #0A2A1F; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+/* Field labels with a consistent Required / Optional marker. */
+.f-label { display: flex; align-items: baseline; gap: 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.f-tag { font-size: 12px; font-weight: 500; color: var(--ink-3); }
+.f-group { display: flex; flex-direction: column; gap: 6px; }
+.note { font-size: 13px; line-height: 1.55; color: var(--ink-3); }
+.note a { color: var(--ink); font-weight: 600; text-decoration: none; }
+.note a:hover { text-decoration: underline; }
+.btn[disabled] { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* Roles: type, add, up to three chips (same chip as languages). */
+.add-row { display: flex; gap: 10px; align-items: flex-end; }
+.add-row .tf-input { flex: 1; }
+
+/* Languages: one row per language with its own proficiency. */
+.lang-rows { display: flex; flex-direction: column; gap: 8px; }
+.lang-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--r-md); background: var(--surface-2); border: 1px solid var(--line); }
+.lang-name { font-size: 14px; font-weight: 600; color: var(--ink); min-width: 0; flex: 1; }
+.lang-level { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink); background: var(--bg); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 6px 8px; }
+.lang-x { border: 0; background: none; cursor: pointer; color: var(--ink-3); font-size: 20px; line-height: 1; padding: 0 2px; }
+.lang-x:hover { color: var(--ink); }
+
+/* Review: every answer, each with its own way back to change it. */
+.review-list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.review-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.review-k { font-size: 12px; color: var(--ink-3); }
+.review-v { font-size: 14.5px; color: var(--ink); grid-column: 1; }
+.review-edit { grid-row: 1 / span 2; grid-column: 2; align-self: center; background: none; border: 0; cursor: pointer; font: 600 13px 'Inter', sans-serif; color: var(--accent); padding: 0; }
+.review-edit:hover { text-decoration: underline; }
+.consents { display: flex; flex-direction: column; gap: 12px; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+.consents a { color: var(--ink); font-weight: 600; text-decoration: none; }
+.slide-inner.wide { max-width: 680px; }
+</style>
+</head>
+<body>
+
+<!-- shared iridescent gradient for the big thank-you check (ds/ptf.css #ptf-grad) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ptf-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5BCFFF"/><stop offset="50%" stop-color="#4FE8A9"/><stop offset="100%" stop-color="#D5FF66"/></linearGradient></defs></svg>
+
+<div class="auth-bg">
+  <div class="auth-bg-blob b1"></div>
+  <div class="auth-bg-blob b2"></div>
+  <div class="auth-bg-blob b3"></div>
+</div>
+
+<header class="hd">
+  <div class="hd-row">
+    <a href="index.html" class="brand">
+      <svg width="130" height="19" viewBox="0 0 160 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PowerToFly"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.7617 10.928C15.7617 2.86221 21.426 0 26.2767 0C28.9615 0 31.3838 0.986191 33.0976 2.77713C34.9591 4.72298 35.9433 7.53213 35.9433 10.9005C35.9433 18.9575 30.5117 21.8282 25.4283 21.8282C22.7435 21.8282 20.3209 20.842 18.6074 19.0511C16.7459 17.1053 15.7617 14.2964 15.7617 10.928ZM26.4544 19.2225C29.7189 19.2225 31.7468 16.4109 31.7468 11.8849C31.7468 6.32669 29.1355 2.59233 25.2498 2.59233C21.9855 2.59233 19.9576 5.40392 19.9576 9.92991C19.9576 15.4881 22.5686 19.2225 26.4544 19.2225Z" fill="black"/><path d="M60.3487 0.682238L60.388 0.42334H64.0336L57.5637 21.4038H53.1831L49.515 6.05079L45.2528 21.4038H40.6598L35.6982 0.42334H39.7348L43.6016 17.256L47.9597 0.42334H52.024L55.958 17.3081L58.4575 8.50437L58.4691 8.51565C59.9813 3.03757 60.3445 0.708726 60.3487 0.682238Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M94.664 6.88663L94.7092 6.90919V6.41579C94.7092 0.978936 90.0786 0.24585 85.549 0.24585C84.3163 0.24585 83.0046 0.252558 82.0012 0.263231C80.6684 0.276649 80.002 0.3908 80.002 0.605684V21.3907H83.8285V12.6763L85.2266 12.8303L92.1919 21.3907H96.9639L89.0199 12.5641C90.8851 11.9548 94.3838 10.6094 94.664 6.88663ZM90.8143 6.52557C90.8142 8.0607 90.2706 10.6359 86.6306 10.6359C86.2535 10.6359 85.4803 10.6234 85.4092 10.6222L83.8428 10.5417V2.72962C84.1799 2.68602 84.8148 2.61954 85.5218 2.61954C88.2708 2.61954 90.8143 3.09281 90.8143 6.52557Z" fill="black"/><path d="M155.887 0.623079L155.96 0.42334H160L152.907 12.1195V21.3898H149.08V12.3994L141.196 0.42334H145.571L151.337 9.52014L152.047 8.22443C154.993 3.00663 155.87 0.667379 155.887 0.623079Z" fill="black"/><path d="M106.876 3.66406H97.958V5.88711H101.366V13.4064H103.674V5.88711H106.876V3.66406Z" fill="black"/><path fill-rule="evenodd" clip-rule="evenodd" d="M106.103 12.4732C106.103 9.61036 108.264 7.45166 111.129 7.45166C114.042 7.45166 116.157 9.5634 116.157 12.4732C116.157 15.3671 114.042 17.4676 111.129 17.4676C108.217 17.4676 106.103 15.3671 106.103 12.4732ZM111.129 15.2171C112.765 15.2171 113.78 14.1604 113.78 12.4595C113.78 10.8103 112.715 9.70215 111.129 9.70215C109.552 9.70215 108.492 10.8103 108.492 12.4595C108.492 14.1345 109.527 15.2171 111.129 15.2171Z" fill="black"/><path d="M69.3816 11.738H77.3604V9.2277H69.3816V2.91962H77.6205V0.42334H65.541V21.3901H78.1544V18.8935H69.3816V11.738Z" fill="black"/><path d="M123.464 21.3901H119.638V0.42334H131.717V2.91962H123.464V9.50093H131.416V12.1344H123.464V21.3901Z" fill="black"/><path d="M137.447 0.42334H133.62V21.3901H145.74V18.8935H137.447V0.42334Z" fill="black"/><path d="M0.299774 0.300435C0.330911 0.299825 3.43396 0.24585 5.57451 0.24585C8.59025 0.24585 11.6246 0.489195 13.3897 2.25726C14.3592 3.22821 14.8486 4.5907 14.844 6.30723C14.844 11.6026 10.3309 12.9465 8.39061 13.2783C7.54532 13.428 6.37461 13.5289 5.47865 13.5289C5.06654 13.5289 4.2823 13.4317 3.82684 13.3701V21.3904H0V9.09717L0.463397 9.37742C2.31088 10.4953 3.74473 11.101 6.026 11.101C9.29237 11.101 10.9488 9.63052 10.9488 6.73019C10.9488 3.11751 8.34604 2.61954 5.53329 2.61954C4.82202 2.61954 4.17119 2.68693 3.82684 2.73054V9.01819L3.43671 8.90567C3.3494 8.88036 1.28549 8.27199 0.0741802 6.86803L0 6.78203V0.305924L0.299774 0.300435Z" fill="black"/></svg>
+      <span class="brand-ai">AI</span>
+    </a>
+    <div class="hd-right">
+      <span class="hd-count" id="hdCount"></span>
+      <button class="hd-back" id="btnBack" onclick="goBack()" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        Back
+      </button>
+    </div>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+</header>
+
+
+<div class="slides-wrap">
+
+  <div class="slide state-below" data-step="welcome">
+    <div class="slide-inner">
+      <div class="eyebrow">PowerToFly AI Talent Community</div>
+      <div class="q-text">Join the PowerToFly AI Talent Community.</div>
+      <p class="q-sub">Tell us about your experience and interests to be considered for paid AI opportunities, from training and evaluation projects to contract, fractional and full-time roles. Registration takes about four minutes.</p>
+      <p class="note">You’ll need your LinkedIn profile URL and most recent résumé to complete your registration.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Get started <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="country">
+    <div class="slide-inner">
+      <div class="q-text">Which country do you currently live in?</div>
+      <p class="q-sub">We use this to show you opportunities you can take on from where you are.</p>
+      <div class="tf-select-wrap">
+        <select class="tf-select" id="country">
+          <option value="">Select a country…</option>
+          <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahrain</option><option>Bangladesh</option><option>Belarus</option><option>Belgium</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Brazil</option><option>Bulgaria</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Chile</option><option>China</option><option>Colombia</option><option>Costa Rica</option><option>Croatia</option><option>Cyprus</option><option>Czech Republic</option><option>Denmark</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Estonia</option><option>Ethiopia</option><option>Finland</option><option>France</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Guatemala</option><option>Honduras</option><option>Hungary</option><option>India</option><option>Indonesia</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kosovo</option><option>Kuwait</option><option>Latvia</option><option>Lebanon</option><option>Lithuania</option><option>Luxembourg</option><option>Malaysia</option><option>Malta</option><option>Mexico</option><option>Moldova</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Myanmar</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nigeria</option><option>North Macedonia</option><option>Norway</option><option>Pakistan</option><option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>South Africa</option><option>South Korea</option><option>Spain</option><option>Sri Lanka</option><option>Sweden</option><option>Switzerland</option><option>Taiwan</option><option>Tanzania</option><option>Thailand</option><option>Tunisia</option><option>Turkey</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+        </select>
+        <span class="tf-select-arr"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg></span>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-country"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="background">
+    <div class="slide-inner">
+      <div class="q-text">Your professional background</div>
+      <p class="q-sub">To join the Talent Community, please provide both your LinkedIn profile URL and your most recent résumé. We’ll use this information to understand your experience and identify opportunities that may be relevant to you.</p>
+      <div class="f-group">
+        <label class="f-label" for="linkedin">LinkedIn profile URL <span class="f-tag">Required</span></label>
+        <input class="tf-input" id="linkedin" type="url" placeholder="linkedin.com/in/your-name" autocomplete="url">
+      </div>
+      <div class="f-group">
+        <span class="f-label">Upload your résumé <span class="f-tag">Required</span></span>
+        <label class="file-drop" id="resumeLabel" for="resumeFile">
+          <div class="file-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg></div>
+          <div class="file-copy"><span class="file-text" id="resumeText">Choose a file</span><span class="file-hint">PDF or Word · Max 10 MB</span></div>
+        </label>
+        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
+      </div>
+      <!-- COPY: neutral wording on purpose. Do NOT say the résumé/LinkedIn "fill in the details"
+           or that information is extracted until parsing and candidate review are confirmed. -->
+      <p class="note">We’ll use the information you provide to understand your professional experience and consider you for relevant opportunities. Read our <a href="#">Privacy Policy</a> to learn more about how we use and protect your information.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" id="bgContinue" onclick="next()" disabled>Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="error-msg" id="err-background"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="expertise">
+    <div class="slide-inner wide">
+      <div class="q-text">What’s your main area of expertise?</div>
+      <p class="q-sub">Choose the one that fits you best.</p>
+      <div class="choices grid-2" id="expertiseGrid">
+        <label class="choice" data-val="Healthcare &amp; medicine"><input type="radio" name="expertise"><span class="choice-key">A</span>Healthcare &amp; medicine</label>
+        <label class="choice" data-val="Legal"><input type="radio" name="expertise"><span class="choice-key">B</span>Legal</label>
+        <label class="choice" data-val="Finance &amp; accounting"><input type="radio" name="expertise"><span class="choice-key">C</span>Finance &amp; accounting</label>
+        <label class="choice" data-val="Engineering"><input type="radio" name="expertise"><span class="choice-key">D</span>Engineering</label>
+        <label class="choice" data-val="Software &amp; IT"><input type="radio" name="expertise"><span class="choice-key">E</span>Software &amp; IT</label>
+        <label class="choice" data-val="Science &amp; research"><input type="radio" name="expertise"><span class="choice-key">F</span>Science &amp; research</label>
+        <label class="choice" data-val="Education &amp; teaching"><input type="radio" name="expertise"><span class="choice-key">G</span>Education &amp; teaching</label>
+        <label class="choice" data-val="Languages &amp; linguistics"><input type="radio" name="expertise"><span class="choice-key">H</span>Languages &amp; linguistics</label>
+        <label class="choice" data-val="Product &amp; design"><input type="radio" name="expertise"><span class="choice-key">I</span>Product &amp; design</label>
+        <label class="choice" data-val="Sales &amp; marketing"><input type="radio" name="expertise"><span class="choice-key">J</span>Sales &amp; marketing</label>
+        <label class="choice" data-val="People &amp; HR"><input type="radio" name="expertise"><span class="choice-key">K</span>People &amp; HR</label>
+        <label class="choice" data-val="Customer success &amp; operations"><input type="radio" name="expertise"><span class="choice-key">L</span>Customer success &amp; operations</label>
+        <label class="choice" data-val="Business &amp; management"><input type="radio" name="expertise"><span class="choice-key">M</span>Business &amp; management</label>
+        <label class="choice" data-val="Creative &amp; writing"><input type="radio" name="expertise"><span class="choice-key">N</span>Creative &amp; writing</label>
+        <label class="choice" data-val="Data &amp; analytics"><input type="radio" name="expertise"><span class="choice-key">O</span>Data &amp; analytics</label>
+        <label class="choice" data-val="Other"><input type="radio" name="expertise"><span class="choice-key">P</span>Other</label>
+      </div>
+      <div class="other-wrap" id="expertiseOtherWrap"><input type="text" id="expertiseOther" placeholder="Please specify your area of expertise"></div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-expertise"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="roles">
+    <div class="slide-inner">
+      <div class="q-text">What types of roles or projects are you interested in?</div>
+      <p class="q-sub">Add up to three role titles or types of work. For example: Product Manager, AI model evaluation, data analytics.</p>
+      <div class="add-row">
+        <input class="tf-input" id="roleInput" type="text" placeholder="Add a role or type of work">
+        <button class="btn btn-sm" type="button" id="roleAdd">Add</button>
+      </div>
+      <div class="lang-tags" id="roleTags"></div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-roles"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="years">
+    <div class="slide-inner">
+      <div class="q-text">How many years of experience do you have in this area?</div>
+      <div class="choices" id="yearsGrid">
+        <label class="choice" data-val="Less than 2 years"><input type="radio" name="years"><span class="choice-key">A</span>Less than 2 years</label>
+        <label class="choice" data-val="2–4 years"><input type="radio" name="years"><span class="choice-key">B</span>2–4 years</label>
+        <label class="choice" data-val="5–9 years"><input type="radio" name="years"><span class="choice-key">C</span>5–9 years</label>
+        <label class="choice" data-val="10+ years"><input type="radio" name="years"><span class="choice-key">D</span>10+ years</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-years"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="ai">
+    <div class="slide-inner wide">
+      <div class="q-text">What’s your experience with AI?</div>
+      <p class="q-sub">There’s no wrong answer here. Let us know where you’re starting from, so we can find the right match for you.</p>
+      <div class="choices" id="aiLevelGrid">
+        <label class="choice" data-val="New to AI"><input type="radio" name="aiLevel"><span class="choice-key">A</span><span><strong>New to AI</strong>: I haven’t used AI tools yet</span></label>
+        <label class="choice" data-val="Exploring"><input type="radio" name="aiLevel"><span class="choice-key">B</span><span><strong>Exploring</strong>: I’ve used AI tools occasionally</span></label>
+        <label class="choice" data-val="AI-enabled professional"><input type="radio" name="aiLevel"><span class="choice-key">C</span><span><strong>AI-enabled professional</strong>: I use AI regularly in my work</span></label>
+        <label class="choice" data-val="AI evaluator/trainer"><input type="radio" name="aiLevel"><span class="choice-key">D</span><span><strong>AI evaluator/trainer</strong>: I have professional experience evaluating, labelling or improving AI outputs</span></label>
+        <label class="choice" data-val="AI builder"><input type="radio" name="aiLevel"><span class="choice-key">E</span><span><strong>AI builder</strong>: I build, train, fine-tune or deploy AI/ML systems</span></label>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-ai"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="aiAreas">
+    <div class="slide-inner wide">
+      <div class="q-text">Which AI areas have you worked with?</div>
+      <p class="q-sub">Select all that apply.</p>
+      <div class="choices grid-2" id="aiAreasGrid">
+        <label class="choice" data-val="Generative AI tools"><input type="checkbox" name="aiAreas"><span class="choice-key">A</span>Generative AI tools</label>
+        <label class="choice" data-val="Prompt design or prompt engineering"><input type="checkbox" name="aiAreas"><span class="choice-key">B</span>Prompt design or prompt engineering</label>
+        <label class="choice" data-val="LLMs"><input type="checkbox" name="aiAreas"><span class="choice-key">C</span>LLMs</label>
+        <label class="choice" data-val="RAG"><input type="checkbox" name="aiAreas"><span class="choice-key">D</span>RAG</label>
+        <label class="choice" data-val="AI agents"><input type="checkbox" name="aiAreas"><span class="choice-key">E</span>AI agents</label>
+        <label class="choice" data-val="Model evaluation or red teaming"><input type="checkbox" name="aiAreas"><span class="choice-key">F</span>Model evaluation or red teaming</label>
+        <label class="choice" data-val="Data annotation or labelling"><input type="checkbox" name="aiAreas"><span class="choice-key">G</span>Data annotation or labelling</label>
+        <label class="choice" data-val="Machine learning or data science"><input type="checkbox" name="aiAreas"><span class="choice-key">H</span>Machine learning or data science</label>
+        <label class="choice" data-val="AI governance or safety"><input type="checkbox" name="aiAreas"><span class="choice-key">I</span>AI governance or safety</label>
+        <label class="choice" data-val="Other"><input type="checkbox" name="aiAreas"><span class="choice-key">J</span>Other</label>
+      </div>
+      <div class="other-wrap" id="aiAreasOtherWrap"><input type="text" id="aiAreasOther" placeholder="Please specify"></div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-aiAreas"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="opps">
+    <div class="slide-inner">
+      <div class="q-text">What opportunities are you interested in?</div>
+      <p class="q-sub">Select all that apply.</p>
+      <div class="choices" id="oppsGrid">
+        <label class="choice" data-val="AI training or evaluation projects"><input type="checkbox" name="opps"><span class="choice-key">A</span>AI training or evaluation projects</label>
+        <label class="choice" data-val="Contract or project work"><input type="checkbox" name="opps"><span class="choice-key">B</span>Contract or project work</label>
+        <label class="choice" data-val="Fractional or part-time roles"><input type="checkbox" name="opps"><span class="choice-key">C</span>Fractional or part-time roles</label>
+        <label class="choice" data-val="Full-time roles"><input type="checkbox" name="opps"><span class="choice-key">D</span>Full-time roles</label>
+        <label class="choice" data-val="AI learning and events"><input type="checkbox" name="opps"><span class="choice-key">E</span>AI learning and events</label>
+        <label class="choice" data-val="Career-transition support"><input type="checkbox" name="opps"><span class="choice-key">F</span>Career-transition support</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-opps"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="hours">
+    <div class="slide-inner">
+      <div class="q-text">How many hours per week could you commit?</div>
+      <div class="choices grid-2" id="hoursGrid">
+        <label class="choice" data-val="Less than 5 hours"><input type="radio" name="hours"><span class="choice-key">A</span>Less than 5 hours</label>
+        <label class="choice" data-val="5–9 hours"><input type="radio" name="hours"><span class="choice-key">B</span>5–9 hours</label>
+        <label class="choice" data-val="10–19 hours"><input type="radio" name="hours"><span class="choice-key">C</span>10–19 hours</label>
+        <label class="choice" data-val="20–29 hours"><input type="radio" name="hours"><span class="choice-key">D</span>20–29 hours</label>
+        <label class="choice" data-val="30+ hours"><input type="radio" name="hours"><span class="choice-key">E</span>30+ hours</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-hours"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="languages">
+    <div class="slide-inner">
+      <div class="q-text">Working languages</div>
+      <p class="q-sub">Some projects are language specific. Add each language you can work in, and how well you use it.</p>
+      <div class="tf-select-wrap">
+        <select class="tf-select" id="langSelect">
+          <option value="">Add a language…</option>
+          <option>Arabic</option><option>Bengali</option><option>Chinese (Mandarin)</option><option>Chinese (Cantonese)</option><option>Dutch</option><option>English</option><option>French</option><option>German</option><option>Greek</option><option>Hebrew</option><option>Hindi</option><option>Indonesian</option><option>Italian</option><option>Japanese</option><option>Korean</option><option>Malay</option><option>Norwegian</option><option>Persian (Farsi)</option><option>Polish</option><option>Portuguese</option><option>Romanian</option><option>Russian</option><option>Spanish</option><option>Swahili</option><option>Swedish</option><option>Tagalog</option><option>Thai</option><option>Turkish</option><option>Ukrainian</option><option>Urdu</option><option>Vietnamese</option>
+        </select>
+        <span class="tf-select-arr"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg></span>
+      </div>
+      <div class="lang-rows" id="langRows"></div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-languages"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="start">
+    <div class="slide-inner">
+      <div class="q-text">When would you be available to start a new opportunity?</div>
+      <div class="choices" id="startGrid">
+        <label class="choice" data-val="Immediately"><input type="radio" name="start"><span class="choice-key">A</span>Immediately</label>
+        <label class="choice" data-val="Within two weeks"><input type="radio" name="start"><span class="choice-key">B</span>Within two weeks</label>
+        <label class="choice" data-val="Within one month"><input type="radio" name="start"><span class="choice-key">C</span>Within one month</label>
+        <label class="choice" data-val="Within one to three months"><input type="radio" name="start"><span class="choice-key">D</span>Within one to three months</label>
+        <label class="choice" data-val="I’m just exploring for now"><input type="radio" name="start"><span class="choice-key">E</span>I’m just exploring for now</label>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="key-hint"><span class="key-pill">Enter ↵</span></span>
+        <span class="error-msg" id="err-start"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="review">
+    <div class="slide-inner wide">
+      <div class="q-text">Review and submit</div>
+      <p class="q-sub">Check your answers before you send them. You can change anything.</p>
+      <!-- COPY: once parsing is confirmed, extracted résumé/LinkedIn fields are listed here
+           too, editable, under "From your résumé and LinkedIn". Not shown until then. -->
+      <div class="review-list" id="reviewList"></div>
+      <p class="note">We’ll use the information you provide to understand your professional experience and consider you for relevant opportunities. We won’t share your details with a client without telling you about the specific opportunity and asking first.<!-- COPY: confirm against the actual process + Privacy Policy --> Read our <a href="#">Privacy Policy</a>.</p>
+      <div class="consents">
+        <label class="check-row"><input type="checkbox" class="check-box" id="consentReq"><span>I agree that PowerToFly may use the information I have provided to assess my suitability for and contact me about relevant opportunities. I have read the <a href="#">Privacy Policy</a>. <span class="f-tag">Required</span></span></label>
+        <label class="check-row"><input type="checkbox" class="check-box" id="consentOpt"><span>I would also like to receive information about PowerToFly events, learning and Talent Community updates. <span class="f-tag">Optional</span></span></label>
+      </div>
+      <div class="cta-row">
+        <button class="btn btn-primary" id="submitBtn" onclick="next()" disabled>Submit registration <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+        <span class="error-msg" id="err-review"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide state-below" data-step="done">
+    <div class="slide-inner">
+      <div class="thanks-icon">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 12.5l4.5 4.5L19.5 6" stroke="url(#ptf-grad)" stroke-width="6.5" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+      </div>
+      <div class="thanks-eyebrow">Registration complete</div>
+      <div class="confirm-title">You’re all set.</div>
+      <p class="confirm-sub">Thanks for joining the PowerToFly AI Talent Community. We’ll email you to confirm your registration and contact you when we identify opportunities that may match your experience and interests.</p>
+      <div class="confirm-actions">
+        <!-- neutral until what happens after submission is confirmed -->
+        <a href="index.html" class="btn btn-sm">Return to PowerToFly</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DEV ONLY — jump to any screen without filling anything in. Delete with its CSS + script before launch. -->
+<div id="devNav"><span class="dev-lbl">DEV</span></div>
+
+<footer class="foot" id="foot">
+  <div class="foot-arrows">
+    <button class="foot-arrow" onclick="goBack()" title="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg></button>
+    <button class="foot-arrow" onclick="next()" title="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg></button>
+  </div>
+</footer>
+<script>
+/* ═══ Talent Community registration — v2 ════════════════════════════════════
+   Built from the 2026-09-15 candidate-flow review. v1 (join.html) is untouched.
+   Screens are read from the DOM (data-step), so adding, removing or reordering
+   one never needs a hand-edited index. Three screens are CONDITIONAL — skipped
+   entirely, and not counted in "n / N", when they do not apply:
+     aiAreas  only for people who work with AI professionally
+     hours    only for project, contract, fractional or part-time interest
+     start    only for anyone interested in paid work
+   ═════════════════════════════════════════════════════════════════════════ */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const STEPS  = slides.map(s => s.dataset.step);
+const at     = id => STEPS.indexOf(id);
+let cur = 0, animating = false, returnToReview = false;
+
+const AI_PRO     = ['AI-enabled professional', 'AI evaluator/trainer', 'AI builder'];
+const HOURS_OPPS = ['AI training or evaluation projects', 'Contract or project work', 'Fractional or part-time roles'];
+const PAID_OPPS  = [...HOURS_OPPS, 'Full-time roles'];
+
+const one  = gid => { const c = document.querySelector('#' + gid + ' .choice.sel'); return c ? c.dataset.val : ''; };
+const many = gid => [...document.querySelectorAll('#' + gid + ' .choice.sel')].map(c => c.dataset.val);
+
+const COND = {
+  aiAreas: () => AI_PRO.includes(one('aiLevelGrid')),
+  hours:   () => many('oppsGrid').some(o => HOURS_OPPS.includes(o)),
+  start:   () => many('oppsGrid').some(o => PAID_OPPS.includes(o)),
+};
+const applies = i => !COND[STEPS[i]] || COND[STEPS[i]]();
+function nextIndex(i) { do { i++; } while (i < STEPS.length - 1 && !applies(i)); return i; }
+function prevIndex(i) { do { i--; } while (i > 0 && !applies(i)); return Math.max(i, 0); }
+
+/* ── navigation ─────────────────────────────────────────────────────────── */
+function render(i) {
+  if (animating) return;
+  animating = true;
+  slides.forEach((s, k) => { s.className = 'slide ' + (k === i ? 'state-active' : k < i ? 'state-above' : 'state-below'); });
+  cur = i;
+  if (STEPS[i] === 'review') buildReview();
+  updateMeta();
+  setTimeout(() => {
+    const f = slides[cur].querySelector('.tf-input');
+    if (f) f.focus();
+    animating = false;
+  }, 460);
+}
+
+function updateMeta() {
+  const id = STEPS[cur];
+  const isWelcome = id === 'welcome', isDone = id === 'done';
+  const counted = STEPS.map((_, k) => k).filter(k => STEPS[k] !== 'welcome' && STEPS[k] !== 'done' && applies(k));
+  const pos = counted.indexOf(cur);
+  document.getElementById('progFill').style.width = isDone ? '100%' : (isWelcome || pos < 0) ? '0%' : ((pos + 1) / counted.length * 100) + '%';
+  document.getElementById('hdCount').textContent = (isWelcome || isDone || pos < 0) ? '' : (pos + 1) + ' / ' + counted.length;
+  document.getElementById('btnBack').style.display = (cur > 0 && !isDone) ? '' : 'none';
+  document.getElementById('foot').style.display = isDone ? 'none' : '';
+  if (window.markDev) markDev();
+}
+
+function next() {
+  const id = STEPS[cur];
+  if (id === 'done') return;
+  if (!validate(id)) return;
+  if (id === 'review') { console.log('Registration:', snapshot()); render(at('done')); return; }
+  if (returnToReview) {
+    // After a change from the review screen, go back to it — but not past a screen
+    // the change has just made relevant and nobody has answered yet.
+    let n = nextIndex(cur);
+    while (STEPS[n] !== 'review' && validate(STEPS[n], true)) n = nextIndex(n);
+    if (STEPS[n] === 'review') returnToReview = false;
+    render(n);
+    return;
+  }
+  render(nextIndex(cur));
+}
+function goBack() { if (cur > 0) render(prevIndex(cur)); }
+
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const a = document.activeElement;
+  if (a && a.id === 'roleInput') { e.preventDefault(); addRole(); return; }
+  if (a && (a.tagName === 'TEXTAREA' || a.tagName === 'SELECT' || a.tagName === 'A' || (a.tagName === 'BUTTON' && a.closest('.slide')))) return;
+  e.preventDefault(); next();
+});
+
+/* ── validation ──────────────────────────────────────────────────────────── */
+const LINKEDIN = /^(https?:\/\/)?([a-z]{2,3}\.)?linkedin\.com\/(in|pub)\/[^\s\/?#]+\/?(\?.*)?$/i;
+const RESUME_TYPES = ['pdf', 'doc', 'docx'];
+
+function resumeProblem() {
+  const f = document.getElementById('resumeFile').files[0];
+  if (!f) return 'Upload your most recent résumé.';
+  const ext = (f.name.split('.').pop() || '').toLowerCase();
+  if (!RESUME_TYPES.includes(ext)) return 'Upload your résumé as a PDF or Word file.';
+  if (f.size > 10 * 1024 * 1024) return 'Your résumé must be 10 MB or smaller.';
+  return '';
+}
+
+function validate(id, silent) {
+  if (!silent) document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+  const fail = msg => { if (!silent) { const el = document.getElementById('err-' + id); if (el) { el.textContent = msg; el.classList.add('show'); } } return false; };
+  switch (id) {
+    case 'country':    return document.getElementById('country').value ? true : fail('Select the country you live in.');
+    case 'background': {
+      const li = document.getElementById('linkedin').value.trim();
+      if (!LINKEDIN.test(li)) return fail(li ? 'Enter a valid LinkedIn profile URL, like linkedin.com/in/your-name.' : 'Enter your LinkedIn profile URL.');
+      const r = resumeProblem();
+      return r ? fail(r) : true;
+    }
+    case 'expertise': {
+      const v = one('expertiseGrid');
+      if (!v) return fail('Choose your main area of expertise.');
+      if (v === 'Other' && !document.getElementById('expertiseOther').value.trim()) return fail('Tell us your area of expertise.');
+      return true;
+    }
+    case 'roles':     return roles.length ? true : fail('Add at least one role or type of work.');
+    case 'years':     return one('yearsGrid') ? true : fail('Choose one to continue.');
+    case 'ai':        return one('aiLevelGrid') ? true : fail('Choose one to continue.');
+    case 'aiAreas': {
+      const v = many('aiAreasGrid');
+      if (!v.length) return fail('Select at least one.');
+      if (v.includes('Other') && !document.getElementById('aiAreasOther').value.trim()) return fail('Tell us the other AI area.');
+      return true;
+    }
+    case 'opps':      return many('oppsGrid').length ? true : fail('Select at least one.');
+    case 'hours':     return one('hoursGrid') ? true : fail('Choose one to continue.');
+    case 'languages': {
+      if (!langs.length) return fail('Add at least one language.');
+      if (langs.some(l => !l.level)) return fail('Choose a proficiency level for each language.');
+      return true;
+    }
+    case 'start':     return one('startGrid') ? true : fail('Choose one to continue.');
+    case 'review':    return document.getElementById('consentReq').checked ? true : fail('Please agree to the required statement to submit.');
+    default:          return true;
+  }
+}
+
+/* ── choices ─────────────────────────────────────────────────────────────── */
+document.querySelectorAll('.choice').forEach(ch => {
+  ch.addEventListener('click', () => {
+    const inp = ch.querySelector('input');
+    if (inp.type === 'radio') {
+      ch.closest('.choices').querySelectorAll('.choice').forEach(c => c.classList.remove('sel'));
+      ch.classList.add('sel'); inp.checked = true;
+    } else {
+      inp.checked = !inp.checked;
+      ch.classList.toggle('sel', inp.checked);
+    }
+    if (inp.name === 'expertise') document.getElementById('expertiseOtherWrap').classList.toggle('vis', ch.dataset.val === 'Other');
+    if (inp.name === 'aiAreas')   document.getElementById('aiAreasOtherWrap').classList.toggle('vis', many('aiAreasGrid').includes('Other'));
+    // AI level and opportunities change which screens exist, so the count moves too
+    if (inp.name === 'aiLevel' || inp.name === 'opps') updateMeta();
+  });
+});
+
+/* ── background: Continue only once both are valid ──────────────────────── */
+const bgBtn = document.getElementById('bgContinue');
+function syncBackground() { bgBtn.disabled = !validate('background', true); }
+document.getElementById('linkedin').addEventListener('input', syncBackground);
+document.getElementById('linkedin').addEventListener('blur', function () {
+  if (this.value.trim() && !LINKEDIN.test(this.value.trim())) validate('background');
+});
+document.getElementById('resumeFile').addEventListener('change', function () {
+  const f = this.files[0];
+  document.getElementById('resumeText').textContent = f ? f.name : 'Choose a file';
+  document.getElementById('resumeLabel').classList.toggle('has-file', !!f);
+  if (f && resumeProblem()) validate('background');
+  syncBackground();
+});
+
+/* ── roles: up to three ──────────────────────────────────────────────────── */
+const roles = [];
+function addRole() {
+  const input = document.getElementById('roleInput');
+  const v = input.value.trim();
+  if (!v || roles.length >= 3 || roles.some(r => r.toLowerCase() === v.toLowerCase())) { input.value = ''; return; }
+  roles.push(v); input.value = ''; renderRoles();
+}
+function renderRoles() {
+  const box = document.getElementById('roleTags');
+  box.innerHTML = '';
+  roles.forEach((r, i) => {
+    const tag = document.createElement('span'); tag.className = 'lang-tag';
+    tag.append(document.createTextNode(r + ' '));
+    const x = document.createElement('button'); x.type = 'button'; x.title = 'Remove'; x.textContent = '×';
+    x.onclick = () => { roles.splice(i, 1); renderRoles(); };
+    tag.append(x); box.append(tag);
+  });
+  const full = roles.length >= 3;
+  document.getElementById('roleInput').disabled = full;
+  document.getElementById('roleAdd').disabled = full;
+  document.getElementById('roleInput').placeholder = full ? 'That’s three — remove one to add another' : 'Add a role or type of work';
+}
+document.getElementById('roleAdd').addEventListener('click', addRole);
+
+/* ── languages: each with its own proficiency ────────────────────────────── */
+const LEVELS = ['Native or bilingual', 'Professional', 'Conversational'];
+const langs = [];
+document.getElementById('langSelect').addEventListener('change', function () {
+  const v = this.value; this.value = '';
+  if (!v || langs.some(l => l.name === v)) return;
+  langs.push({ name: v, level: '' }); renderLangs();
+});
+function renderLangs() {
+  const box = document.getElementById('langRows');
+  box.innerHTML = '';
+  langs.forEach((l, i) => {
+    const row = document.createElement('div'); row.className = 'lang-row';
+    const name = document.createElement('span'); name.className = 'lang-name'; name.textContent = l.name;
+    const sel = document.createElement('select'); sel.className = 'lang-level'; sel.setAttribute('aria-label', 'Proficiency in ' + l.name);
+    sel.innerHTML = '<option value="">Proficiency…</option>' + LEVELS.map(o => '<option' + (o === l.level ? ' selected' : '') + '>' + o + '</option>').join('');
+    sel.onchange = () => { l.level = sel.value; };
+    const x = document.createElement('button'); x.type = 'button'; x.className = 'lang-x'; x.setAttribute('aria-label', 'Remove ' + l.name); x.textContent = '×';
+    x.onclick = () => { langs.splice(i, 1); renderLangs(); };
+    row.append(name, sel, x); box.append(row);
+  });
+}
+
+/* ── review ──────────────────────────────────────────────────────────────── */
+function answers() {
+  const rows = [];
+  const add = (step, k, v) => { if (applies(at(step))) rows.push({ step, k, v }); };
+  add('country', 'Country', document.getElementById('country').value);
+  add('background', 'LinkedIn profile', document.getElementById('linkedin').value.trim());
+  add('background', 'Résumé', (document.getElementById('resumeFile').files[0] || {}).name || '');
+  const ex = one('expertiseGrid');
+  add('expertise', 'Main area of expertise', ex === 'Other' ? 'Other: ' + document.getElementById('expertiseOther').value.trim() : ex);
+  add('roles', 'Roles or projects', roles.join(', '));
+  add('years', 'Years of experience', one('yearsGrid'));
+  add('ai', 'Experience with AI', one('aiLevelGrid'));
+  const areas = many('aiAreasGrid').map(a => a === 'Other' ? 'Other: ' + document.getElementById('aiAreasOther').value.trim() : a);
+  add('aiAreas', 'AI areas', areas.join(', '));
+  add('opps', 'Opportunities', many('oppsGrid').join(', '));
+  add('hours', 'Hours per week', one('hoursGrid'));
+  add('languages', 'Working languages', langs.map(l => l.name + (l.level ? ' (' + l.level.toLowerCase() + ')' : '')).join(', '));
+  add('start', 'Available to start', one('startGrid'));
+  return rows;
+}
+function buildReview() {
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+  answers().forEach(r => {
+    const row = document.createElement('div'); row.className = 'review-row';
+    const k = document.createElement('span'); k.className = 'review-k'; k.textContent = r.k;
+    const v = document.createElement('span'); v.className = 'review-v'; v.textContent = r.v || '—';
+    const e = document.createElement('button'); e.type = 'button'; e.className = 'review-edit'; e.textContent = 'Change';
+    e.setAttribute('aria-label', 'Change ' + r.k);
+    e.onclick = () => { returnToReview = true; animating = false; render(at(r.step)); };
+    row.append(k, v, e); list.append(row);
+  });
+}
+document.getElementById('consentReq').addEventListener('change', function () {
+  document.getElementById('submitBtn').disabled = !this.checked;
+});
+function snapshot() {
+  const o = {}; answers().forEach(r => { o[r.k] = r.v; });
+  o['Consent: contact about opportunities'] = document.getElementById('consentReq').checked;
+  o['Consent: events, learning and updates'] = document.getElementById('consentOpt').checked;
+  return o;
+}
+
+/* ── DEV ONLY — jump to any screen. Delete with #devNav before launch. ─────── */
+function devGo(i) { animating = false; returnToReview = false; render(i); }
+function markDev() {
+  document.querySelectorAll('#devNav .dev-btn').forEach(b => b.classList.toggle('is-on', +b.dataset.go === cur));
+}
+(function buildDev() {
+  const bar = document.getElementById('devNav');
+  slides.forEach((s, i) => {
+    const h = s.querySelector('.q-text, .confirm-title');
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'dev-btn'; b.dataset.go = i; b.textContent = i;
+    b.title = i + ' · ' + (h ? h.textContent.trim() : s.dataset.step) + (COND[s.dataset.step] ? ' (conditional)' : '');
+    b.onclick = () => devGo(i);
+    bar.append(b);
+  });
+})();
+
+render(0);
+</script>
+
+</body>
+</html>
