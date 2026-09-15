@@ -257,6 +257,9 @@ input[type="file"] { display: none; }
 #devNav .dev-btn { all: unset; cursor: pointer; min-width: 22px; text-align: center; padding: 5px 7px; border-radius: 7px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; color: #fff; }
 #devNav .dev-btn:hover { background: rgba(255,255,255,0.14); }
 #devNav .dev-btn.is-on { background: var(--iri-green); color: #0A0A0A; }
+/* A screen the current answers skip: still reachable for a quick look, but struck
+   through, so the bar never suggests every question is asked every time. */
+#devNav .dev-btn.is-skipped { color: rgba(255,255,255,0.32); text-decoration: line-through; }
 
 /* ── Mobile ── */
 @media (max-width: 600px) {
@@ -620,7 +623,8 @@ input[type="file"] { display: none; }
 
 </div>
 
-<!-- DEV ONLY — jump to any screen without filling anything in. Delete with its CSS + script before launch. -->
+<!-- DEV ONLY — jump to any screen without filling anything in. Struck-through numbers are screens your
+     current answers skip. Delete with its CSS + script before launch. -->
 <div id="devNav"><span class="dev-lbl">DEV</span></div>
 
 <footer class="foot" id="foot">
@@ -892,7 +896,12 @@ function snapshot() {
 /* ── DEV ONLY — jump to any screen. Delete with #devNav before launch. ─────── */
 function devGo(i) { animating = false; returnToReview = false; render(i); }
 function markDev() {
-  document.querySelectorAll('#devNav .dev-btn').forEach(b => b.classList.toggle('is-on', +b.dataset.go === cur));
+  document.querySelectorAll('#devNav .dev-btn').forEach(b => {
+    const i = +b.dataset.go, skipped = !applies(i);
+    b.classList.toggle('is-on', i === cur);
+    b.classList.toggle('is-skipped', skipped);
+    b.title = b.dataset.label + (skipped ? ' — skipped for your current answers' : '');
+  });
 }
 (function buildDev() {
   const bar = document.getElementById('devNav');
@@ -900,10 +909,11 @@ function markDev() {
     const h = s.querySelector('.q-text, .confirm-title');
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'dev-btn'; b.dataset.go = i; b.textContent = i;
-    b.title = i + ' · ' + (h ? h.textContent.trim() : s.dataset.step) + (COND[s.dataset.step] ? ' (conditional)' : '');
+    b.dataset.label = i + ' · ' + (h ? h.textContent.trim() : s.dataset.step);
     b.onclick = () => devGo(i);
     bar.append(b);
   });
+  markDev();
 })();
 
 render(0);
